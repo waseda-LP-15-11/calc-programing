@@ -1,0 +1,9 @@
+src/*.tab.c
+src/*.tab.h
+src/*.yy.cc
+src/*.output
+src/*.o
+src/*.exe
+src/*.output
+*.zip
+src/calc
