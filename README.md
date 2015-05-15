@@ -13,7 +13,7 @@ make
 
 ##プロジェクトの情報
 基本的には掲示板の方に書く。
-ここもまあ更新できたらするぐらいの気持ちで
+ここもまあgithubの練習もかねて更新できたらするぐらいの気持ちで
 ###予定
 https://github.com/waseda-LP-15-11/calc-programing/milestones
 
