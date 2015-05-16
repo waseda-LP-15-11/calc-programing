@@ -7,3 +7,5 @@ src/*.exe
 src/*.output
 *.zip
 src/calc
+*.bat
+src/result.txt
