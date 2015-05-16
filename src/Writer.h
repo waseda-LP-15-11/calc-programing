@@ -1,7 +1,13 @@
-#pragma once
+﻿#pragma once
 #include <string>
 #include <fstream>
-#include <iostream>
+
+/*
+result.txt以外でも
+必要な箇所で
+Writer writer2("ファイル名")
+writer.write("テキスト");
+*/
 class Writer
 {
 public:
@@ -17,14 +23,14 @@ public:
   template<typename Type>
   void write(const Type& value)
   {
-    	m_ofs << value;
+    m_ofs << value;
   }
 
   template<typename Type>
   void writeln(const Type& value)
   {
   	write(value);
-	nextLine();
+    nextLine();
   }
 
   void nextLine()

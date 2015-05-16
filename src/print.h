@@ -5,27 +5,24 @@
 #include <sstream>
 
 //calc.y以外でもprint.hをincludeすればWriteとWritelnが使える
-extern std::unique_ptr<Writer> writer;
+static Writer writer("result.txt");
 template<typename Type>void Write(const Type value)
 {
-	writer->write(value);
+	writer.write(value);
 }
 template<typename Type>void Writeln(const Type value)
 {
-	writer->writeln(value);
+	writer.writeln(value);
 }
 
-static inline void WriteNextLine()
-{
-	writer->nextLine();
-}
+void WriteNextLine();
 
 template<typename Type>void Print(const Type value,bool write  = true)
 {
 	std::cout << value;
 	if(write)
 	{
-		writer->write(value);
+		writer.write(value);
 	}
 }
 template<typename Type>void Println(const Type value,bool write  = true)
@@ -33,7 +30,7 @@ template<typename Type>void Println(const Type value,bool write  = true)
 	std::cout << value << std::endl;
 	if(write)
 	{
-		writer->writeln(value);
+		writer.writeln(value);
 	}
 }
 
@@ -42,7 +39,7 @@ template<typename Type>void PrintErrorln(const Type value,bool write  = true)
 	std::cerr << value << std::endl;
 	if(write)
 	{
-		writer->writeln(value);
+		writer.writeln(value);
 	}
 }
 

@@ -1,4 +1,6 @@
 %{
+//#define MEMCHEK //メモリリークのチェックをする場合有効化
+#include "MemLeakChecker.h"
 #include "exmath.h"
 #include "variable.h"
 #include "memory.h"
@@ -10,8 +12,8 @@
 #include <iostream>
 #include <FlexLexer.h>
 
-FlexLexer* lexer = nullptr;
-std::unique_ptr<Writer> writer = nullptr;
+
+std::unique_ptr<FlexLexer> lexer = nullptr;
 
 int yyparse();
 int yylex()
@@ -60,6 +62,10 @@ void showFormula(double value)
 
 int main(int argc, char *argv[])
 {
+#ifdef MEMCHEK
+  MemLeakChecker checker;
+#endif
+
   std::ifstream ifs;
 
   if(argc >= 2)
@@ -67,7 +73,7 @@ int main(int argc, char *argv[])
     ifs.open(argv[1]);
     if(!ifs.fail())
     {
-      lexer = new yyFlexLexer(&ifs);
+      lexer = std::make_unique<yyFlexLexer>(&ifs);
       goto OPEN_SUCCESS;
     }
     else
@@ -77,12 +83,10 @@ int main(int argc, char *argv[])
   }
 
   //失敗した場合||入力がない場合はここでnew
-  lexer = new yyFlexLexer();
+  lexer = std::make_unique<yyFlexLexer>();
 
 OPEN_SUCCESS:
 
-  const std::string resultFileName = (argc >= 3) ? to_string(argv[2]) : "result.txt";
-  writer = std::unique_ptr<Writer>(new Writer(resultFileName));
   Print(">> ");
   yyparse();
 }
