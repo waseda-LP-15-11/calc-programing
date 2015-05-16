@@ -1,0 +1,50 @@
+定義済み数学定数
+pi π	円周率
+2pi 2π	2*円周率
+pi2 π2  円周率/2
+e		ネイピア数
+
+定義済み数学関数
+
+三角関数(x:ラジアン)
+sin(x)	cos(x)	tan(x)	
+
+逆三角関数(x:ラジアン)
+asin(x) acos(x)	atan(x) 	
+
+双曲線関数(x:ラジアン)
+sinh(x)	cosh(x)	tanh(x) 
+
+逆双曲線関数(x:ラジアン)
+asinh(x) acosh(x) atanh(x)	
+	
+
+指数関数(底:e)	指数関数(底:2)
+exp(x) 			exp2(x)
+
+対数関数(底:2)	対数関数(底:e)	
+log2(x) 		log(x) ln(x)
+
+対数関数(底:10)
+log10(x) 	
+
+abs(x) 		xの絶対値
+
+xの平方根	xの立方根
+sqrt √(x) 	cbrt(x) 	
+
+xの四捨五入
+round(x)  rint(x) 
+
+xの切り捨て xの切り上げ
+floor(x)	ceil(x) 	
+
+Radians(x)	xをラジアンに変換
+Degrees(x) 	xを度数に変換
+
+hypot(x,y) 	√(x^2+y^2)
+
+dim(a,b) 	xとyの正の差分
+			
+mem[i]		i番目の計算結果
+ans 		最新の計算結果
