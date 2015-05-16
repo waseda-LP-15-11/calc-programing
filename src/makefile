@@ -1,7 +1,7 @@
 TARGET = calc
 BISON_SRC = $(TARGET).y
-INCLUDE_BISON_C = variable.c print.c exmath.c Writer.c memory.c
-INCLUDE_BISON_O = variable.o print.o exmath.o Writer.o memory.o MemLeakChecker.h
+INCLUDE_BISON_C = variable.c print.c exmath.c Writer.c memory.c MemLeakChecker.c
+INCLUDE_BISON_O = variable.o print.o exmath.o Writer.o memory.o MemLeakChecker.o
 BISON_H   = $(TARGET).tab.h
 BISON_C   = $(TARGET).tab.c
 BISON_O   = $(TARGET).tab.o

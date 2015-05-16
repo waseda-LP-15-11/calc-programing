@@ -14,16 +14,17 @@
 
 
 std::unique_ptr<FlexLexer> lexer = nullptr;
+bool isFileInputMode = false;
 
 int yyparse();
 int yylex()
 {
   if(const char* text = lexer->YYText())
   {
-    if(*text != '\n')
-    {
-      Write(text);
-    }
+  	if(to_String(text) != "\n")
+  	{
+  		WriteInput(to_String(text));
+  	}
   }
   return lexer->yylex();
 }
@@ -35,28 +36,30 @@ void yyerror(const char *s)
 
 
 void showFormula(double value)
-{
-  WriteNextLine();//式と答えの間の改行必要
+{  
+  bool error = false;
   if(std::isinf(value))//オーバーフロー
   {
     PrintErrorln("ERROR: Overflow");
-    return;
+    error = true;
   }
-
   if(std::isnan(value))//数値でない
   {
     PrintErrorln("Not a Number");
-    return;
+    error = true;
   }
 
 
-  if(ceil(value)!=floor(value) || value > INT_MAX)
+  if(!error)
   {
-    Println(value);
-  }
-  else 
-  {
-    Println((int)value);
+    if(ceil(value)!=floor(value) || value > INT_MAX)
+    {
+      Println(value);
+    }
+    else 
+    {
+      Println((int)value);
+    }
   }
 }
 
@@ -74,11 +77,12 @@ int main(int argc, char *argv[])
     if(!ifs.fail())
     {
       lexer = std::make_unique<yyFlexLexer>(&ifs);
+      isFileInputMode = true;
       goto OPEN_SUCCESS;
     }
     else
     {
-      PrintErrorln("FAIL_OPEN_FILE",false);
+      PrintErrorln("FAIL_OPEN_FILE");
     }
   }
 
@@ -87,7 +91,7 @@ int main(int argc, char *argv[])
 
 OPEN_SUCCESS:
 
-  Print(">> ");
+  Print(">> ",false);
   yyparse();
 }
 
@@ -117,9 +121,9 @@ OPEN_SUCCESS:
 %%
 lines
   : /* empty */ {/* empty */}
-  | lines '\n' {Print(">> ");}
-  | lines expression '\n' {Print(">> ");update_ans($2);pushMemory($2);}
-  | error '\n'       { yyerrok;Print(">> "); }
+  | lines '\n' {PrintNextLine();}
+  | lines expression '\n' {PrintNextLine();update_ans($2);pushMemory($2);}
+  | error '\n'       { yyerrok;PrintNextLine(); }
 expression
   : formula { showFormula($1); }
   | character { show_variable($1); }

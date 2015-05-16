@@ -4,6 +4,7 @@
 
 class MemLeakChecker
 {
+public:
 	MemLeakChecker()
 	{
 		// チェック開始

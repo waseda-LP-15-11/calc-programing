@@ -4,46 +4,46 @@
 #include <iostream>
 #include <sstream>
 
-//calc.y以外でもprint.hをincludeすればWriteとWritelnが使える
-static Writer writer("result.txt");
-template<typename Type>void Write(const Type value)
-{
-	writer.write(value);
-}
-template<typename Type>void Writeln(const Type value)
-{
-	writer.writeln(value);
-}
+extern Writer writer;
+extern bool isFileInputMode;
+void PrintNextLine();
 
-void WriteNextLine();
+void WriteInput(const std::string& value);
+void WriteOutput(const std::string& value);
 
-template<typename Type>void Print(const Type value,bool write  = true)
-{
-	std::cout << value;
-	if(write)
-	{
-		writer.write(value);
-	}
-}
-template<typename Type>void Println(const Type value,bool write  = true)
-{
-	std::cout << value << std::endl;
-	if(write)
-	{
-		writer.writeln(value);
-	}
-}
-
-template<typename Type>void PrintErrorln(const Type value,bool write  = true)
-{
-	std::cerr << value << std::endl;
-	if(write)
-	{
-		writer.writeln(value);
-	}
-}
-
-template <typename T> std::string to_string(const T& t)
+template <typename T> std::string to_String(const T& t)
 {
     std::ostringstream os; os<<t; return os.str();
 }
+
+template<typename Type>void Print(const Type value,bool writable  = true)
+{
+	if(!isFileInputMode)
+	{
+		std::cout << value;
+	}
+	if(writable)
+	{
+		WriteOutput(to_String(value));
+	}
+}
+
+template<typename Type>void Println(const Type value,bool writable  = true)
+{
+	Print(value,writable);
+	if(!isFileInputMode)
+	{
+		std::cout << std::endl;
+	}
+}
+
+template<typename Type>void PrintErrorln(const Type value)
+{
+	if(!isFileInputMode)
+	{
+		std::cerr << value << std::endl;
+	}
+	WriteOutput(to_String(value));
+}
+
+

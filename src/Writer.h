@@ -1,7 +1,8 @@
 ﻿#pragma once
 #include <string>
 #include <fstream>
-
+#include <iostream>
+#include <queue>
 /*
 result.txt以外でも
 必要な箇所で
@@ -20,24 +21,48 @@ public:
     m_ofs.close();
   }
 
-  template<typename Type>
-  void write(const Type& value)
+  void writeInput(const std::string& value)
   {
-    m_ofs << value;
+    m_inputs.push_back(value);
   }
 
-  template<typename Type>
-  void writeln(const Type& value)
+  void writeOutput(const std::string& value)
   {
-  	write(value);
-    nextLine();
+    m_outputs.push_back(value);
   }
-
-  void nextLine()
+  
+  void writeOneLine()
+  {	
+  	m_ofs << ">> ";
+  	for(size_t i=0;i<m_inputs.size();++i)
+  	{
+  		 m_ofs << m_inputs[i];
+  	}
+  	m_ofs << std::endl;
+  	for(size_t i=0;i<m_outputs.size();++i)
+  	{
+  		 m_ofs << m_outputs[i] << std::endl;
+  	}
+  	m_inputs.clear();
+  	m_outputs.clear();
+  }
+  
+  void writeCout()
   {
-    m_ofs << "\n";
+    	std::cout << ">> ";
+  	for(size_t i=0;i<m_inputs.size();++i)
+  	{
+  		 std::cout << m_inputs[i];
+  	}
+  	std::cout << std::endl;
+  	for(size_t i=0;i<m_outputs.size();++i)
+  	{
+  		 std::cout << m_outputs[i] << std::endl;
+  	}
   }
 
 private:
   std::ofstream m_ofs;
+  std::vector<std::string> m_inputs;
+  std::vector<std::string> m_outputs;
 };
