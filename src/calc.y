@@ -103,14 +103,14 @@ OPEN_SUCCESS:
   char string[255];
   double (*fp)(double);//double型の数学関数用
   double (*fpp)(double,double);//double型の数学関数用
-  double (*mem)(unsigned int);//履歴取得
+  void (*fpv)(void);//void型の関数
 }
 
 %token  <number> CONSTANT
 %token  <string> CHARACTER
 %token  <fp> FUNCTION
 %token  <fpp> FUNCTION2
-%token  <mem> MEMORY
+%token  <fpv> FUNCTION3
 %token  '+'
 %token  '('
 %token  ')'
@@ -141,10 +141,10 @@ term
   | term '^' primary { $$ = pow($1,$3); }
 primary
   : CONSTANT 
-  | MEMORY '[' formula ']'{ $$ = $1($3); }
   | FUNCTION '(' formula ')'{ $$ = $1($3); }
   | FUNCTION2 '(' formula','formula')'{ $$ = $1($3,$5); }
-  | character { if(get_value($1)){ $$ = *get_value($1);}}
+  | FUNCTION3 { $1(); }
+  | character { if(get_value($1)){ $$ = *get_value($1);}else{$$ = nan(NULL);}}
   | '(' formula ')'  { $$ = $2; }
 character
   : CHARACTER

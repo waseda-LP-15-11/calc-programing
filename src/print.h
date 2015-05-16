@@ -46,4 +46,4 @@ template<typename Type>void PrintErrorln(const Type value)
 	WriteOutput(to_String(value));
 }
 
-
+void dispFunc(void);

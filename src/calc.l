@@ -5,7 +5,8 @@
 #include "calc.tab.h"
 #include "exmath.h"
 using namespace std;
-double getMem(unsigned int);
+double getMem(double);
+void dispFunc(void);
 %}
 
 letter  [a-zA-Z_'"']
@@ -60,7 +61,9 @@ hypot			{ yylval.fpp = hypot; return FUNCTION2;}
 
 dim				{ yylval.fpp = fdim; return FUNCTION2;}
 			
-mem				{ yylval.mem = getMem; return MEMORY;}
+mem				{ yylval.fp = getMem; return FUNCTION;}
+
+function 		{ yylval.fpv = dispFunc; return FUNCTION3;}
 
 {digit}+(\.{digit}+)?   { yylval.number = atof(yytext); return CONSTANT; }
 {letter}({digit}|{letter})* 		{ strcpy(yylval.string, yytext); return CHARACTER; }

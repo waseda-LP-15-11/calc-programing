@@ -1,4 +1,6 @@
 #include "print.h"
+#include <fstream>
+#include <locale>
 Writer writer("result.txt");
 
 void WriteInput(const std::string& value)
@@ -18,4 +20,21 @@ void PrintNextLine()
 	}
 	writer.writeOneLine();
 	Print(">> ",false);
+}
+
+void dispFunc(void)
+{
+	std::ifstream ifs("func.txt");
+	if(!ifs.fail())
+	{
+		std::string text;
+		while (getline(ifs, text))
+    	{
+        	Println(text,false);
+    	}
+	}
+	else
+	{
+		PrintErrorln("FAIL_OPEN_FILE");
+	}
 }
