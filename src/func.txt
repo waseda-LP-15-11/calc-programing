@@ -45,6 +45,16 @@ Degrees(x) 	xを度数に変換
 hypot(x,y) 	√(x^2+y^2)
 
 dim(a,b) 	xとyの正の差分
+
+sum(a,b,c)	可変長引数(a,b,c,...)の合計
+ave(a,b,c)	可変長引数(a,b,c,...の相加平均
+geomean		可変長引数(a,b,c,...)の相乗平均
 			
 mem[i]		i番目の計算結果
 ans 		最新の計算結果
+
+memory		全ての計算結果一覧表示
+
+function 	関数一覧表示
+
+variable	定義された変数一覧表示

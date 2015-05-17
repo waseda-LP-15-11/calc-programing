@@ -146,7 +146,7 @@ primary
   : CONSTANT 
   | FUNCTION '(' formula ')'{ $$ = $1($3); }
   | FUNCTION2 '(' formula','formula')'{ $$ = $1($3,$5); }
-  | FUNCTION_var '(' args ')'{ $$ = $1(); /* argsで引数を全てpushArgした後、それらは関数内で参照する */}
+  | FUNCTION_var '(' args ')'{ $$ = $1(); clearArgs();/* argsで引数を全てpushArgした後、それらは関数内で参照する */}
   | character { if(get_value($1)){ $$ = *get_value($1);}else{$$ = NAN;}}
   | '(' formula ')'  { $$ = $2; }
 args/* $$ = NANは使われないため特に意味はない */

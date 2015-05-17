@@ -36,5 +36,5 @@ clean :
 	rm -f *.gch
 	rm -f $(TARGET)
 
-lex.yy.o: lex.yy.cc calc.tab.h sum.h exmath.h sum.h
+lex.yy.o: lex.yy.cc calc.tab.h sum.h exmath.h
 calc.tab.o: calc.tab.c calc.tab.h variable.h print.h exmath.h Writer.h memory.h MemLeakChecker.h sum.h args.h

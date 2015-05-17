@@ -75,6 +75,8 @@ variable		{ yylval.fpv = dispVar; return FUNCTION0;}
 sum				{ yylval.fpvec = sum; return FUNCTION_var;}
 ave				{ yylval.fpvec = ave; return FUNCTION_var;}
 
+geomean			{ yylval.fpvec = geometricMean; return FUNCTION_var;}
+
 {digit}+(\.{digit}+)?   { yylval.number = atof(yytext); return CONSTANT; }
 {letter}({digit}|{letter})* 		{ strcpy(yylval.string, yytext); return CHARACTER; }
 {other}          	{ return (int)yytext[0]; } 

@@ -1,19 +1,22 @@
 #include "sum.h"
 #include "args.h"
+#include "exmath.h"
+#include <numeric>      // std::accumulate
+#include <functional>   // std::multiplies
 double sum(void)
 {
-  	std::vector<double> vec = getArgs();
-	double sum = 0;
-	for(const auto& v :vec)
-		sum += v;
-	clearArgs();
-	return sum;
+  	const std::vector<double> vec = getArgs();
+	return std::accumulate(vec.cbegin(),vec.cend(),0);
 }
 
 double ave(void)
 {
-  int num = getArgs().size();
-  double s = sum();
-  double average = s / num;
-  return average;
+  return sum() / (getArgs().size());
+}
+
+double geometricMean(void)
+{
+	const std::vector<double> vec = getArgs();
+	const double multiOfData = std::accumulate(vec.cbegin(),vec.cend(),1,std::multiplies<double>());
+	return pow(multiOfData,1.0/vec.size());
 }
