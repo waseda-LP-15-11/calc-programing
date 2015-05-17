@@ -4,9 +4,12 @@
 #include <stdlib.h>
 #include "calc.tab.h"
 #include "exmath.h"
+#include "sum.h"
 using namespace std;
 double getMem(double);
+void dispMem(void);
 void dispFunc(void);
+void dispVar(void);
 %}
 
 letter  [a-zA-Z_'"']
@@ -63,7 +66,14 @@ dim				{ yylval.fpp = fdim; return FUNCTION2;}
 			
 mem				{ yylval.fp = getMem; return FUNCTION;}
 
-function 		{ yylval.fpv = dispFunc; return FUNCTION3;}
+memory			{ yylval.fpv = dispMem; return FUNCTION0;}
+
+function 		{ yylval.fpv = dispFunc; return FUNCTION0;}
+
+variable		{ yylval.fpv = dispVar; return FUNCTION0;}
+
+sum				{ yylval.fpvec = sum; return FUNCTION_var;}
+ave				{ yylval.fpvec = ave; return FUNCTION_var;}
 
 {digit}+(\.{digit}+)?   { yylval.number = atof(yytext); return CONSTANT; }
 {letter}({digit}|{letter})* 		{ strcpy(yylval.string, yytext); return CHARACTER; }

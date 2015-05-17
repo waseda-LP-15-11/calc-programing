@@ -1,11 +1,11 @@
 
 #include "variable.h"
 #include "print.h"
-#include <unordered_map>
+#include <map>
 using namespace std;
 
 
-static unordered_map<string,double> variables;
+static map<string,double> variables;
 
 // 変数の値を表示する
 void show_variable(const char* name) 
@@ -40,5 +40,20 @@ double* get_value(const char* name)
 	{
 		Println("ERROR:: " + string(name) + " is undefined");
 		return nullptr;
+	}
+}
+
+
+void dispVar(void)
+{
+	if(variables.empty())
+	{
+		Println("Variable is undefined");
+		return;
+	}
+	for(const auto& var: variables)
+	{
+		//var.firstがキー(変数名),var.secondが変数の値
+		Println(var.first + " = " + to_String(var.second));
 	}
 }

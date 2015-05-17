@@ -14,15 +14,15 @@ double getMem(double index)
 
   if(std::isnan(index))
   {
-	Println("Index is Not a Number",false);
-	return 0;
+  	Println("Index is Not a Number",false);
+  	return NAN;
   }
 
   if(i <= 0 || memory.size() < i)
   {
-	Println("Out of Index",false);
-    	Println("num of memory is "+to_string(memory.size()),false);
-    	return 0;
+    Println("Out of Index",false);
+    Println("num of memory is "+to_string(memory.size()),false);
+    return NAN;
   }
 
   return memory.at(i-1);
@@ -31,4 +31,17 @@ double getMem(double index)
 void pushMemory(double value)
 {
 	memory.push_back(value);
+}
+
+void dispMem(void)
+{
+  if(memory.empty())
+  {
+    Println("memory is empty");
+    return;
+  }
+  for(unsigned int i=0;i<memory.size();++i)
+  {
+     Println("mem("+to_String(i+1)+")="+to_String(memory[i]),false);
+  }
 }
