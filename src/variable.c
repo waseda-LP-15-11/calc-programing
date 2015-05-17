@@ -6,13 +6,14 @@ using namespace std;
 
 
 static map<string,double> variables;
-
+void showFormula(double value);
 // 変数の値を表示する
 void show_variable(const char* name) 
 {
 	if(double* value = get_value(name))
 	{
-		Println(string(name)+" = "+to_String(*value));
+		Print(string(name)+" = ");
+		showFormula(*value);
 	}
 }
 
@@ -20,7 +21,8 @@ void show_variable(const char* name)
 void update_variable(const char* name, double value) 
 {
 	variables[to_String(name)] = value;	
-	Println(string(name)+" = "+to_String(value));
+	Print(string(name)+" = ");
+	showFormula(value);
 }
 
 void update_ans(double value)
