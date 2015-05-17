@@ -1,5 +1,6 @@
 %{
 //#define MEMCHEK //メモリリークのチェックをする場合有効化
+#include "numberBase.h"
 #include "args.h"
 #include "sum.h"
 #include "MemLeakChecker.h"
@@ -15,7 +16,8 @@
 #include <FlexLexer.h>
 
 std::unique_ptr<FlexLexer> lexer = nullptr;
-bool isFileInputMode = false;
+bool isFileInputMode = false;//ファイル入力があるか
+bool isBinaryInput = false;//その時点の計算に2進数表記があるか
 
 int yyparse();
 int yylex()
@@ -59,7 +61,15 @@ void showFormula(double value)
     }
     else 
     {
-      Println((int)value);
+      if(isBinaryInput)
+      {
+        Println(uIntToBinStr((unsigned int)value)+"("+to_String((int)value)+")");
+        isBinaryInput=false;
+      }
+      else
+      {
+        Println((int)value);
+      }
     }
   }
 }
@@ -117,7 +127,7 @@ OPEN_SUCCESS:
 %token  '('
 %token  ')'
 
-%type <number> lines expression formula term primary args
+%type <number> lines expression formula term primary function args
 %type <string> character
 
 %%
@@ -144,11 +154,13 @@ term
   | term '^' primary { $$ = pow($1,$3); }
 primary
   : CONSTANT 
-  | FUNCTION '(' formula ')'{ $$ = $1($3); }
-  | FUNCTION2 '(' formula','formula')'{ $$ = $1($3,$5); }
-  | FUNCTION_var '(' args ')'{ $$ = $1(); clearArgs();/* argsで引数を全てpushArgした後、それらは関数内で参照する */}
+  | function { $$ = $1; }
   | character { if(get_value($1)){ $$ = *get_value($1);}else{$$ = NAN;}}
   | '(' formula ')'  { $$ = $2; }
+function
+  : FUNCTION '(' formula ')'{ $$ = $1($3); }
+  | FUNCTION2 '(' formula','formula')'{ $$ = $1($3,$5); }
+  | FUNCTION_var '(' args ')'{ $$ = $1(); clearArgs();/* argsで引数を全てpushArgした後、それらは関数内で参照する */}
 args/* $$ = NANは使われないため特に意味はない */
   : formula   { pushArg($1);$$ = NAN;}
   | formula ',' args  { pushArg($1);$$ = NAN; }

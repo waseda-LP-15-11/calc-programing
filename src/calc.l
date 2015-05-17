@@ -5,11 +5,14 @@
 #include "calc.tab.h"
 #include "exmath.h"
 #include "sum.h"
+#include "numberBase.h"
 using namespace std;
 double getMem(double);
 void dispMem(void);
 void dispFunc(void);
 void dispVar(void);
+extern bool isBinaryInput;
+
 %}
 
 letter  [a-zA-Z_'"']
@@ -76,6 +79,8 @@ sum				{ yylval.fpvec = sum; return FUNCTION_var;}
 ave				{ yylval.fpvec = ave; return FUNCTION_var;}
 
 geomean			{ yylval.fpvec = geometricMean; return FUNCTION_var;}
+
+0(b|B)(0|(1|0)+)	 { yylval.number = binToUInt(yytext); isBinaryInput=true;return CONSTANT; }
 
 {digit}+(\.{digit}+)?   { yylval.number = atof(yytext); return CONSTANT; }
 {letter}({digit}|{letter})* 		{ strcpy(yylval.string, yytext); return CHARACTER; }

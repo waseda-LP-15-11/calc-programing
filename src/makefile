@@ -1,7 +1,7 @@
 TARGET = calc
 BISON_SRC = $(TARGET).y
-INCLUDE_BISON_C = variable.c print.c exmath.c Writer.c memory.c MemLeakChecker.c sum.c args.c
-INCLUDE_BISON_O = variable.o print.o exmath.o Writer.o memory.o MemLeakChecker.o sum.o args.o
+INCLUDE_BISON_C = variable.c print.c exmath.c Writer.c memory.c MemLeakChecker.c sum.c args.c numberBase.c
+INCLUDE_BISON_O = variable.o print.o exmath.o Writer.o memory.o MemLeakChecker.o sum.o args.o numberBase.o
 BISON_H   = $(TARGET).tab.h
 BISON_C   = $(TARGET).tab.c
 BISON_O   = $(TARGET).tab.o
@@ -36,5 +36,5 @@ clean :
 	rm -f *.gch
 	rm -f $(TARGET)
 
-lex.yy.o: lex.yy.cc calc.tab.h sum.h exmath.h
-calc.tab.o: calc.tab.c calc.tab.h variable.h print.h exmath.h Writer.h memory.h MemLeakChecker.h sum.h args.h
+lex.yy.o: lex.yy.cc calc.tab.h sum.h exmath.h numberBase.h
+calc.tab.o: calc.tab.c calc.tab.h variable.h print.h exmath.h Writer.h memory.h MemLeakChecker.h sum.h args.h numberBase.h

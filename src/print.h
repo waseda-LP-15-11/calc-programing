@@ -11,6 +11,7 @@ void PrintNextLine();
 void WriteInput(const std::string& value);
 void WriteOutput(const std::string& value);
 
+
 template <typename T> std::string to_String(const T& t)
 {
     std::ostringstream os; os<<t; return os.str();
