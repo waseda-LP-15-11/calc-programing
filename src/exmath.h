@@ -20,3 +20,5 @@ const double M_PI_2     =	1.570796327;
 
 double Radians(double degree);
 double Degrees(double radian);
+double rightShift(double a,double b);
+double leftShift(double a,double b);

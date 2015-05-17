@@ -58,3 +58,7 @@ memory		全ての計算結果一覧表示
 function 	関数一覧表示
 
 variable	定義された変数一覧表示
+
+toBin(x)	xを2進数表記を表示
+
+toHex(x)	xの16進数表記を表示

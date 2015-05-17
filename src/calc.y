@@ -18,7 +18,7 @@
 std::unique_ptr<FlexLexer> lexer = nullptr;
 bool isFileInputMode = false;//ファイル入力があるか
 bool isBinaryInput = false;//その時点の計算に2進数表記があるか
-
+bool isHexInput = false;
 int yyparse();
 int yylex()
 {
@@ -55,23 +55,25 @@ void showFormula(double value)
 
   if(!error)
   {
-    if(ceil(value)!=floor(value) || value > INT_MAX)
+    if(isBinaryInput)
+    {
+      Println(uIntToBinStr((unsigned int)value)+"("+to_String((unsigned int)value)+")");
+    }
+    else if(isHexInput)
+    {
+      Println(uIntToHexStr((unsigned int)value)+"("+to_String((unsigned int)value)+")");
+    }
+    else if(ceil(value)!=floor(value) || value > INT_MAX)
     {
       Println(value);
     }
-    else 
+    else
     {
-      if(isBinaryInput)
-      {
-        Println(uIntToBinStr((unsigned int)value)+"("+to_String((int)value)+")");
-        isBinaryInput=false;
-      }
-      else
-      {
-        Println((int)value);
-      }
+      Println((int)value);
     }
   }
+  isBinaryInput=false;
+  isHexInput = false;
 }
 
 int main(int argc, char *argv[])
@@ -143,7 +145,7 @@ expression
   | FUNCTION0 { $1();}
 formula
   : term
-  | '-'term  { $$ = -1*$2; }
+  | '-'term  { $$ = (!isBinaryInput) ? -1*$2 : complement($2) ;}
   | formula '+' term  { $$ = $1 + $3; }
   | formula '-' term  { $$ = $1 - $3; }
 term
@@ -152,6 +154,8 @@ term
   | term '/' primary { $$ = $1 / $3; if($3==0)PrintErrorln("ERROR: Can't divide by 0");}
   | term '%' primary { $$ = fmod($1,$3); }
   | term '^' primary { $$ = pow($1,$3); }
+  | term '<''<' primary { $$ = leftShift($1,$4); if(32<=$4||$$ < $1)PrintErrorln("ERROR: Over Flow");}
+  | term '>''>' primary { $$ = rightShift($1,$4); if($4< 0||31<=$4 )PrintErrorln("ERROR: Out of Shift Range"); }
 primary
   : CONSTANT 
   | function { $$ = $1; }

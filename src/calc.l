@@ -12,11 +12,12 @@ void dispMem(void);
 void dispFunc(void);
 void dispVar(void);
 extern bool isBinaryInput;
-
+extern bool isHexInput;
 %}
 
 letter  [a-zA-Z_'"']
 digit        [0-9]
+hexleter	 [a-fA-F]
 string		 {letter}({digit}|{letter})* 
 white_blank  [ \t]
 other        .|\n
@@ -80,7 +81,13 @@ ave				{ yylval.fpvec = ave; return FUNCTION_var;}
 
 geomean			{ yylval.fpvec = geometricMean; return FUNCTION_var;}
 
+toBin			{ yylval.fp = toBin; isBinaryInput=true; return FUNCTION;}
+
+toHex			{ yylval.fp = toHex; isHexInput=true; return FUNCTION;}
+
 0(b|B)(0|(1|0)+)	 { yylval.number = binToUInt(yytext); isBinaryInput=true;return CONSTANT; }
+
+0(x|X)(0|({digit}|{hexleter})+)	{ yylval.number = hexToUInt(yytext); isHexInput=true;return CONSTANT; }
 
 {digit}+(\.{digit}+)?   { yylval.number = atof(yytext); return CONSTANT; }
 {letter}({digit}|{letter})* 		{ strcpy(yylval.string, yytext); return CHARACTER; }
