@@ -1,8 +1,7 @@
 ﻿#pragma once
 #include <string>
 #include <fstream>
-#include <iostream>
-#include <queue>
+#include <vector>
 /*
 result.txt以外でも
 必要な箇所で
@@ -12,8 +11,8 @@ writer.write("テキスト");
 class Writer
 {
 public:
-  Writer(const std::string& path):
-	m_ofs(path)
+  Writer(const std::string& path,bool fileCheck=true):
+	m_ofs(makeNewFileName(path,fileCheck))
   {}
 
   ~Writer()
@@ -31,35 +30,14 @@ public:
     m_outputs.push_back(value);
   }
   
-  void writeOneLine()
-  {	
-  	m_ofs << ">> ";
-  	for(size_t i=0;i<m_inputs.size();++i)
-  	{
-  		 m_ofs << m_inputs[i];
-  	}
-  	m_ofs << std::endl;
-  	for(size_t i=0;i<m_outputs.size();++i)
-  	{
-  		 m_ofs << m_outputs[i] << std::endl;
-  	}
-  	m_inputs.clear();
-  	m_outputs.clear();
-  }
+  //m_inputsとm_outputsを書き出す
+  void writeOneLine();
   
-  void writeCout()
-  {
-    	std::cout << ">> ";
-  	for(size_t i=0;i<m_inputs.size();++i)
-  	{
-  		 std::cout << m_inputs[i];
-  	}
-  	std::cout << std::endl;
-  	for(size_t i=0;i<m_outputs.size();++i)
-  	{
-  		 std::cout << m_outputs[i] << std::endl;
-  	}
-  }
+  //ファイル入力モード時に内容を標準出力へ書き出す
+  void writeCout();
+
+  //すでに存在するresult.txtを上書きしないようにファイル名を作成する
+  std::string makeNewFileName(const std::string& filename,bool enableCheck);
 
 private:
   std::ofstream m_ofs;
