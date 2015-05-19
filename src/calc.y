@@ -1,9 +1,10 @@
 %{
-//#define MEMCHEK //メモリリークのチェックをする場合有効化
+
+#include "Calc.h"
 #include "numberBase.h"
 #include "args.h"
 #include "sum.h"
-#include "MemLeakChecker.h"
+
 #include "exmath.h"
 #include "variable.h"
 #include "memory.h"
@@ -11,11 +12,10 @@
 #include <vector>
 #include <string>
 #include <limits.h>
-#include <fstream>
-#include <iostream>
+
 #include <FlexLexer.h>
 
-std::unique_ptr<FlexLexer> lexer = nullptr;
+FlexLexer* lexer;
 bool isFileInputMode = false;//ファイル入力があるか
 bool isBinaryInput = false;//その時点の計算に2進数表記があるか
 bool isHexInput = false;
@@ -24,10 +24,10 @@ int yylex()
 {
   if(const char* text = lexer->YYText())
   {
-  	if(to_String(text) != "\n")
-  	{
-  		WriteInput(to_String(text));
-  	}
+    if(to_String(text) != "\n")
+    {
+      WriteInput(to_String(text));
+    }
   }
   return lexer->yylex();
 }
@@ -76,36 +76,20 @@ void showFormula(double value)
   isHexInput = false;
 }
 
+
 int main(int argc, char *argv[])
 {
-#ifdef MEMCHEK
-  MemLeakChecker checker;
-#endif
-
-  std::ifstream ifs;
-
-  if(argc >= 2)
+  if(argc>=2)
   {
-    ifs.open(argv[1]);
-    if(!ifs.fail())
-    {
-      lexer = std::make_unique<yyFlexLexer>(&ifs);
-      isFileInputMode = true;
-      goto OPEN_SUCCESS;
-    }
-    else
-    {
-      PrintErrorln("FAIL_OPEN_FILE");
-    }
+    Clac mainCalc(to_String(argv[1]));
+    mainCalc.run();
+  }
+  else
+  {
+    Clac mainCalc;
+    mainCalc.run();
   }
 
-  //失敗した場合||入力がない場合はここでnew
-  lexer = std::make_unique<yyFlexLexer>();
-
-OPEN_SUCCESS:
-
-  Print(">> ",false);
-  yyparse();
 }
 %}
 

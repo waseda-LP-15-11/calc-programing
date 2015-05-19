@@ -1,6 +1,7 @@
 #include "print.h"
 #include <fstream>
 #include <locale>
+#include "Calc.h"
 Writer writer("result.txt");
 
 void WriteInput(const std::string& value)
@@ -24,7 +25,11 @@ void PrintNextLine()
 
 void dispFunc(void)
 {
-	std::ifstream ifs("func.txt");
+
+	Clac calc("a.txt");
+  	calc.doFunc();
+  	Print("doFUnctfinish",false);
+	/*std::ifstream ifs("func.txt");
 	if(!ifs.fail())
 	{
 		std::string text;
@@ -37,4 +42,5 @@ void dispFunc(void)
 	{
 		PrintErrorln("FAIL_OPEN_FILE");
 	}
+	*/
 }
