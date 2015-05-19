@@ -23,6 +23,8 @@ white_blank  [ \t]
 other        .|\n
 
 %%
+<<EOF>> 		{yylval.fpv = dispFunc; return FUNCTION0;}
+"end" {yylval.fpv = dispVar; return FUNCTION0;}
 "exit" { exit(0); }
 {white_blank}+
 
@@ -92,3 +94,4 @@ toHex			{ yylval.fp = toHex; isHexInput=true; return FUNCTION;}
 {digit}+(\.{digit}+)?   { yylval.number = atof(yytext); return CONSTANT; }
 {letter}({digit}|{letter})* 		{ strcpy(yylval.string, yytext); return CHARACTER; }
 {other}          	{ return (int)yytext[0]; } 
+

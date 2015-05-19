@@ -37,9 +37,10 @@ public:
   void writeCout();
 
   //すでに存在するresult.txtを上書きしないようにファイル名を作成する
-  std::string makeNewFileName(const std::string& filename,bool enableCheck);
+  char* makeNewFileName(const std::string& filename,bool enableCheck);
 
 private:
+  char szDst[256];
   std::ofstream m_ofs;
   std::vector<std::string> m_inputs;
   std::vector<std::string> m_outputs;

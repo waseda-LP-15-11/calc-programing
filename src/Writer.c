@@ -32,11 +32,12 @@ void Writer::writeCout()
  	}
 }
 
-std::string Writer::makeNewFileName(const std::string& filename,bool enableCheck)
+char* Writer::makeNewFileName(const std::string& filename,bool enableCheck)
 {
 	if(!enableCheck)
 	{
-		return filename;
+		 sprintf(szDst, "%s", filename.c_str());
+		return szDst;
 	}
 
 	std::string newFileName = filename;
@@ -60,5 +61,7 @@ std::string Writer::makeNewFileName(const std::string& filename,bool enableCheck
 			break;
 		}
 	}
-	return newFileName;
+    //const char* pszDst = strSrc.c_str();
+    sprintf(szDst, "%s", newFileName.c_str());
+	return szDst;
 }

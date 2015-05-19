@@ -24,7 +24,7 @@ class Clac
             Println("ClacConstrfinis",false);
   }
 
-  Clac(const std::string& filename)
+  Clac(const char* filename)
   {
       Println("ClacConstrS",false);
     #ifdef MEMCHEK
@@ -45,6 +45,7 @@ class Clac
     {
       //PrintlnErrorln("FAIL_OPEN_FILE");
       m_lexer = new yyFlexLexer();
+      isFileInputMode = false;
     }
            Println("newFinish",false);
     lexer = m_lexer;
@@ -54,7 +55,7 @@ class Clac
   void run()
   {
           Println("Clacrun",false);
-    Println(">> ",false);
+    Print(">> ");
     yyparse();
               Println("Clacrunfini",false);
   }
@@ -62,7 +63,7 @@ class Clac
   void doFunc()
   {
                   Println("dofunc",false);
-    Println(">> ",false);
+    Print(">> ");
     yyparse();
                       Println("dofuncfin",false);
   }
@@ -73,8 +74,8 @@ class Clac
     lexer = m_preLexer;
     //delete m_lexer;
   }
-private:
+//private:
   FlexLexer* m_lexer;
   std::ifstream m_ifs;
-  FlexLexer* m_preLexer=nullptr;
+  FlexLexer* m_preLexer;
 };

@@ -81,7 +81,7 @@ int main(int argc, char *argv[])
 {
   if(argc>=2)
   {
-    Clac mainCalc(to_String(argv[1]));
+    Clac mainCalc(argv[1]);
     mainCalc.run();
   }
   else
