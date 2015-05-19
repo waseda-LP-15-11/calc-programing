@@ -24,13 +24,6 @@ bool isHexInput = false;
 int yyparse();
 int yylex()
 {
-  if(const char* text = lexer->YYText())
-  {
-  	if(to_String(text) != "\n")
-  	{
-  		WriteInput(to_String(text));
-  	}
-  }
   return lexer->yylex();
 }
 
