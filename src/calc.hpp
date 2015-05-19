@@ -20,13 +20,19 @@ typedef struct {
 typedef enum {
     BOOLEAN_EXPRESSION = 1,
     INT_EXPRESSION,
-    ADD_EXPRESSION
+    ADD_EXPRESSION,
+    SUB_EXPRESSION,
+    MUL_EXPRESSION,
+    DIV_EXPRESSION,
+    MOD_EXPRESSION,
+    POW_EXPRESSION
 } ExpressionType;
 
 typedef struct {
     Expression *left;
     Expression *right;
 } BinaryExpression;
+
 struct Expression_tag {
     ExpressionType type;
     int line_number;

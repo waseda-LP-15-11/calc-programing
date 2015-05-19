@@ -137,9 +137,14 @@ expression
   : formula { calc_eval_expression($1); }
 formula
   : term
-  | formula '+' term  { $$ = create_binary_expression(ADD_EXPRESSION, $1, $3) }
+  | formula '+' term  { $$ = create_binary_expression(ADD_EXPRESSION, $1, $3); }
+  | formula '-' term  { $$ = create_binary_expression(SUB_EXPRESSION, $1, $3); }
 term
   : primary
+  | term '*' primary { $$ = create_binary_expression(MUL_EXPRESSION, $1,$3); }
+  | term '/' primary { $$ = create_binary_expression(DIV_EXPRESSION, $1,$3); }
+  | term '%' primary { $$ = create_binary_expression(MOD_EXPRESSION, $1,$3); }
+  | term '^' primary { $$ = create_binary_expression(POW_EXPRESSION, $1,$3); }
 primary
   : INT_LITERAL
 %%

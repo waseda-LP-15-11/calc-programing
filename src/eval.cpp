@@ -5,6 +5,7 @@
 #include <stddef.h>
 #include <stdio.h>
 #include "calc.hpp"
+#include "exmath.h"
 
 Value eval_int_expression(int int_value) {
     Value v;
@@ -18,6 +19,21 @@ static int eval_binary_int(ExpressionType type, int left, int right) {
     switch (type) {
         case ADD_EXPRESSION:
             result = left + right;
+            break;
+        case SUB_EXPRESSION:
+            result = left - right;
+            break;
+        case MUL_EXPRESSION:
+            result = left * right;
+            break;
+        case DIV_EXPRESSION:
+            result = left / right;
+            break;
+        case MOD_EXPRESSION:
+            result = left % right;
+            break;
+        case POW_EXPRESSION:
+            result = pow(left, right);
             break;
     }
 
@@ -46,6 +62,11 @@ static Value eval_expression(Expression *expr) {
             v = eval_int_expression(expr->u.int_value);
             break;
         case ADD_EXPRESSION:
+        case SUB_EXPRESSION:
+        case MUL_EXPRESSION:
+        case DIV_EXPRESSION:
+        case MOD_EXPRESSION:
+        case POW_EXPRESSION:
             v = eval_binary_expression(expr->type, expr->u.binary_expression.left, expr->u.binary_expression.right);
             break;
     }

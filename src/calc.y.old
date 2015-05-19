@@ -4,7 +4,7 @@
 #include "args.h"
 #include "sum.h"
 #include "MemLeakChecker.h"
-#include "exmath.h"
+
 #include "variable.h"
 #include "memory.h"
 #include "print.h"
