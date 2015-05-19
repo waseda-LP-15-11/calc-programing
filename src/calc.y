@@ -5,7 +5,6 @@
 #include "sum.h"
 #include "MemLeakChecker.h"
 #include "exmath.h"
-#include "variable.h"
 #include "memory.h"
 #include "print.h"
 #include <vector>
@@ -107,7 +106,7 @@ OPEN_SUCCESS:
 %union 
 {
   double number;
-  char string[255];
+  char *character;
   double (*fp)(double);//1引数double型の数学関数用
   double (*fpp)(double,double);//2引数double型の数学関数用
   void (*fpv)(void);//引数のないvoid型の関数
@@ -116,7 +115,7 @@ OPEN_SUCCESS:
 }
 %token <expression> INT_LITERAL
 %token  <number> CONSTANT
-%token  <string> CHARACTER
+%token  <character> CHARACTER
 %token  <fp> FUNCTION
 %token  <fpp> FUNCTION2
 %token  <fpv> FUNCTION0
@@ -131,10 +130,11 @@ OPEN_SUCCESS:
 lines
   : /* empty */ {/* empty */}
   | lines '\n' {PrintNextLine();}
-  | lines expression '\n' {PrintNextLine();}
+  | lines expression '\n' {calc_eval_expression($2); PrintNextLine();}
   | error '\n'       { yyerrok;PrintNextLine(); }
 expression
-  : formula { calc_eval_expression($1); }
+  : formula
+  | CHARACTER '=' expression { $$ = create_assign_expression($1, $3); }
 formula
   : term
   | formula '+' term  { $$ = create_binary_expression(ADD_EXPRESSION, $1, $3); }
@@ -147,4 +147,6 @@ term
   | term '^' primary { $$ = create_binary_expression(POW_EXPRESSION, $1,$3); }
 primary
   : INT_LITERAL
+  | '(' formula ')'  { $$ = $2; }
+  | CHARACTER { $$ = create_character_expression($1); }
 %%

@@ -33,5 +33,5 @@ other        .|\n
     yylval.expression = expression;
     return INT_LITERAL;
 }
-{letter}({digit}|{letter})* 		{ strcpy(yylval.string, yytext); return CHARACTER; }
+{letter}({digit}|{letter})* 		{ yylval.character = create_character(yytext); return CHARACTER;}
 {other}          	{ return (int)yytext[0]; } 

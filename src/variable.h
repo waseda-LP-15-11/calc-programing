@@ -1,7 +1,7 @@
 #pragma once
-
-void show_variable(const char* name);
-void update_variable(const char*  name, double value);
-void update_ans(double value);
-double* get_value(const char*  name);
-void dispVar(void);
+#include "calc.hpp"
+//void show_variable(const char* name);
+void add_variable(const char*  name, Value *var);
+//void update_ans(double value);
+Value* search_local_variable(const char* name);
+//void dispVar(void);

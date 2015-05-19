@@ -6,6 +6,7 @@
 #include <stdio.h>
 #include "calc.hpp"
 #include "exmath.h"
+#include "variable.h"
 
 Value eval_int_expression(int int_value) {
     Value v;
@@ -13,6 +14,45 @@ Value eval_int_expression(int int_value) {
     v.u.int_value = int_value;
     return v;
 }
+
+static Value eval_char_expression(Expression *expr) {
+    Value v;
+    Value *var;
+
+    var = search_local_variable(expr->u.character);
+    if(var != NULL) {
+        v = *var;
+    } else {
+//        var = search_global_variable(expr->u.character);
+        if(var != NULL) {
+            v = *var;
+        } else {
+         // error handling
+        }
+    }
+    return v;
+}
+
+static Value eval_assign_expression(char *chara, Expression *expr) {
+    Value v;
+    Value *left;
+
+    v = eval_expression(expr);
+
+    left = search_local_variable(chara);
+//    if (left == NULL) {
+//        left = search_global_variable(chara);
+//    }
+    if (left != NULL) {
+       *left = v;
+    } else {
+        add_variable(chara, &v);
+    }
+
+    return v;
+
+}
+
 
 static int eval_binary_int(ExpressionType type, int left, int right) {
     int result;
@@ -61,12 +101,19 @@ static Value eval_expression(Expression *expr) {
         case INT_EXPRESSION:
             v = eval_int_expression(expr->u.int_value);
             break;
+        case CHAR_EXPRESSION:
+            v = eval_char_expression(expr);
+            break;
+        case ASSIGN_EXPRESSION:
+            v = eval_assign_expression(expr->u.assignExpression.variable, expr->u.assignExpression.operand);
+            break;
         case ADD_EXPRESSION:
         case SUB_EXPRESSION:
         case MUL_EXPRESSION:
         case DIV_EXPRESSION:
         case MOD_EXPRESSION:
         case POW_EXPRESSION:
+        case EQ_EXPRESSION:
             v = eval_binary_expression(expr->type, expr->u.binary_expression.left, expr->u.binary_expression.right);
             break;
     }
