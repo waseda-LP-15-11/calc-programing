@@ -39,4 +39,4 @@ SET_SOURCE_FILES_PROPERTIES(
 add_executable(calc_programing
     ${SOURCE_FILES}
     ${BISON_MyParser_OUTPUTS}
-    ${FLEX_MyScanner_OUTPUTS})
+    ${FLEX_MyScanner_OUTPUTS} src/create.h src/create.cpp src/eval.h src/eval.cpp)
