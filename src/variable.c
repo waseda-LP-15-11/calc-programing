@@ -1,4 +1,3 @@
-
 #include "variable.h"
 
 // 変数の値を表示する

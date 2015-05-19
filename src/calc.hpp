@@ -3,19 +3,21 @@
 #include "print.h"
 #include <map>
 using namespace std;
-
 typedef struct Expression_tag Expression;
 
-typedef enum {
-    FALSE = 0,
-    TRUE = 1
-} Boolean;
+//
+// 数値定義
+// 各数値の属性、値の定義
+//
 
+// 数値の属性
 typedef enum {
     INT_VALUE,
     DOUBLE_VALUE
 } ValueType;
 
+// 数値
+// 数値は、属性と値をもつ
 typedef struct {
     ValueType type;
     union {
@@ -24,6 +26,12 @@ typedef struct {
     } u;
 } Value;
 
+//
+// 枝定義
+// 各枝の属性、値の定義
+//
+
+// 枝の属性
 typedef enum {
     BOOLEAN_EXPRESSION = 1,
     INT_EXPRESSION,
@@ -38,19 +46,29 @@ typedef enum {
     ASSIGN_EXPRESSION
 } ExpressionType;
 
+// Booleanの枝の値
+typedef enum {
+    FALSE = 0,
+    TRUE = 1
+} Boolean;
+
+// 右辺と左辺がある枝の値
 typedef struct {
     Expression *left;
     Expression *right;
 } BinaryExpression;
 
+// 変数を割り当てる枝の値
 typedef struct {
-    char *variable;
-    Expression *operand;
+    char *variable;         // 変数名
+    Expression *operand;    // 割り当てる式
 } AssignExpression;
 
+// 枝
+// 枝は、属性と値をもつ
 struct Expression_tag {
     ExpressionType type;
-    int line_number;
+    int line_number;    //未実装
     union {
         Boolean boolean_value;
         int     int_value;
@@ -61,6 +79,7 @@ struct Expression_tag {
     } u;
 };
 
+// 変数の保存場所
 static map<string,Value> Variables;
 
 // create.cpp
@@ -71,11 +90,10 @@ Expression * create_assign_expression(char *variable, Expression *operand);
 char * create_character(char *chara);
 
 //eval.cpp
-
 void calc_eval_expression(Expression *expression);
 static Value eval_expression(Expression *expr);
 Value eval_int_expression(int int_value);
-static int eval_binary_int(ExpressionType type, int left, int right);
+static int calc_binary_int(ExpressionType type, int left, int right);
 Value eval_binary_expression(ExpressionType type, Expression *left, Expression *right);
 
 #endif

@@ -1,5 +1,6 @@
 //
 // Created by Keigo Ogawa on 5/19/15.
+// 流れ: 枝を一つづつ再帰的に評価→数値を計算して返す→最終的に一つの数値を出力
 //
 
 #include <stddef.h>
@@ -8,53 +9,12 @@
 #include "exmath.h"
 #include "variable.h"
 
-Value eval_int_expression(int int_value) {
-    Value v;
-    v.type = INT_VALUE;
-    v.u.int_value = int_value;
-    return v;
-}
+//
+// 計算関数
+//
 
-static Value eval_char_expression(Expression *expr) {
-    Value v;
-    Value *var;
-
-    var = search_local_variable(expr->u.character);
-    if(var != NULL) {
-        v = *var;
-    } else {
-//        var = search_global_variable(expr->u.character);
-        if(var != NULL) {
-            v = *var;
-        } else {
-         // error handling
-        }
-    }
-    return v;
-}
-
-static Value eval_assign_expression(char *chara, Expression *expr) {
-    Value v;
-    Value *left;
-
-    v = eval_expression(expr);
-
-    left = search_local_variable(chara);
-//    if (left == NULL) {
-//        left = search_global_variable(chara);
-//    }
-    if (left != NULL) {
-       *left = v;
-    } else {
-        add_variable(chara, &v);
-    }
-
-    return v;
-
-}
-
-
-static int eval_binary_int(ExpressionType type, int left, int right) {
+// 左辺、右辺ともにint型の式の計算
+static int calc_binary_int(ExpressionType type, int left, int right) {
     int result;
     switch (type) {
         case ADD_EXPRESSION:
@@ -80,21 +40,93 @@ static int eval_binary_int(ExpressionType type, int left, int right) {
     return result;
 }
 
+//
+// 枝評価関数
+//
+
+// 変数の枝を評価
+// 今のところ、ローカルな変数とグローバルな変数は区別していない
+static Value eval_char_expression(Expression *expr) {
+    Value v;
+    Value *var;
+
+    // 変数を探す
+    var = search_local_variable(expr->u.character);
+    if(var != NULL) {
+        // 変数があったらそれを返す
+        v = *var;
+    } else {
+        // TODO: 変数がなかった場合,エラーを表示
+//        var = search_global_variable(expr->u.character);
+        if(var != NULL) {
+            v = *var;
+        } else {
+         // TODO: error handling
+        }
+    }
+    return v;
+}
+
+// 変数作成枝の評価
+static Value eval_assign_expression(char *chara, Expression *expr) {
+    Value v;
+    Value *left;
+
+    // 右辺の構文木を評価
+    v = eval_expression(expr);
+
+    // 左辺の変数があるかどうか探す
+    left = search_local_variable(chara);
+//    if (left == NULL) {
+//        left = search_global_variable(chara);
+//    }
+    if (left != NULL) {
+        // 変数がすでにあったら更新
+        *left = v;
+    } else {
+        // なかったら作成
+        add_variable(chara, &v);
+    }
+
+    return v;
+
+}
+
+// 右辺と左辺があるタイプの枝を評価
 Value eval_binary_expression(ExpressionType type, Expression *left, Expression *right) {
     Value left_val;
     Value right_val;
     Value result;
+    // 両辺の枝を評価
     left_val = eval_expression(left);
     right_val = eval_expression(right);
 
+    // 両辺のタイプによって、計算する方法を変える
+    // int & int -> int
     if(left_val.type == INT_VALUE && right_val.type == INT_VALUE) {
         result.type = INT_VALUE;
-        result.u.int_value = eval_binary_int(type, left_val.u.int_value, right_val.u.int_value);
+        result.u.int_value = calc_binary_int(type, left_val.u.int_value, right_val.u.int_value);
+    } else {
+        // TODO: double & double -> double
+        // TODO: double & int -> double
     }
 
     return result;
 }
 
+//
+// 値評価関数
+//
+
+// int型の値を評価
+static Value eval_int_expression(int int_value) {
+    Value v;
+    v.type = INT_VALUE;
+    v.u.int_value = int_value;
+    return v;
+}
+
+// 解析木の評価をする
 static Value eval_expression(Expression *expr) {
     Value v;
     switch(expr->type) {
@@ -120,7 +152,7 @@ static Value eval_expression(Expression *expr) {
     return v;
 }
 
-
+// 入力された解析木全体の評価をする。そして、最終的な出力をする。
 void calc_eval_expression(Expression *expression) {
     Value v;
     v = eval_expression(expression);
