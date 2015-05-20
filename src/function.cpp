@@ -4,7 +4,29 @@
 #include "args.h"
 #include <fstream>
 #include <vector>
+void readFile(char* funcName)
+{
+	{
+		const char* filename = std::string(to_String(funcName)+".txt").c_str();
+		std::ifstream ifs(filename);
+		if(ifs.fail())
+		{
+			PrintErrorln("CANNOT OPEN");
+			return;
+		}
 
+		std::ofstream ofs("temp");
+		std::string str;
+
+		//全行の読み出し
+		while(ifs >> str)
+		{
+			ofs << str << std::endl;
+		}
+	}
+	Clac calc("temp");
+  	calc.doFunc();
+}
 void readFunc(char* funcName)
 {
 	{
@@ -28,9 +50,16 @@ void readFunc(char* funcName)
 			//引数がなければ置換しない
 			if(!args.empty())
 			{
-				//引数があれば関数なので$$を削除する
-				str.replace((int)str.find("$"), 1, "");
-				str.replace((int)str.rfind("$"), 1, "");
+				//引数があれば関数なので$  $を削除する
+				if((int)str.find("$") != -1)
+				{
+					str.replace((int)str.find("$"), 1, "");
+					if((int)str.find("$") != -1)
+					{
+						str.replace((int)str.rfind("$"), 1, "");
+					}
+				}
+
 				
 				std::string::size_type pos = 0;
 				std::string from = "x";
@@ -44,6 +73,7 @@ void readFunc(char* funcName)
 			ofs << str << std::endl;
 		}
 	}
+	isReadFuncMode=true;
 	Clac calc("temp");
   	calc.doFunc();
 }

@@ -15,7 +15,7 @@ void WriteOutput(const std::string& value)
 
 void PrintNextLine()
 {	
-	if(isFileInputMode)
+	if(isFileInputMode && !isReadFuncMode)
 	{
 		writer.writeCout();
 	}

@@ -6,6 +6,7 @@
 #include "exmath.h"
 #include "sum.h"
 #include "numberBase.h"
+#include "variable.h"
 //#include <FlexLexer.h>
 #include <iostream>
 using namespace std;
@@ -13,12 +14,12 @@ double getMem(double);
 void dispMem(void);
 void dispFunc(void);
 void dispVar(void);
-void readFunc(char*);
+void readFile(char*);
 //void makeFunc(char*);
 extern bool isBinaryInput;
 extern bool isHexInput;
 extern bool isFileInputMode;//ファイル入力があるか
-extern bool isReadFuncEnd;
+extern bool isReadFuncMode;
 
 extern FlexLexer* lexer;
 %}
@@ -31,7 +32,7 @@ white_blank  [ \t]
 other        .|\n
 
 %%
-<<EOF>> 		{lexer->yyrestart(&std::cin);isFileInputMode=false; isReadFuncEnd = true;yylval.number = 1; return CONSTANT; }
+<<EOF>> 		{lexer->yyrestart(&std::cin);isFileInputMode=false; isReadFuncMode=false;yylval.number = *get_value("ans"); return CONSTANT; }
 "exit" { exit(0); }
 {white_blank}+
 
@@ -87,7 +88,7 @@ function 		{ yylval.fpv = dispFunc; return FUNCTION0;}
 
 variable		{ yylval.fpv = dispVar; return FUNCTION0;}
 
-read			{ yylval.fpc = readFunc; return FUNCTION_user;}
+read			{ yylval.fpc = readFile; return FUNCTION_user;}
 
 sum				{ yylval.fpvec = sum; return FUNCTION_var;}
 ave				{ yylval.fpvec = ave; return FUNCTION_var;}

@@ -16,7 +16,7 @@
 #include <FlexLexer.h>
 
 FlexLexer* lexer;
-bool isReadFuncEnd = false;
+bool isReadFuncMode = false;
 bool isFileInputMode = false;//ファイル入力があるか
 bool isBinaryInput = false;//その時点の計算に2進数表記があるか
 bool isHexInput = false;
@@ -54,7 +54,7 @@ void showFormula(double value)
   }
 
 
-  if(!error && !isReadFuncEnd)
+  if(!error)
   {
     if(isBinaryInput)
     {
@@ -75,7 +75,6 @@ void showFormula(double value)
   }
   isBinaryInput=false;
   isHexInput = false;
-  isReadFuncEnd = false;
 }
 
 
@@ -135,7 +134,7 @@ expression
   | FUNCTION0 { $1();}
   | FUNCTION_user '(' character ')'{$1($3);clearArgs();/*変数なしのファイル*/}
   | FUNCTION_user '(' character'('args')' ')'{$1($3);  clearArgs();/*変数ｘがあるファイル*/}
-  | '#'  character'('character')'FUNCTION_TEXT {makeFunc($2,$6); clearArgs();/*# a(x) (x-1)*(x-3)のような定義*/}
+  | '#'  character'('character')'FUNCTION_TEXT {makeFunc($2,$6); clearArgs();/*# a(x) $(x-1)*(x-3)$のような定義*/}
 formula
   : term
   | '-'term  { $$ = (!isBinaryInput) ? -1*$2 : complement($2) ;}
@@ -158,6 +157,7 @@ function
   : FUNCTION '(' formula ')'{ $$ = $1($3); }
   | FUNCTION2 '(' formula','formula')'{ $$ = $1($3,$5); }
   | FUNCTION_var '(' args ')'{ $$ = $1(); clearArgs();/* argsで引数を全てpushArgした後、それらは関数内で参照する */}
+  | character'('args')'{readFunc($1);  clearArgs();/*ユーザー定義の関数(変数ｘがあるファイル)*/}
 args/* $$ = NANは使われないため特に意味はない */
   : formula   { pushArg($1);$$ = NAN;}
   | formula ',' args  { pushArg($1);$$ = NAN; }
