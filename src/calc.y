@@ -16,6 +16,7 @@
 #include <FlexLexer.h>
 
 FlexLexer* lexer;
+bool isReadFuncEnd = false;
 bool isFileInputMode = false;//ファイル入力があるか
 bool isBinaryInput = false;//その時点の計算に2進数表記があるか
 bool isHexInput = false;
@@ -53,7 +54,7 @@ void showFormula(double value)
   }
 
 
-  if(!error)
+  if(!error && !isReadFuncEnd)
   {
     if(isBinaryInput)
     {
@@ -74,6 +75,7 @@ void showFormula(double value)
   }
   isBinaryInput=false;
   isHexInput = false;
+  isReadFuncEnd = false;
 }
 
 
@@ -129,7 +131,8 @@ expression
   | character { show_variable($1); }
   | character '=' formula { update_variable($1, $3); }
   | FUNCTION0 { $1();}
-  | FUNCTION_user '(' character ')'{readFunc($3); $$ = 1; clearArgs();/* argsで引数を全てpushArgした後、それらは関数内で参照する */}
+  | FUNCTION_user '(' character ')'{$1($3); /*$$ = 1;*/ clearArgs();/* argsで引数を全てpushArgした後、それらは関数内で参照する */}
+  | FUNCTION_user '(' character'('args')' ')'{$1($3); /*$$ = 1;*/ clearArgs();/* argsで引数を全てpushArgした後、それらは関数内で参照する */}
 formula
   : term
   | '-'term  { $$ = (!isBinaryInput) ? -1*$2 : complement($2) ;}

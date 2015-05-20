@@ -1,7 +1,9 @@
 #include "function.h"
 #include "Calc.h"
 #include "print.h"
+#include "args.h"
 #include <fstream>
+#include <vector>
 
 void readFunc(char* funcName)
 {
@@ -13,19 +15,28 @@ void readFunc(char* funcName)
 			PrintErrorln("the func is undefined");
 			return;
 		}
+
 		std::ofstream ofs("temp");
 		std::string str;
+
+		//引数の取得
+		std::vector<double> args = getArgs();
+		clearArgs();//sumなどの関数が記述されていると引数が交じるため一旦リセット
 		//全行の読み出し
 		while(ifs >> str)
 		{
-			std::string::size_type pos = 0;
-			std::string from = "x";
-			std::string to = "3";
-	    	while(pos = str.find(from, pos), pos != std::string::npos) 
-	    	{
-	        	str.replace(pos, from.length(), to);
-	       	 	pos += to.length();
-	    	}	
+			//引数がなければ置換しない
+			if(!args.empty())
+			{
+				std::string::size_type pos = 0;
+				std::string from = "x";
+				std::string to = to_String(args[0]);
+		    	while(pos = str.find(from, pos), pos != std::string::npos) 
+		    	{
+		        	str.replace(pos, from.length(), to);
+		       	 	pos += to.length();
+		    	}	
+	    	}
 			ofs << str << std::endl;
 		}
 	}

@@ -64,7 +64,7 @@ class Clac
   void doFunc()
   {
       //Println("dofunc",false);
-    Print(">> ");
+    //bPrint(">> ");
     yyparse();
       //Println("dofuncfin",false);
   }

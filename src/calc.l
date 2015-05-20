@@ -17,6 +17,7 @@ void readFunc(char*);
 extern bool isBinaryInput;
 extern bool isHexInput;
 extern bool isFileInputMode;//ファイル入力があるか
+extern bool isReadFuncEnd;
 
 extern FlexLexer* lexer;
 %}
@@ -29,8 +30,7 @@ white_blank  [ \t]
 other        .|\n
 
 %%
-<<EOF>> 		{lexer->yyrestart(&std::cin);isFileInputMode=false; yylval.number = 0; return CONSTANT; }
-"end" {yylval.fpv = dispVar; return FUNCTION0;}
+<<EOF>> 		{lexer->yyrestart(&std::cin);isFileInputMode=false; isReadFuncEnd = true;yylval.number = 1; return CONSTANT; }
 "exit" { exit(0); }
 {white_blank}+
 
@@ -84,7 +84,7 @@ function 		{ yylval.fpv = dispFunc; return FUNCTION0;}
 
 variable		{ yylval.fpv = dispVar; return FUNCTION0;}
 
-read			{ yylval.fpc = readFunc;  return FUNCTION_user;}
+read			{ yylval.fpc = readFunc; return FUNCTION_user;}
 
 sum				{ yylval.fpvec = sum; return FUNCTION_var;}
 ave				{ yylval.fpvec = ave; return FUNCTION_var;}
@@ -94,6 +94,8 @@ geomean			{ yylval.fpvec = geometricMean; return FUNCTION_var;}
 toBin			{ yylval.fp = toBin; isBinaryInput=true; return FUNCTION;}
 
 toHex			{ yylval.fp = toHex; isHexInput=true; return FUNCTION;}
+
+#				{ yylval.fp = toHex; isHexInput=true; return FUNCTION;}
 
 
 
