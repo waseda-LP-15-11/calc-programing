@@ -28,6 +28,10 @@ void readFunc(char* funcName)
 			//引数がなければ置換しない
 			if(!args.empty())
 			{
+				//引数があれば関数なので$$を削除する
+				str.replace((int)str.find("$"), 1, "");
+				str.replace((int)str.rfind("$"), 1, "");
+				
 				std::string::size_type pos = 0;
 				std::string from = "x";
 				std::string to = to_String(args[0]);
@@ -42,4 +46,12 @@ void readFunc(char* funcName)
 	}
 	Clac calc("temp");
   	calc.doFunc();
+}
+
+void makeFunc(char* funcName,char* funcText)
+{
+	const char* filename = std::string(to_String(funcName)+".txt").c_str();
+
+	std::ofstream ofs(filename);
+	ofs << funcText;
 }

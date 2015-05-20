@@ -104,6 +104,7 @@ int main(int argc, char *argv[])
   void (*fpv)(void);//引数のないvoid型の関数
   double (*fpvec)(void);//可変引数の関数用、引数は全てargs.cのvecotrに追加されていく。
   void (*fpc)(char*);
+  char expr[255];//ユーザー定義の式の文字列
 }
 
 %token  <number> CONSTANT
@@ -113,6 +114,7 @@ int main(int argc, char *argv[])
 %token  <fpv> FUNCTION0
 %token  <fpvec> FUNCTION_var
 %token  <fpc> FUNCTION_user
+%token  <expr> FUNCTION_TEXT
 %token  '+'
 %token  '('
 %token  ')'
@@ -131,8 +133,9 @@ expression
   | character { show_variable($1); }
   | character '=' formula { update_variable($1, $3); }
   | FUNCTION0 { $1();}
-  | FUNCTION_user '(' character ')'{$1($3); /*$$ = 1;*/ clearArgs();/* argsで引数を全てpushArgした後、それらは関数内で参照する */}
-  | FUNCTION_user '(' character'('args')' ')'{$1($3); /*$$ = 1;*/ clearArgs();/* argsで引数を全てpushArgした後、それらは関数内で参照する */}
+  | FUNCTION_user '(' character ')'{$1($3);clearArgs();/*変数なしのファイル*/}
+  | FUNCTION_user '(' character'('args')' ')'{$1($3);  clearArgs();/*変数ｘがあるファイル*/}
+  | '#'  character'('character')'FUNCTION_TEXT {makeFunc($2,$6); clearArgs();/*# a(x) (x-1)*(x-3)のような定義*/}
 formula
   : term
   | '-'term  { $$ = (!isBinaryInput) ? -1*$2 : complement($2) ;}

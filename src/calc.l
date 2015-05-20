@@ -14,6 +14,7 @@ void dispMem(void);
 void dispFunc(void);
 void dispVar(void);
 void readFunc(char*);
+//void makeFunc(char*);
 extern bool isBinaryInput;
 extern bool isHexInput;
 extern bool isFileInputMode;//ファイル入力があるか
@@ -33,6 +34,8 @@ other        .|\n
 <<EOF>> 		{lexer->yyrestart(&std::cin);isFileInputMode=false; isReadFuncEnd = true;yylval.number = 1; return CONSTANT; }
 "exit" { exit(0); }
 {white_blank}+
+
+$.*$			{ strcpy(yylval.expr, yytext); return FUNCTION_TEXT; }
 
 (pi|π)2			{ yylval.number = M_PI_2; return CONSTANT; }
 2(pi|π)			{ yylval.number = 2*M_PI; return CONSTANT; }
@@ -94,10 +97,6 @@ geomean			{ yylval.fpvec = geometricMean; return FUNCTION_var;}
 toBin			{ yylval.fp = toBin; isBinaryInput=true; return FUNCTION;}
 
 toHex			{ yylval.fp = toHex; isHexInput=true; return FUNCTION;}
-
-#				{ yylval.fp = toHex; isHexInput=true; return FUNCTION;}
-
-
 
 0(b|B)(0|(1|0)+)	 { yylval.number = binToUInt(yytext); isBinaryInput=true;return CONSTANT; }
 
