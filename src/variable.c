@@ -48,12 +48,6 @@ double* get_value(const char* name)
 
 void dispVar(void)
 {
-		  	Print("inDisVar",false);
-	Clac calc;
-	  	Print("preRunDisVar",false);
-  	calc.run();
-
-	/*
 	if(variables.empty())
 	{
 		Println("Variable is undefined");
@@ -63,5 +57,5 @@ void dispVar(void)
 	{
 		//var.firstがキー(変数名),var.secondが変数の値
 		Println(var.first + " = " + to_String(var.second));
-	}*/
+	}
 }

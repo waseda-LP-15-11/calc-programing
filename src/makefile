@@ -15,7 +15,7 @@ OBJ       = $(FLEX_O) $(BISON_O) $(INCLUDE_BISON_O)
 all : $(TARGET)
 
 $(TARGET) : $(OBJ)
-	g++ -g -std=c++14 -o $@ $(OBJ)
+	g++  -std=c++14 -o $@ $(OBJ)
 
 $(FLEX_C) : $(FLEX_SRC) $(BISON_H)
 	flex $(FLEX_SRC)
@@ -24,7 +24,7 @@ $(BISON_OUT) : $(BISON_SRC)
 	bison -dv $(BISON_SRC)
 
 .c.o :
-	g++ -g -std=c++14 -c $<
+	g++  -std=c++14 -c $<
 
 
 clean :
