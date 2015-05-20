@@ -1,2 +1,2 @@
 #pragma once
-void readFunc(void);
+void readFunc(char* funcName);

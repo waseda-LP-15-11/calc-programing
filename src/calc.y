@@ -4,7 +4,7 @@
 #include "numberBase.h"
 #include "args.h"
 #include "sum.h"
-
+#include "function.h"
 #include "exmath.h"
 #include "variable.h"
 #include "memory.h"
@@ -101,6 +101,7 @@ int main(int argc, char *argv[])
   double (*fpp)(double,double);//2引数double型の数学関数用
   void (*fpv)(void);//引数のないvoid型の関数
   double (*fpvec)(void);//可変引数の関数用、引数は全てargs.cのvecotrに追加されていく。
+  void (*fpc)(char*);
 }
 
 %token  <number> CONSTANT
@@ -109,6 +110,7 @@ int main(int argc, char *argv[])
 %token  <fpp> FUNCTION2
 %token  <fpv> FUNCTION0
 %token  <fpvec> FUNCTION_var
+%token  <fpc> FUNCTION_user
 %token  '+'
 %token  '('
 %token  ')'
@@ -127,6 +129,7 @@ expression
   | character { show_variable($1); }
   | character '=' formula { update_variable($1, $3); }
   | FUNCTION0 { $1();}
+  | FUNCTION_user '(' character ')'{readFunc($3); $$ = 1; clearArgs();/* argsで引数を全てpushArgした後、それらは関数内で参照する */}
 formula
   : term
   | '-'term  { $$ = (!isBinaryInput) ? -1*$2 : complement($2) ;}

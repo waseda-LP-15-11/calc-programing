@@ -13,7 +13,7 @@ double getMem(double);
 void dispMem(void);
 void dispFunc(void);
 void dispVar(void);
-void readFunc(void);
+void readFunc(char*);
 extern bool isBinaryInput;
 extern bool isHexInput;
 extern bool isFileInputMode;//ファイル入力があるか
@@ -84,7 +84,7 @@ function 		{ yylval.fpv = dispFunc; return FUNCTION0;}
 
 variable		{ yylval.fpv = dispVar; return FUNCTION0;}
 
-read			{ yylval.fpv = readFunc;  return FUNCTION0;}
+read			{ yylval.fpc = readFunc;  return FUNCTION_user;}
 
 sum				{ yylval.fpvec = sum; return FUNCTION_var;}
 ave				{ yylval.fpvec = ave; return FUNCTION_var;}

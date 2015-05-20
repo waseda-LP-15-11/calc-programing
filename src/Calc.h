@@ -5,6 +5,7 @@
 #include <FlexLexer.h>
 #include "MemLeakChecker.h"
 #include "print.h"
+#include <stdio.h>
 extern bool isFileInputMode;
 extern FlexLexer* lexer;
 int yyparse();
@@ -13,7 +14,7 @@ class Clac
   public:
   Clac()
   {
-          Println("ClacConstr",false);
+      //Println("ClacConstr",false);
     #ifdef MEMCHEK
     MemLeakChecker checker;
     #endif
@@ -21,12 +22,12 @@ class Clac
     m_lexer = new yyFlexLexer();
 
     lexer = m_lexer;
-            Println("ClacConstrfinis",false);
+      //Println("ClacConstrfinis",false);
   }
 
   Clac(const char* filename)
   {
-      Println("ClacConstrS",false);
+      //Println("ClacConstrS",false);
     #ifdef MEMCHEK
     MemLeakChecker checker;
     #endif
@@ -36,9 +37,9 @@ class Clac
     m_ifs.open(filename);
     if(!m_ifs.fail())
     {
-            Println("suceess",false);
+        //Println("suceess",false);
       m_lexer = new yyFlexLexer(&m_ifs);
-       Println("newFinish",false);
+        //Println("newFinish",false);
       isFileInputMode = true;
     }
     else
@@ -47,31 +48,32 @@ class Clac
       m_lexer = new yyFlexLexer();
       isFileInputMode = false;
     }
-           Println("newFinish",false);
+       //Println("newFinish",false);
     lexer = m_lexer;
-        Println("ClacConstrfinisS",false);
+      //Println("ClacConstrfinisS",false);
   }
 
   void run()
   {
-          Println("Clacrun",false);
+      //Println("Clacrun",false);
     Print(">> ");
     yyparse();
-              Println("Clacrunfini",false);
+      //Println("Clacrunfini",false);
   }
 
   void doFunc()
   {
-                  Println("dofunc",false);
+      //Println("dofunc",false);
     Print(">> ");
     yyparse();
-                      Println("dofuncfin",false);
+      //Println("dofuncfin",false);
   }
 
   ~Clac()
   {
-    Println("calcDest",false);
+    //Println("calcDest",false);
     lexer = m_preLexer;
+    remove("temp");
     //delete m_lexer;
   }
 //private:

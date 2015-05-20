@@ -36,7 +36,7 @@ char* Writer::makeNewFileName(const std::string& filename,bool enableCheck)
 {
 	if(!enableCheck)
 	{
-		 sprintf(szDst, "%s", filename.c_str());
+		sprintf(szDst, "%s", filename.c_str());
 		return szDst;
 	}
 

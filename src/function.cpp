@@ -1,11 +1,18 @@
 #include "function.h"
 #include "Calc.h"
+#include "print.h"
 #include <fstream>
 
-void readFunc(void)
+void readFunc(char* funcName)
 {
 	{
-		std::ifstream ifs("a(x).txt");
+		const char* filename = std::string(to_String(funcName)+".txt").c_str();
+		std::ifstream ifs(filename);
+		if(ifs.fail())
+		{
+			PrintErrorln("the func is undefined");
+			return;
+		}
 		std::ofstream ofs("temp");
 		std::string str;
 		//全行の読み出し
