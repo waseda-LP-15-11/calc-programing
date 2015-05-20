@@ -6,7 +6,7 @@
 
 extern Writer writer;
 extern bool isFileInputMode;
-extern bool isReadFuncMode;
+extern bool isFuncReadMode;
 void PrintNextLine();
 
 void WriteInput(const std::string& value);

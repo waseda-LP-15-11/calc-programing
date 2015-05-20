@@ -19,7 +19,7 @@ void readFile(char*);
 extern bool isBinaryInput;
 extern bool isHexInput;
 extern bool isFileInputMode;//ファイル入力があるか
-extern bool isReadFuncMode;
+extern double* get_value(const char*  name);
 
 extern FlexLexer* lexer;
 %}
@@ -32,7 +32,7 @@ white_blank  [ \t]
 other        .|\n
 
 %%
-<<EOF>> 		{lexer->yyrestart(&std::cin);isFileInputMode=false; isReadFuncMode=false;yylval.number = *get_value("ans"); return CONSTANT; }
+<<EOF>> 		{lexer->yyrestart(&std::cin);isFileInputMode=false;yylval.number = get_value("ans") ? *get_value("ans"):0; return CONSTANT; }
 "exit" { exit(0); }
 {white_blank}+
 

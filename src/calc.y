@@ -16,10 +16,10 @@
 #include <FlexLexer.h>
 
 FlexLexer* lexer;
-bool isReadFuncMode = false;
 bool isFileInputMode = false;//ファイル入力があるか
 bool isBinaryInput = false;//その時点の計算に2進数表記があるか
 bool isHexInput = false;
+bool isFuncReadMode = false;
 int yyparse();
 int yylex()
 {
@@ -73,6 +73,7 @@ void showFormula(double value)
       Println((int)value);
     }
   }
+
   isBinaryInput=false;
   isHexInput = false;
 }
@@ -80,17 +81,8 @@ void showFormula(double value)
 
 int main(int argc, char *argv[])
 {
-  if(argc>=2)
-  {
-    Clac mainCalc(argv[1]);
-    mainCalc.run();
-  }
-  else
-  {
     Clac mainCalc;
     mainCalc.run();
-  }
-
 }
 %}
 
@@ -157,7 +149,7 @@ function
   : FUNCTION '(' formula ')'{ $$ = $1($3); }
   | FUNCTION2 '(' formula','formula')'{ $$ = $1($3,$5); }
   | FUNCTION_var '(' args ')'{ $$ = $1(); clearArgs();/* argsで引数を全てpushArgした後、それらは関数内で参照する */}
-  | character'('args')'{readFunc($1);  clearArgs();/*ユーザー定義の関数(変数ｘがあるファイル)*/}
+  | character'('args')'{readFunc($1);  clearArgs();$$=get_value("ans") ? *get_value("ans"):1;/*ユーザー定義の関数(変数ｘがあるファイル)*/}
 args/* $$ = NANは使われないため特に意味はない */
   : formula   { pushArg($1);$$ = NAN;}
   | formula ',' args  { pushArg($1);$$ = NAN; }

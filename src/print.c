@@ -15,9 +15,15 @@ void WriteOutput(const std::string& value)
 
 void PrintNextLine()
 {	
-	if(isFileInputMode && !isReadFuncMode)
+	if(isFileInputMode)
 	{
-		writer.writeCout();
+		if(!isFuncReadMode)
+		{
+			writer.writeInputToCout();
+			writer.writeOutputToCout();
+		}
+
+
 	}
 	writer.writeOneLine();
 	Print(">> ",false);

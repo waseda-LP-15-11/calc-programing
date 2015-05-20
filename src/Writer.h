@@ -33,6 +33,9 @@ public:
   //m_inputsとm_outputsを書き出す
   void writeOneLine();
   
+
+  void writeInputToCout();
+  void writeOutputToCout();
   //ファイル入力モード時に内容を標準出力へ書き出す
   void writeCout();
 

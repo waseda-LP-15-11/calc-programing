@@ -4,10 +4,10 @@
 #include "args.h"
 #include <fstream>
 #include <vector>
-void readFile(char* funcName)
+void readFile(char* fileName)
 {
 	{
-		const char* filename = std::string(to_String(funcName)+".txt").c_str();
+		const char* filename = std::string(to_String(fileName)+".txt").c_str();
 		std::ifstream ifs(filename);
 		if(ifs.fail())
 		{
@@ -73,7 +73,7 @@ void readFunc(char* funcName)
 			ofs << str << std::endl;
 		}
 	}
-	isReadFuncMode=true;
+	isFuncReadMode=true;
 	Clac calc("temp");
   	calc.doFunc();
 }

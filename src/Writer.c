@@ -18,18 +18,26 @@ void Writer::writeOneLine()
 	m_outputs.clear();
 }
  
-void Writer::writeCout()
+void Writer::writeInputToCout()
 {
- 	std::cout << ">> ";
+	 std::cout << ">> ";
  	for(size_t i=0;i<m_inputs.size();++i)
  	{
  		 std::cout << m_inputs[i];
  	}
  	std::cout << std::endl;
- 	for(size_t i=0;i<m_outputs.size();++i)
+}
+void Writer::writeOutputToCout()
+{
+	for(size_t i=0;i<m_outputs.size();++i)
  	{
  		 std::cout << m_outputs[i] << std::endl;
  	}
+}
+void Writer::writeCout()
+{
+	writeInputToCout();
+	writeOutputToCout();
 }
 
 char* Writer::makeNewFileName(const std::string& filename,bool enableCheck)
