@@ -25,11 +25,7 @@ void PrintNextLine()
 
 void dispFunc(void)
 {
-
-	Clac calc("a.txt");
-  	calc.doFunc();
-  	Print("doFUnctfinish",false);
-	/*std::ifstream ifs("func.txt");
+	std::ifstream ifs("func.txt");
 	if(!ifs.fail())
 	{
 		std::string text;
@@ -42,5 +38,4 @@ void dispFunc(void)
 	{
 		PrintErrorln("FAIL_OPEN_FILE");
 	}
-	*/
 }

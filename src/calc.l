@@ -13,6 +13,7 @@ double getMem(double);
 void dispMem(void);
 void dispFunc(void);
 void dispVar(void);
+void readFunc(void);
 extern bool isBinaryInput;
 extern bool isHexInput;
 extern bool isFileInputMode;//ファイル入力があるか
@@ -83,6 +84,8 @@ function 		{ yylval.fpv = dispFunc; return FUNCTION0;}
 
 variable		{ yylval.fpv = dispVar; return FUNCTION0;}
 
+read			{ yylval.fpv = readFunc;  return FUNCTION0;}
+
 sum				{ yylval.fpvec = sum; return FUNCTION_var;}
 ave				{ yylval.fpvec = ave; return FUNCTION_var;}
 
@@ -91,6 +94,8 @@ geomean			{ yylval.fpvec = geometricMean; return FUNCTION_var;}
 toBin			{ yylval.fp = toBin; isBinaryInput=true; return FUNCTION;}
 
 toHex			{ yylval.fp = toHex; isHexInput=true; return FUNCTION;}
+
+
 
 0(b|B)(0|(1|0)+)	 { yylval.number = binToUInt(yytext); isBinaryInput=true;return CONSTANT; }
 
