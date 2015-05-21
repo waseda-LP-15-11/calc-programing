@@ -35,8 +35,21 @@ static double calc_binary_int(ExpressionType type, double left, double right) {
         case POW_EXPRESSION:
             result = pow(left, right);
             break;
+        case LS_EXPRESSION:
+            result = leftShift(left, right);
+            if(32 <= right || result < left) {
+                PrintErrorln("ERROR: Over Flow") ;
+                result = NULL;
+            }
+            break;
+        case RS_EXPRESSION:
+            result = rightShift(left, right);
+            if(right < 0||31<= right ) {
+                PrintErrorln("ERROR: Out of Shift Range");
+                result = NULL;
+            }
+            break;
     }
-
     return result;
 }
 
@@ -227,6 +240,8 @@ static Value eval_expression(Expression *expr) {
         case MOD_EXPRESSION:
         case POW_EXPRESSION:
         case EQ_EXPRESSION:
+        case LS_EXPRESSION:
+        case RS_EXPRESSION:
             v = eval_binary_expression(expr->type, expr->u.binary_expression.left, expr->u.binary_expression.right);
             break;
         case MATH_EXPRESSION:

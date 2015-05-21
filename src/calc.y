@@ -143,7 +143,7 @@ func_parameter_list
   | func_parameter_list ',' CHARACTER { $$ = chain_parameter($1, $3); }
 func_expression_list
   : expression { $$ = create_expression_list($1); }
-  | func_expression_list ';' expression { $$ = chain_expression_list($1, $3); }
+  | func_expression_list ',' expression { $$ = chain_expression_list($1, $3); }
 expression
   : formula
   | CHARACTER '=' expression { $$ = create_assign_expression($1, $3); }
@@ -158,6 +158,8 @@ term
   | term '/' primary { $$ = create_binary_expression(DIV_EXPRESSION, $1,$3); }
   | term '%' primary { $$ = create_binary_expression(MOD_EXPRESSION, $1,$3); }
   | term '^' primary { $$ = create_binary_expression(POW_EXPRESSION, $1,$3); }
+  | term '<''<' primary { $$ = create_binary_expression(LS_EXPRESSION, $1, $4);}
+  | term '>''>' primary { $$ = create_binary_expression(RS_EXPRESSION, $1, $4);}
 primary
   : NUM_LITERAL
   | '(' formula ')'  { $$ = $2; }
