@@ -115,7 +115,7 @@ OPEN_SUCCESS:
   ParameterList *parameter_list;
 
 }
-%token <expression> INT_LITERAL
+%token <expression> NUM_LITERAL
 %token  <number> CONSTANT
 %token  <character> CHARACTER
 %token  <fp> FUNCTION
@@ -159,7 +159,7 @@ term
   | term '%' primary { $$ = create_binary_expression(MOD_EXPRESSION, $1,$3); }
   | term '^' primary { $$ = create_binary_expression(POW_EXPRESSION, $1,$3); }
 primary
-  : INT_LITERAL
+  : NUM_LITERAL
   | '(' formula ')'  { $$ = $2; }
   | CHARACTER '(' func_expression_list ')' { $$ = create_function_call_expression($1, $3) }
   | CHARACTER { $$ = create_character_expression($1); }

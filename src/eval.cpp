@@ -14,8 +14,8 @@
 //
 
 // 左辺、右辺ともにint型の式の計算
-static int calc_binary_int(ExpressionType type, int left, int right) {
-    int result;
+static double calc_binary_int(ExpressionType type, double left, double right) {
+    double result;
     switch (type) {
         case ADD_EXPRESSION:
             result = left + right;
@@ -30,7 +30,7 @@ static int calc_binary_int(ExpressionType type, int left, int right) {
             result = left / right;
             break;
         case MOD_EXPRESSION:
-            result = left % right;
+            result = (int)left % (int)right;
             break;
         case POW_EXPRESSION:
             result = pow(left, right);
@@ -135,15 +135,8 @@ Value eval_binary_expression(ExpressionType type, Expression *left, Expression *
     left_val = eval_expression(left);
     right_val = eval_expression(right);
 
-    // 両辺のタイプによって、計算する方法を変える
-    // int & int -> int
-    if(left_val.type == INT_VALUE && right_val.type == INT_VALUE) {
-        result.type = INT_VALUE;
-        result.u.int_value = calc_binary_int(type, left_val.u.int_value, right_val.u.int_value);
-    } else {
-        // TODO: double & double -> double
-        // TODO: double & int -> double
-    }
+    result.type = NUM_VALUE;
+    result.u.num_value = calc_binary_int(type, left_val.u.num_value, right_val.u.num_value);
 
     return result;
 }
@@ -153,10 +146,10 @@ Value eval_binary_expression(ExpressionType type, Expression *left, Expression *
 //
 
 // int型の値を評価
-Value eval_int_expression(int int_value) {
+Value eval_num_expression(double num_value) {
     Value v;
-    v.type = INT_VALUE;
-    v.u.int_value = int_value;
+    v.type = NUM_VALUE;
+    v.u.num_value = num_value;
     return v;
 }
 
@@ -164,8 +157,8 @@ Value eval_int_expression(int int_value) {
 static Value eval_expression(Expression *expr) {
     Value v;
     switch(expr->type) {
-        case INT_EXPRESSION:
-            v = eval_int_expression(expr->u.int_value);
+        case NUM_EXPRESSION:
+            v = eval_num_expression(expr->u.num_value);
             break;
         case CHAR_EXPRESSION:
             v = eval_char_expression(expr);
@@ -198,10 +191,12 @@ static Value eval_expression(Expression *expr) {
 void calc_eval_expression(Expression *expression) {
     Value v;
     v = eval_expression(expression);
-    if (v.type == INT_VALUE) {
-        printf(">>%d\n", v.u.int_value);
-    } else if (v.type == DOUBLE_VALUE) {
-        printf(">>%f\n", v.u.double_value);
+    if (v.type == NUM_VALUE) {
+        if (v.u.num_value / (int)(v.u.num_value) == 1) {
+            printf("%d\n", (int)(v.u.num_value));
+        } else {
+            printf("%f\n", v.u.num_value);
+        }
     } else {
         printf("<void>\n");
     }

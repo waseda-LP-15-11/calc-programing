@@ -12,8 +12,7 @@ typedef struct Expression_tag Expression;
 
 // 数値の属性
 typedef enum {
-    INT_VALUE,
-    DOUBLE_VALUE
+    NUM_VALUE
 } ValueType;
 
 // 数値
@@ -21,8 +20,7 @@ typedef enum {
 typedef struct {
     ValueType type;
     union {
-        int int_value;
-        double double_value;
+        double num_value;
     } u;
 } Value;
 
@@ -34,7 +32,7 @@ typedef struct {
 // 枝の属性
 typedef enum {
     BOOLEAN_EXPRESSION = 1,
-    INT_EXPRESSION,
+    NUM_EXPRESSION,
     ADD_EXPRESSION,
     SUB_EXPRESSION,
     MUL_EXPRESSION,
@@ -75,6 +73,7 @@ typedef struct {
     char *character;
     Expression *arg;
 } FunctionCallExpression;
+
 // 枝
 // 枝は、属性と値をもつ
 struct Expression_tag {
@@ -82,8 +81,7 @@ struct Expression_tag {
     int line_number;    //未実装
     union {
         Boolean boolean_value;
-        int     int_value;
-        double  doule_value;
+        double  num_value;
         BinaryExpression    binary_expression;
         char *character;
         AssignExpression    assignExpression;

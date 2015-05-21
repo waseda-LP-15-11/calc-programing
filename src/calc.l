@@ -30,11 +30,11 @@ other        .|\n
 
 "#" { return DEFINE; }
 
-{digit}+   {
-    Expression *expression = alloc_expression(INT_EXPRESSION);
-    sscanf(yytext, "%d", &expression->u.int_value);
+{digit}+(\.{digit}+)?   {
+    Expression *expression = alloc_expression(NUM_EXPRESSION);
+    sscanf(yytext, "%lf", &expression->u.num_value);
     yylval.expression = expression;
-    return INT_LITERAL;
+    return NUM_LITERAL;
 }
 {letter}({digit}|{letter})* 		{ yylval.character = create_character(yytext); return CHARACTER;}
 {other}          	{ return (int)yytext[0]; } 
