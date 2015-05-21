@@ -27,6 +27,9 @@ other        .|\n
 %%
 "exit" { exit(0); }
 {white_blank}+
+
+"#" { return DEFINE; }
+
 {digit}+   {
     Expression *expression = alloc_expression(INT_EXPRESSION);
     sscanf(yytext, "%d", &expression->u.int_value);

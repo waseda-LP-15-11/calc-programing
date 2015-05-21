@@ -112,6 +112,8 @@ OPEN_SUCCESS:
   void (*fpv)(void);//引数のないvoid型の関数
   double (*fpvec)(void);//可変引数の関数用、引数は全てargs.cのvecotrに追加されていく。
   Expression *expression;
+  ParameterList *parameter_list;
+
 }
 %token <expression> INT_LITERAL
 %token  <number> CONSTANT
@@ -123,15 +125,26 @@ OPEN_SUCCESS:
 %token  '+'
 %token  '('
 %token  ')'
+%token  DEFINE;
 
+%type <parameter_list> func_parameter_list
 %type <number> lines
-%type <expression> expression formula term primary
+%type <expression> expression formula term primary func_expression_list
 %%
 lines
   : /* empty */ {/* empty */}
   | lines '\n' {PrintNextLine();}
   | lines expression '\n' {calc_eval_expression($2); PrintNextLine();}
   | error '\n'       { yyerrok;PrintNextLine(); }
+  | lines function_definition
+function_definition
+  : DEFINE CHARACTER '(' func_parameter_list ')' '=' func_expression_list { function_define($2, $4, $7) }
+func_parameter_list
+  : CHARACTER { $$ = create_parameter($1); }
+  | func_parameter_list ',' CHARACTER { $$ = chain_parameter($1, $3); }
+func_expression_list
+  : expression { $$ = create_expression_list($1); }
+  | func_expression_list ';' expression { $$ = chain_expression_list($1, $3); }
 expression
   : formula
   | CHARACTER '=' expression { $$ = create_assign_expression($1, $3); }

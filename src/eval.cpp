@@ -92,6 +92,15 @@ static Value eval_assign_expression(char *chara, Expression *expr) {
 
 }
 
+static Value eval_expression_list_expression(Expression *expression, Expression *next) {
+    Value v;
+    v = eval_expression(expression);
+    if (next) {
+        v = eval_expression(next);
+    }
+    return v;
+}
+
 // 右辺と左辺があるタイプの枝を評価
 Value eval_binary_expression(ExpressionType type, Expression *left, Expression *right) {
     Value left_val;
@@ -119,7 +128,7 @@ Value eval_binary_expression(ExpressionType type, Expression *left, Expression *
 //
 
 // int型の値を評価
-static Value eval_int_expression(int int_value) {
+Value eval_int_expression(int int_value) {
     Value v;
     v.type = INT_VALUE;
     v.u.int_value = int_value;
@@ -136,6 +145,9 @@ static Value eval_expression(Expression *expr) {
         case CHAR_EXPRESSION:
             v = eval_char_expression(expr);
             break;
+        case EXPRESSION_LIST_EXPRESSION:
+            v = eval_expression_list_expression(expr->u.expression_list.expression, expr->u.expression_list.next);
+            break;
         case ASSIGN_EXPRESSION:
             v = eval_assign_expression(expr->u.assignExpression.variable, expr->u.assignExpression.operand);
             break;
@@ -151,6 +163,8 @@ static Value eval_expression(Expression *expr) {
     }
     return v;
 }
+
+
 
 // 入力された解析木全体の評価をする。そして、最終的な出力をする。
 void calc_eval_expression(Expression *expression) {
