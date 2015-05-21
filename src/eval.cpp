@@ -101,6 +101,31 @@ static Value eval_expression_list_expression(Expression *expression, Expression 
     return v;
 }
 
+static Value eval_function_call_expression(char *character, Expression *arg) {
+    Value result;
+    Expression *arg_p;
+    ParameterList *param_p;
+    FunctionDefinition *func;
+
+    func = search_function(character);
+    if (func == NULL) {
+        //error;
+    }
+    for (arg_p = arg, param_p = func->parameter; arg_p; arg_p = arg_p->u.expression_list.next, param_p = param_p->next) {
+        Value arg_val;
+        if (param_p == NULL) {
+            // error many arg
+        }
+        arg_val = eval_expression(arg_p->u.expression_list.expression);
+        add_variable(param_p->name, &arg_val);
+    }
+    if (param_p) {
+        // error few arg
+    }
+    result = eval_expression(func->expression_list);
+    //dispose var
+    return result;
+}
 // 右辺と左辺があるタイプの枝を評価
 Value eval_binary_expression(ExpressionType type, Expression *left, Expression *right) {
     Value left_val;
@@ -159,6 +184,9 @@ static Value eval_expression(Expression *expr) {
         case POW_EXPRESSION:
         case EQ_EXPRESSION:
             v = eval_binary_expression(expr->type, expr->u.binary_expression.left, expr->u.binary_expression.right);
+            break;
+        case FUNCTION_CALL_EXPRESSION:
+            v = eval_function_call_expression(expr->u.function_call_expression.character, expr->u.function_call_expression.arg);
             break;
     }
     return v;

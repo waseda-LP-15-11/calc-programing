@@ -103,6 +103,15 @@ Expression *create_assign_expression(char *variable, Expression *operand) {
     return exp;
 }
 
+
+Expression *create_function_call_expression(char *func_name, Expression *arg) {
+    Expression *exp;
+    exp = alloc_expression(FUNCTION_CALL_EXPRESSION);
+    exp->u.function_call_expression.character = func_name;
+    exp->u.function_call_expression.arg = arg;
+    return exp;
+}
+
 // 変数作成
 // TODO: これは枝作成機能ではないので違うところに移動したい
 char *create_character(char *chara) {

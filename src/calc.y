@@ -161,5 +161,6 @@ term
 primary
   : INT_LITERAL
   | '(' formula ')'  { $$ = $2; }
+  | CHARACTER '(' func_expression_list ')' { $$ = create_function_call_expression($1, $3) }
   | CHARACTER { $$ = create_character_expression($1); }
 %%

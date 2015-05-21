@@ -44,7 +44,8 @@ typedef enum {
     CHAR_EXPRESSION,
     EQ_EXPRESSION,
     ASSIGN_EXPRESSION,
-    EXPRESSION_LIST_EXPRESSION
+    EXPRESSION_LIST_EXPRESSION,
+    FUNCTION_CALL_EXPRESSION
 } ExpressionType;
 
 // Booleanの枝の値
@@ -69,6 +70,11 @@ typedef struct {
     Expression *expression;
     Expression *next;
 } ExpressionList;
+
+typedef struct {
+    char *character;
+    Expression *arg;
+} FunctionCallExpression;
 // 枝
 // 枝は、属性と値をもつ
 struct Expression_tag {
@@ -82,6 +88,7 @@ struct Expression_tag {
         char *character;
         AssignExpression    assignExpression;
         ExpressionList expression_list;
+        FunctionCallExpression function_call_expression;
     } u;
 };
 
@@ -115,6 +122,8 @@ Expression * chain_expression_list(Expression *list, Expression *add);
 Expression * create_expression_list(Expression *expression);
 FunctionDefinition * search_function(char *name);
 void function_define(char *character, ParameterList *parameter_list, Expression *expression_list);
+Expression * create_function_call_expression(char *func_name, Expression *arg);
+
 
 //eval.cpp
 void calc_eval_expression(Expression *expression);
