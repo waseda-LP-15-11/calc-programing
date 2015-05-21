@@ -13,7 +13,7 @@
 // 計算関数
 //
 
-// 左辺、右辺ともにint型の式の計算
+// 左辺、右辺ともにdouble型の式の計算
 static double calc_binary_int(ExpressionType type, double left, double right) {
     double result;
     switch (type) {
@@ -109,7 +109,8 @@ static Value eval_function_call_expression(char *character, Expression *arg) {
 
     func = search_function(character);
     if (func == NULL) {
-        //error;
+        printf("error function not found");
+        return result;
     }
     for (arg_p = arg, param_p = func->parameter; arg_p; arg_p = arg_p->u.expression_list.next, param_p = param_p->next) {
         Value arg_val;
@@ -125,6 +126,43 @@ static Value eval_function_call_expression(char *character, Expression *arg) {
     result = eval_expression(func->expression_list);
     //dispose var
     return result;
+}
+
+static Value eval_math_expression(char *math_name, Expression *arg) {
+    Value result;
+    result.type = NUM_VALUE;
+    Value arg_p = eval_expression(arg);
+
+    if (!strcmp(math_name, "sin"))     { result.u.num_value = sin(arg_p.u.num_value); }
+    if (!strcmp(math_name, "cos"))     { result.u.num_value = cos(arg_p.u.num_value); }
+    if (!strcmp(math_name, "tan"))     { result.u.num_value = tan(arg_p.u.num_value); }
+    if (!strcmp(math_name, "sinh"))    { result.u.num_value = sinh(arg_p.u.num_value); }
+    if (!strcmp(math_name, "cosh"))    { result.u.num_value = cosh(arg_p.u.num_value); }
+    if (!strcmp(math_name, "tanh"))    { result.u.num_value = tanh(arg_p.u.num_value); }
+    if (!strcmp(math_name, "asin"))    { result.u.num_value = asin(arg_p.u.num_value); }
+    if (!strcmp(math_name, "acos"))    { result.u.num_value = acos(arg_p.u.num_value); }
+    if (!strcmp(math_name, "atan"))    { result.u.num_value = atan(arg_p.u.num_value); }
+    if (!strcmp(math_name, "asinh"))   { result.u.num_value = asinh(arg_p.u.num_value); }
+    if (!strcmp(math_name, "acosh"))   { result.u.num_value = acosh(arg_p.u.num_value); }
+    if (!strcmp(math_name, "atanh"))   { result.u.num_value = atanh(arg_p.u.num_value); }
+    if (!strcmp(math_name, "exp"))     { result.u.num_value = exp(arg_p.u.num_value); }
+    if (!strcmp(math_name, "log2"))    { result.u.num_value = log2(arg_p.u.num_value); }
+    if (!strcmp(math_name, "log10"))   { result.u.num_value = log10(arg_p.u.num_value); }
+    if (!strcmp(math_name, "log"))     { result.u.num_value = log(arg_p.u.num_value); }
+    if (!strcmp(math_name, "ln"))      { result.u.num_value = log(arg_p.u.num_value); }
+    if (!strcmp(math_name, "abs"))     { result.u.num_value = abs(arg_p.u.num_value); }
+    if (!strcmp(math_name, "sqrt"))    { result.u.num_value = sqrt(arg_p.u.num_value); }
+    if (!strcmp(math_name, "cbrt"))    { result.u.num_value = cbrt(arg_p.u.num_value); }
+    if (!strcmp(math_name, "round"))   { result.u.num_value = round(arg_p.u.num_value); }
+    if (!strcmp(math_name, "rint"))    { result.u.num_value = rint(arg_p.u.num_value); }
+    if (!strcmp(math_name, "floor"))   { result.u.num_value = floor(arg_p.u.num_value); }
+    if (!strcmp(math_name, "ceil"))    { result.u.num_value = ceil(arg_p.u.num_value); }
+    if (!strcmp(math_name, "Radians")) { result.u.num_value = Radians(arg_p.u.num_value); }
+    if (!strcmp(math_name, "Degrees")) { result.u.num_value = Degrees(arg_p.u.num_value); }
+//    if (strcmp(math_name, "ToBin"))   { result.u.num_value = ToBin(arg_p.u.num_value); }
+//    if (strcmp(math_name, "ToHex"))   { result.u.num_value = ToHex(arg_p.u.num_value); }
+    return result;
+
 }
 // 右辺と左辺があるタイプの枝を評価
 Value eval_binary_expression(ExpressionType type, Expression *left, Expression *right) {
@@ -153,6 +191,16 @@ Value eval_num_expression(double num_value) {
     return v;
 }
 
+Value eval_minus_expression(Expression *ope) {
+    Value ope_val;
+    Value result;
+    ope_val = eval_expression(ope);
+    if (ope_val.type == NUM_VALUE) {
+        result.type = NUM_VALUE;
+        result.u.num_value = -(ope_val.u.num_value);
+    }
+    return result;
+}
 // 解析木の評価をする
 static Value eval_expression(Expression *expr) {
     Value v;
@@ -169,6 +217,9 @@ static Value eval_expression(Expression *expr) {
         case ASSIGN_EXPRESSION:
             v = eval_assign_expression(expr->u.assignExpression.variable, expr->u.assignExpression.operand);
             break;
+        case MINUS_EXPRESSION:
+            v = eval_minus_expression(expr->u.minus_expression);
+            break;
         case ADD_EXPRESSION:
         case SUB_EXPRESSION:
         case MUL_EXPRESSION:
@@ -178,9 +229,14 @@ static Value eval_expression(Expression *expr) {
         case EQ_EXPRESSION:
             v = eval_binary_expression(expr->type, expr->u.binary_expression.left, expr->u.binary_expression.right);
             break;
+        case MATH_EXPRESSION:
+            v = eval_math_expression(expr->u.function_call_expression.character, expr->u.function_call_expression.arg );
+            break;
         case FUNCTION_CALL_EXPRESSION:
             v = eval_function_call_expression(expr->u.function_call_expression.character, expr->u.function_call_expression.arg);
             break;
+        default:
+            Println("error");
     }
     return v;
 }

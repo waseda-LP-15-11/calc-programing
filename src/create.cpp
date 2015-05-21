@@ -85,6 +85,29 @@ Expression* create_binary_expression(ExpressionType type, Expression *left, Expr
     return exp;
 }
 
+static Expression convert_value_to_expression(Value *v) {
+    Expression exp;
+    if (v->type == NUM_VALUE) {
+        exp.type = NUM_EXPRESSION;
+        exp.u.num_value = v->u.num_value;
+    }
+    return exp;
+}
+
+Expression *create_minus_expression(Expression *ope) {
+    if (ope->type == NUM_EXPRESSION) {
+        Value v;
+        v = eval_minus_expression(ope);
+        *ope = convert_value_to_expression(&v);
+        return ope;
+    } else {
+        Expression *exp;
+        exp = alloc_expression(MINUS_EXPRESSION);
+        exp->u.minus_expression = ope;
+        return exp;
+    }
+}
+
 // 変数の枝作成
 Expression *create_character_expression(char *chara) {
     Expression *exp;
@@ -103,6 +126,16 @@ Expression *create_assign_expression(char *variable, Expression *operand) {
     return exp;
 }
 
+Expression *create_math_expression(char* math_name ) {
+    Expression *exp;
+    char *arg = "x";
+    Expression *name_expr = create_character_expression(math_name);
+    Expression *arg_expr = create_character_expression(arg);
+    exp = alloc_expression(MATH_EXPRESSION);
+    exp->u.function_call_expression.character = math_name;
+    exp->u.function_call_expression.arg = arg_expr;
+    return exp;
+}
 
 Expression *create_function_call_expression(char *func_name, Expression *arg) {
     Expression *exp;

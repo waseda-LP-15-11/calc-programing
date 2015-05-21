@@ -30,6 +30,43 @@ other        .|\n
 
 "#" { return DEFINE; }
 
+sin 			{ yylval.character = create_character(yytext); return FUNCTION; }
+asinh			{ yylval.character = create_character(yytext); return FUNCTION;}
+acosh			{ yylval.character = create_character(yytext); return FUNCTION;}
+atanh 			{ yylval.character = create_character(yytext); return FUNCTION;}
+
+sinh			{ yylval.character = create_character(yytext); return FUNCTION;}
+cosh			{ yylval.character = create_character(yytext); return FUNCTION;}
+tanh 			{ yylval.character = create_character(yytext); return FUNCTION;}
+
+sin 			{ yylval.character = create_character(yytext); return FUNCTION; }
+cos 			{ yylval.character = create_character(yytext); return FUNCTION; }
+tan 			{ yylval.character = create_character(yytext); return FUNCTION; }
+
+asin 			{ yylval.character = create_character(yytext); return FUNCTION;}
+acos 			{ yylval.character = create_character(yytext); return FUNCTION;}
+atan 			{ yylval.character = create_character(yytext); return FUNCTION;}
+
+e				{ yylval.number = M_E; return CONSTANT; }
+exp				{ yylval.character = create_character(yytext); return FUNCTION;}
+exp2			{ yylval.character = create_character(yytext); return FUNCTION;}
+log2			{ yylval.character = create_character(yytext); return FUNCTION;}
+log10			{ yylval.character = create_character(yytext); return FUNCTION;}
+log|ln			{ yylval.character = create_character(yytext); return FUNCTION;}
+
+abs				{ yylval.character = create_character(yytext); return FUNCTION;}
+
+sqrt|√			{ yylval.character = create_character(yytext); return FUNCTION;}
+cbrt			{ yylval.character = create_character(yytext); return FUNCTION;}
+
+round|rint		{ yylval.character = create_character(yytext); return FUNCTION;}
+floor			{ yylval.character = create_character(yytext); return FUNCTION;}
+ceil			{ yylval.character = create_character(yytext); return FUNCTION;}
+
+Radians			{ yylval.character = create_character(yytext); return FUNCTION;}
+Degrees			{ yylval.character = create_character(yytext); return FUNCTION;}
+
+
 {digit}+(\.{digit}+)?   {
     Expression *expression = alloc_expression(NUM_EXPRESSION);
     sscanf(yytext, "%lf", &expression->u.num_value);

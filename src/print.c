@@ -1,4 +1,5 @@
 #include "print.h"
+#include "calc.hpp"
 #include <fstream>
 #include <locale>
 Writer writer("result.txt");

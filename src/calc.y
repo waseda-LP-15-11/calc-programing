@@ -69,7 +69,6 @@ void showFormula(double value)
   isBinaryInput=false;
   isHexInput = false;
 }
-
 int main(int argc, char *argv[])
 {
 #ifdef MEMCHEK
@@ -97,7 +96,7 @@ int main(int argc, char *argv[])
   lexer = std::make_unique<yyFlexLexer>();
 
 OPEN_SUCCESS:
-
+  defineAllDefaultFunction();
   Print(">> ",false);
   yyparse();
 }
@@ -118,7 +117,7 @@ OPEN_SUCCESS:
 %token <expression> NUM_LITERAL
 %token  <number> CONSTANT
 %token  <character> CHARACTER
-%token  <fp> FUNCTION
+%token  <character> FUNCTION
 %token  <fpp> FUNCTION2
 %token  <fpv> FUNCTION0
 %token  <fpvec> FUNCTION_var
@@ -150,6 +149,7 @@ expression
   | CHARACTER '=' expression { $$ = create_assign_expression($1, $3); }
 formula
   : term
+  | '-' term { $$ = create_minus_expression($2); }
   | formula '+' term  { $$ = create_binary_expression(ADD_EXPRESSION, $1, $3); }
   | formula '-' term  { $$ = create_binary_expression(SUB_EXPRESSION, $1, $3); }
 term
@@ -163,4 +163,5 @@ primary
   | '(' formula ')'  { $$ = $2; }
   | CHARACTER '(' func_expression_list ')' { $$ = create_function_call_expression($1, $3) }
   | CHARACTER { $$ = create_character_expression($1); }
+  | FUNCTION '(' func_expression_list ')' { $$ = create_function_call_expression($1, $3) }
 %%

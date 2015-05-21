@@ -43,7 +43,9 @@ typedef enum {
     EQ_EXPRESSION,
     ASSIGN_EXPRESSION,
     EXPRESSION_LIST_EXPRESSION,
-    FUNCTION_CALL_EXPRESSION
+    FUNCTION_CALL_EXPRESSION,
+    MATH_EXPRESSION,
+    MINUS_EXPRESSION
 } ExpressionType;
 
 // Booleanの枝の値
@@ -87,6 +89,7 @@ struct Expression_tag {
         AssignExpression    assignExpression;
         ExpressionList expression_list;
         FunctionCallExpression function_call_expression;
+        Expression *minus_expression;
     } u;
 };
 
@@ -121,7 +124,11 @@ Expression * create_expression_list(Expression *expression);
 FunctionDefinition * search_function(char *name);
 void function_define(char *character, ParameterList *parameter_list, Expression *expression_list);
 Expression * create_function_call_expression(char *func_name, Expression *arg);
+Expression * create_math_expression(char* math_name );
 
+void defineDefaultFunction(char *name);
+void defineAllDefaultFunction();
+Expression * create_minus_expression(Expression *ope);
 
 //eval.cpp
 void calc_eval_expression(Expression *expression);
@@ -129,5 +136,6 @@ static Value eval_expression(Expression *expr);
 Value eval_int_expression(int int_value);
 static int calc_binary_int(ExpressionType type, int left, int right);
 Value eval_binary_expression(ExpressionType type, Expression *left, Expression *right);
-
+Value eval_minus_expression(Expression *ope);
 #endif
+
