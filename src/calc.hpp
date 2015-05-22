@@ -2,29 +2,29 @@
 #define CALC_HPP_INCLUDED
 #include "print.h"
 #include <map>
+#include <vector>
 using namespace std;
-typedef struct Expression_tag Expression;
-
+struct Expression;
 //
 // 数値定義
 // 各数値の属性、値の定義
 //
 
 // 数値の属性
-typedef enum {
+enum ValueType{
     NUM_VALUE,
     HEX_VALUE,
     BIN_VALUE
-} ValueType;
+};
 
 // 数値
 // 数値は、属性と値をもつ
-typedef struct {
+struct Value{
     ValueType type;
     union {
         double num_value;
     } u;
-} Value;
+} ;
 
 //
 // 枝定義
@@ -32,7 +32,7 @@ typedef struct {
 //
 
 // 枝の属性
-typedef enum {
+enum ExpressionType{
     BOOLEAN_EXPRESSION = 1,
     NUM_EXPRESSION,
     ADD_EXPRESSION,
@@ -50,7 +50,7 @@ typedef enum {
     FUNCTION_CALL_EXPRESSION,
     MATH_EXPRESSION,
     MINUS_EXPRESSION
-} ExpressionType;
+} ;
 
 // Booleanの枝の値
 typedef enum {
@@ -59,30 +59,30 @@ typedef enum {
 } Boolean;
 
 // 右辺と左辺がある枝の値
-typedef struct {
+struct BinaryExpression{
     Expression *left;
     Expression *right;
-} BinaryExpression;
+};
 
 // 変数を割り当てる枝の値
-typedef struct {
+struct AssignExpression{
     char *variable;         // 変数名
     Expression *operand;    // 割り当てる式
-} AssignExpression;
+};
 
-typedef struct {
+struct ExpressionList{
     Expression *expression;
     Expression *next;
-} ExpressionList;
+};
 
-typedef struct {
+struct FunctionCallExpression{
     char *character;
     Expression *arg;
-} FunctionCallExpression;
+};
 
 // 枝
 // 枝は、属性と値をもつ
-struct Expression_tag {
+struct Expression {
     ExpressionType type;
     int line_number;    //未実装
     union {
@@ -100,20 +100,21 @@ struct Expression_tag {
 // 変数の保存場所
 static map<string,Value> Variables;
 
-typedef struct ParameterList_tag {
+struct ParameterList {
     char *name;
-    struct ParameterList_tag *next;
-} ParameterList;
+    struct ParameterList *next;
+};
 
-typedef struct FunctionDefinition_tag {
-    char *name;
+
+
+struct FunctionDefinition 
+{
     ParameterList *parameter;
     Expression *expression_list;
-    struct FunctionDefinition_tag *next;
-} FunctionDefinition;
+};
 
-static FunctionDefinition *function_list_top;
-
+// 関数の保存場所
+static std::map<std::string,FunctionDefinition> function_list;
 
 // create.cpp
 Expression* alloc_expression(ExpressionType type);

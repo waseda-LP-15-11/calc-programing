@@ -11,34 +11,37 @@
 #include "calc.hpp"
 
 FunctionDefinition *search_function(char *name) {
-    FunctionDefinition *pos;
-    for(pos = function_list_top; pos; pos = pos->next) {
-        if (!strcmp(pos->name, name)) {
-            break;
-        }
+    const std::string key(name);
+    if (function_list.find(key) != function_list.end())
+    {
+        return &function_list[key];
     }
-    return pos;
+    else
+    {
+        return NULL;
+    }
 }
 
 void function_define(char *character, ParameterList *parameter_list, Expression *expression_list) {
-    FunctionDefinition *f;
+
     if (search_function(character)) {
         return;
     }
-    f = new FunctionDefinition;
-    f->name = character;
-    f->parameter = parameter_list;
-    f->expression_list = expression_list;
-    f->next = function_list_top;
-    function_list_top = f;
+
+    FunctionDefinition f;
+    f.parameter = parameter_list;
+    f.expression_list = expression_list;
+
+    function_list[std::string(character)] = f;
 }
 
 ParameterList *create_parameter(char *character) {
-    ParameterList *p;
-    p = new ParameterList;
-    p->name = character;
-    p->next = NULL;
-    return p;
+    static std::vector<ParameterList> tempParameterList;
+    ParameterList p;
+    p.name = character;
+    p.next = NULL;
+    tempParameterList.push_back(p);
+    return &tempParameterList.back();
 }
 
 ParameterList *chain_parameter(ParameterList *list, char *character) {
@@ -53,10 +56,11 @@ ParameterList *chain_parameter(ParameterList *list, char *character) {
 
 // expression(=解析木の枝)のメモリ確保
 Expression* alloc_expression(ExpressionType type) {
-    Expression *exp;
-    exp = new Expression;
-    exp->type = type;
-    return exp;
+    static std::vector<Expression> tempExpression;
+    Expression exp;
+    exp.type = type;
+    tempExpression.push_back(exp);
+    return &tempExpression.back();
 }
 
 Expression *create_expression_list(Expression *expression) {
@@ -151,16 +155,9 @@ Expression *create_function_call_expression(char *func_name, Expression *arg) {
 // TODO: これは枝作成機能ではないので違うところに移動したい
 
 char *create_character(char *chara) {
-#if 0
-    char *new_chara;
-    new_chara = (char*)malloc(strlen(chara) + 1);
-    strcpy(new_chara, chara);
-    return new_chara;
-#else
     //create_characterで渡されたcharaはtempCharactersに全て追加されていく
     //できれば一つの計算ごとに.clearしたい。
-    static std::vector<std::string> tempCharacters;
-    tempCharacters.push_back(chara);
-    return const_cast<char *>(tempCharacters.back().c_str());
-#endif
+    static std::vector<std::string> tempChara;
+    tempChara.push_back(chara);
+    return const_cast<char *>(tempChara.back().c_str());
 }
