@@ -151,6 +151,13 @@ Expression *create_function_call_expression(char *func_name, Expression *arg) {
     return exp;
 }
 
+Expression *create_function_var_call_expression(char *name) {
+    Expression *exp;
+    exp = alloc_expression(FUNCTION_VAR_CALL_EXPRESSION);
+    exp->u.function_call_expression.character = name;
+    return exp;
+}
+
 // 変数作成
 // TODO: これは枝作成機能ではないので違うところに移動したい
 

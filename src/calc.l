@@ -74,6 +74,11 @@ Degrees			{ yylval.character = create_character(yytext); return FUNCTION;}
 toHex			{ yylval.character = create_character(yytext); isHexInput=true; return FUNCTION;}
 toBin			{ yylval.character = create_character(yytext); isBinaryInput=true; return FUNCTION;}
 
+sum				{ yylval.character = create_character(yytext); return FUNCTION_var;}
+ave				{ yylval.character = create_character(yytext); return FUNCTION_var;}
+
+geomean			{ yylval.character = create_character(yytext); return FUNCTION_var;}
+
 {digit}+(\.{digit}+)?   {
     Expression *expression = alloc_expression(NUM_EXPRESSION);
     sscanf(yytext, "%lf", &expression->u.num_value);

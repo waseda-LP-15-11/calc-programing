@@ -119,9 +119,9 @@ OPEN_SUCCESS:
 %token  <number> CONSTANT
 %token  <character> CHARACTER
 %token  <character> FUNCTION
+%token  <character> FUNCTION_var
 %token  <fpp> FUNCTION2
 %token  <fpv> FUNCTION0
-%token  <fpvec> FUNCTION_var
 %token  '+'
 %token  '('
 %token  ')'
@@ -129,7 +129,7 @@ OPEN_SUCCESS:
 
 %type <parameter_list> func_parameter_list
 %type <number> lines
-%type <expression> expression formula term primary func_expression_list
+%type <expression> expression formula term primary func_expression_list args
 %%
 lines
   : /* empty */ {/* empty */}
@@ -167,4 +167,8 @@ primary
   | CHARACTER '(' func_expression_list ')' { $$ = create_function_call_expression($1, $3); }
   | CHARACTER { $$ = create_character_expression($1); }
   | FUNCTION '(' func_expression_list ')' { $$ = create_function_call_expression($1, $3); }
+  | FUNCTION_var '(' args ')' { $$ = create_function_var_call_expression($1);}
+args/* $$ = NANは使われないため特に意味はない */
+  : formula   { pushArg($1);}
+  | formula ',' args  { pushArg($1); }
 %%

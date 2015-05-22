@@ -1,10 +1,13 @@
 #include "args.h"
+
 #include <vector>
 static std::vector<double> args;
 
-void pushArg(double arg)
+void pushArg(Expression *arg)
 {
-	args.push_back(arg);
+	Value v;
+	v = eval_expression(arg);
+	args.push_back(v.u.num_value);
 }
 void clearArgs()
 {

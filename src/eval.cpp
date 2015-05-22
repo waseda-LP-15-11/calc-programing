@@ -10,6 +10,8 @@
 #include "exmath.h"
 #include "variable.h"
 #include "numberBase.h"
+#include "sum.h"
+#include "args.h"
 
 //
 // 計算関数
@@ -41,16 +43,18 @@ static double calc_binary_int(ExpressionType type, double left, double right) {
             result = leftShift(left, right);
             if(32 <= right || result < left) {
                 PrintErrorln("ERROR: Over Flow") ;
-                result = NULL;
+                result = 0;
             }
             break;
         case RS_EXPRESSION:
             result = rightShift(left, right);
             if(right < 0||31<= right ) {
                 PrintErrorln("ERROR: Out of Shift Range");
-                result = NULL;
+                result = 0;
             }
             break;
+        default:
+            printf("ERROR: at calc_binary_int");
     }
     return result;
 }
@@ -143,6 +147,15 @@ static Value eval_function_call_expression(char *character, Expression *arg) {
     return result;
 }
 
+static Value eval_function_var_call_expression(char *name) {
+    Value result;
+    result.type = NUM_VALUE;
+    if (!strcmp(name, "sum")) { result.u.num_value = sum(); }
+    if (!strcmp(name, "ave")) { result.u.num_value = ave(); }
+    if (!strcmp(name, "geomean")) { result.u.num_value = geometricMean(); }
+    return result;
+}
+
 static Value eval_math_expression(char *math_name, Expression *arg) {
     Value result;
     result.type = NUM_VALUE;
@@ -224,7 +237,7 @@ Value eval_minus_expression(Expression *ope) {
     return result;
 }
 // 解析木の評価をする
-static Value eval_expression(Expression *expr) {
+Value eval_expression(Expression *expr) {
     Value v;
     switch(expr->type) {
         case NUM_EXPRESSION:
@@ -259,12 +272,15 @@ static Value eval_expression(Expression *expr) {
         case FUNCTION_CALL_EXPRESSION:
             v = eval_function_call_expression(expr->u.function_call_expression.character, expr->u.function_call_expression.arg);
             break;
+        case FUNCTION_VAR_CALL_EXPRESSION:
+            v = eval_function_var_call_expression(expr->u.function_call_expression.character);
+            clearArgs();
+            break;
         default:
-            Println("error");
+            Println("Expression error");
     }
     return v;
 }
-
 
 
 // 入力された解析木全体の評価をする。そして、最終的な出力をする。
