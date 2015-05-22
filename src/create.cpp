@@ -23,7 +23,7 @@ void function_define(char *character, ParameterList *parameter_list, Expression 
     if (search_function(character)) {
         return;
     }
-    f = (FunctionDefinition *) malloc(sizeof(FunctionDefinition));
+    f = new FunctionDefinition;
     f->name = character;
     f->parameter = parameter_list;
     f->expression_list = expression_list;
@@ -33,7 +33,7 @@ void function_define(char *character, ParameterList *parameter_list, Expression 
 
 ParameterList *create_parameter(char *character) {
     ParameterList *p;
-    p = (ParameterList *) malloc(sizeof(ParameterList));
+    p = new ParameterList;
     p->name = character;
     p->next = NULL;
     return p;
@@ -52,7 +52,7 @@ ParameterList *chain_parameter(ParameterList *list, char *character) {
 // expression(=解析木の枝)のメモリ確保
 Expression* alloc_expression(ExpressionType type) {
     Expression *exp;
-    exp = (Expression*)malloc(sizeof *exp);
+    exp = new Expression;
     exp->type = type;
     return exp;
 }
