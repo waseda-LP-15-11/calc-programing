@@ -5,6 +5,7 @@
 
 #include <stddef.h>
 #include <stdio.h>
+#include <string.h>
 #include "calc.hpp"
 #include "exmath.h"
 #include "variable.h"

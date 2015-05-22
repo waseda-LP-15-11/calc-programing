@@ -4,39 +4,44 @@
 // 流れ: メモリ確保→枝作成
 // 各枝の定義はcalc.hppで行う。
 //
+#include <string>
+#include <vector>
 #include <stdlib.h>
 #include <string.h>
 #include "calc.hpp"
 
 FunctionDefinition *search_function(char *name) {
-    FunctionDefinition *pos;
-    for(pos = function_list_top; pos; pos = pos->next) {
-        if (!strcmp(pos->name, name)) {
-            break;
-        }
+    const std::string key(name);
+    if (function_list.find(key) != function_list.end())
+    {
+        return &function_list[key];
     }
-    return pos;
+    else
+    {
+        return NULL;
+    }
 }
 
 void function_define(char *character, ParameterList *parameter_list, Expression *expression_list) {
-    FunctionDefinition *f;
+
     if (search_function(character)) {
         return;
     }
-    f = (FunctionDefinition *) malloc(sizeof(FunctionDefinition));
-    f->name = character;
-    f->parameter = parameter_list;
-    f->expression_list = expression_list;
-    f->next = function_list_top;
-    function_list_top = f;
+
+    FunctionDefinition f;
+    f.parameter = parameter_list;
+    f.expression_list = expression_list;
+
+    function_list[std::string(character)] = f;
 }
 
 ParameterList *create_parameter(char *character) {
-    ParameterList *p;
-    p = (ParameterList *) malloc(sizeof(ParameterList));
-    p->name = character;
-    p->next = NULL;
-    return p;
+    static std::vector<ParameterList> tempParameterList;
+    ParameterList p;
+    p.name = character;
+    p.next = NULL;
+    tempParameterList.push_back(p);
+    return &tempParameterList.back();
 }
 
 ParameterList *chain_parameter(ParameterList *list, char *character) {
@@ -51,10 +56,11 @@ ParameterList *chain_parameter(ParameterList *list, char *character) {
 
 // expression(=解析木の枝)のメモリ確保
 Expression* alloc_expression(ExpressionType type) {
-    Expression *exp;
-    exp = (Expression*)malloc(sizeof *exp);
-    exp->type = type;
-    return exp;
+    static std::vector<Expression> tempExpression;
+    Expression exp;
+    exp.type = type;
+    tempExpression.push_back(exp);
+    return &tempExpression.back();
 }
 
 Expression *create_expression_list(Expression *expression) {
@@ -128,7 +134,7 @@ Expression *create_assign_expression(char *variable, Expression *operand) {
 
 Expression *create_math_expression(char* math_name ) {
     Expression *exp;
-    char *arg = "x";
+    char *arg = (char*)"x";
     Expression *name_expr = create_character_expression(math_name);
     Expression *arg_expr = create_character_expression(arg);
     exp = alloc_expression(MATH_EXPRESSION);
@@ -147,9 +153,11 @@ Expression *create_function_call_expression(char *func_name, Expression *arg) {
 
 // 変数作成
 // TODO: これは枝作成機能ではないので違うところに移動したい
+
 char *create_character(char *chara) {
-    char *new_chara;
-    new_chara = (char*)malloc(strlen(chara) + 1);
-    strcpy(new_chara, chara);
-    return new_chara;
+    //create_characterで渡されたcharaはtempCharactersに全て追加されていく
+    //できれば一つの計算ごとに.clearしたい。
+    static std::vector<std::string> tempChara;
+    tempChara.push_back(chara);
+    return const_cast<char *>(tempChara.back().c_str());
 }

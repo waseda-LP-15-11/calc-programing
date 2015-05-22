@@ -1,8 +1,8 @@
 ﻿#pragma once
 #include <string>
 #include <fstream>
-#include <iostream>
-#include <queue>
+#include <vector>
+
 /*
 result.txt以外でも
 必要な箇所で
@@ -12,9 +12,15 @@ writer.write("テキスト");
 class Writer
 {
 public:
-  Writer(const std::string& path):
-	m_ofs(path)
-  {}
+  Writer(const std::string& path)
+  {
+    makeNewResultFile(path.c_str());
+  }
+
+  Writer(const char* path)
+  {
+    makeNewResultFile(path);
+  }
 
   ~Writer()
   {
@@ -30,36 +36,12 @@ public:
   {
     m_outputs.push_back(value);
   }
+
+  void writeOneLine();
+
+  void writeCout();
   
-  void writeOneLine()
-  {	
-  	m_ofs << ">> ";
-  	for(size_t i=0;i<m_inputs.size();++i)
-  	{
-  		 m_ofs << m_inputs[i];
-  	}
-  	m_ofs << std::endl;
-  	for(size_t i=0;i<m_outputs.size();++i)
-  	{
-  		 m_ofs << m_outputs[i] << std::endl;
-  	}
-  	m_inputs.clear();
-  	m_outputs.clear();
-  }
-  
-  void writeCout()
-  {
-    	std::cout << ">> ";
-  	for(size_t i=0;i<m_inputs.size();++i)
-  	{
-  		 std::cout << m_inputs[i];
-  	}
-  	std::cout << std::endl;
-  	for(size_t i=0;i<m_outputs.size();++i)
-  	{
-  		 std::cout << m_outputs[i] << std::endl;
-  	}
-  }
+  void makeNewResultFile(const char* filename);
 
 private:
   std::ofstream m_ofs;
