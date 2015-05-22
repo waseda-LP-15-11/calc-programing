@@ -1,4 +1,5 @@
 #include "variable.h"
+#include "calc.hpp"
 
 // 変数の値を表示する
 //void show_variable(const char* name)
@@ -12,7 +13,7 @@
 // 変数を作成
 void add_variable(const char* name, Value *var)
 {
-	Variables[to_String(name)] = *var;
+	Variables[to_String(name)].u.num_value = var->u.num_value;
 //	Println(string(name)+" = "+to_String(value));
 }
 

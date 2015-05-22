@@ -12,7 +12,9 @@ typedef struct Expression_tag Expression;
 
 // 数値の属性
 typedef enum {
-    NUM_VALUE
+    NUM_VALUE,
+    HEX_VALUE,
+    BIN_VALUE
 } ValueType;
 
 // 数値

@@ -8,6 +8,7 @@
 #include "calc.hpp"
 #include "exmath.h"
 #include "variable.h"
+#include "numberBase.h"
 
 //
 // 計算関数
@@ -172,8 +173,14 @@ static Value eval_math_expression(char *math_name, Expression *arg) {
     if (!strcmp(math_name, "ceil"))    { result.u.num_value = ceil(arg_p.u.num_value); }
     if (!strcmp(math_name, "Radians")) { result.u.num_value = Radians(arg_p.u.num_value); }
     if (!strcmp(math_name, "Degrees")) { result.u.num_value = Degrees(arg_p.u.num_value); }
-//    if (strcmp(math_name, "ToBin"))   { result.u.num_value = ToBin(arg_p.u.num_value); }
-//    if (strcmp(math_name, "ToHex"))   { result.u.num_value = ToHex(arg_p.u.num_value); }
+    if (!strcmp(math_name, "toBin"))   {
+        result.type = BIN_VALUE;
+        result.u.num_value = toBin(arg_p.u.num_value);
+    }
+    if (!strcmp(math_name, "toHex"))   {
+        result.type = HEX_VALUE;
+        result.u.num_value = toHex(arg_p.u.num_value);
+    }
     return result;
 
 }
@@ -269,6 +276,10 @@ void calc_eval_expression(Expression *expression) {
         } else {
             printf("%f\n", v.u.num_value);
         }
+    } else if (v.type == HEX_VALUE) {
+        Println(uIntToHexStr((unsigned int)v.u.num_value)+"("+to_String((unsigned int)v.u.num_value)+")");
+    } else if (v.type == BIN_VALUE) {
+        Println(uIntToBinStr((unsigned int)v.u.num_value)+"("+to_String((unsigned int)v.u.num_value)+")");
     } else {
         printf("<void>\n");
     }
