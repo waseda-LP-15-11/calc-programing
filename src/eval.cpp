@@ -54,7 +54,7 @@ static double calc_binary_int(ExpressionType type, double left, double right) {
             }
             break;
         default:
-            printf("ERROR: at calc_binary_int");
+            PrintErrorln("ERROR: at calc_binary_int");
     }
     return result;
 }
@@ -128,7 +128,7 @@ static Value eval_function_call_expression(char *character, Expression *arg) {
 
     func = search_function(character);
     if (func == nullptr) {
-        printf("error function not found");
+        PrintErrorln("error function not found");
         return result;
     }
     for (arg_p = arg, param_p = func->parameter; arg_p; arg_p = arg_p->u.expression_list.next, param_p = param_p->next) {
@@ -289,15 +289,15 @@ void calc_eval_expression(Expression *expression) {
     v = eval_expression(expression);
     if (v.type == NUM_VALUE) {
         if (v.u.num_value / (int)(v.u.num_value) == 1) {
-            printf("%d\n", (int)(v.u.num_value));
+            Println((int)(v.u.num_value));
         } else {
-            printf("%f\n", v.u.num_value);
+            Println(v.u.num_value);
         }
     } else if (v.type == HEX_VALUE) {
         Println(uIntToHexStr((unsigned int)v.u.num_value)+"("+to_String((unsigned int)v.u.num_value)+")");
     } else if (v.type == BIN_VALUE) {
         Println(uIntToBinStr((unsigned int)v.u.num_value)+"("+to_String((unsigned int)v.u.num_value)+")");
     } else {
-        printf("<void>\n");
+        Println("<void>");
     }
 }
