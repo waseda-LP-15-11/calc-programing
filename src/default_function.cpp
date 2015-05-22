@@ -1,8 +1,7 @@
 //
 // Created by Keigo Ogawa on 5/22/15.
 //
-
-#include <math.h>
+#include "exmath.h"
 #include "default_function.h"
 #include "calc.hpp"
 #include "variable.h"
