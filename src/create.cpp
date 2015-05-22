@@ -4,6 +4,8 @@
 // 流れ: メモリ確保→枝作成
 // 各枝の定義はcalc.hppで行う。
 //
+#include <string>
+#include <vector>
 #include <stdlib.h>
 #include <string.h>
 #include "calc.hpp"
@@ -147,9 +149,18 @@ Expression *create_function_call_expression(char *func_name, Expression *arg) {
 
 // 変数作成
 // TODO: これは枝作成機能ではないので違うところに移動したい
+
 char *create_character(char *chara) {
+#if 0
     char *new_chara;
     new_chara = (char*)malloc(strlen(chara) + 1);
     strcpy(new_chara, chara);
     return new_chara;
+#else
+    //create_characterで渡されたcharaはtempCharactersに全て追加されていく
+    //できれば一つの計算ごとに.clearしたい。
+    static std::vector<std::string> tempCharacters;
+    tempCharacters.push_back(chara);
+    return const_cast<char *>(tempCharacters.back().c_str());
+#endif
 }
