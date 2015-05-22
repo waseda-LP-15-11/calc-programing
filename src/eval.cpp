@@ -71,13 +71,13 @@ static Value eval_char_expression(Expression *expr) {
 
     // 変数を探す
     var = search_local_variable(expr->u.character);
-    if(var != NULL) {
+    if(var != nullptr) {
         // 変数があったらそれを返す
         v = *var;
     } else {
         // TODO: 変数がなかった場合,エラーを表示
 //        var = search_global_variable(expr->u.character);
-        if(var != NULL) {
+        if(var != nullptr) {
             v = *var;
         } else {
          // TODO: error handling
@@ -99,7 +99,7 @@ static Value eval_assign_expression(char *chara, Expression *expr) {
 //    if (left == NULL) {
 //        left = search_global_variable(chara);
 //    }
-    if (left != NULL) {
+    if (left != nullptr) {
         // 変数がすでにあったら更新
         *left = v;
     } else {
@@ -127,13 +127,13 @@ static Value eval_function_call_expression(char *character, Expression *arg) {
     FunctionDefinition *func;
 
     func = search_function(character);
-    if (func == NULL) {
+    if (func == nullptr) {
         printf("error function not found");
         return result;
     }
     for (arg_p = arg, param_p = func->parameter; arg_p; arg_p = arg_p->u.expression_list.next, param_p = param_p->next) {
         Value arg_val;
-        if (param_p == NULL) {
+        if (param_p == nullptr) {
             // error many arg
         }
         arg_val = eval_expression(arg_p->u.expression_list.expression);

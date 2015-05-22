@@ -18,7 +18,7 @@ FunctionDefinition *search_function(char *name) {
     }
     else
     {
-        return NULL;
+        return nullptr;
     }
 }
 
@@ -39,7 +39,7 @@ ParameterList *create_parameter(char *character) {
     static std::vector<ParameterList> tempParameterList;
     ParameterList p;
     p.name = character;
-    p.next = NULL;
+    p.next = nullptr;
     tempParameterList.push_back(p);
     return &tempParameterList.back();
 }
@@ -67,7 +67,7 @@ Expression *create_expression_list(Expression *expression) {
     Expression *exp;
     exp = alloc_expression(EXPRESSION_LIST_EXPRESSION);
     exp->u.expression_list.expression = expression;
-    exp->u.expression_list.next = NULL;
+    exp->u.expression_list.next = nullptr;
     return exp;
 }
 
@@ -76,7 +76,7 @@ Expression *chain_expression_list(Expression *list, Expression *add) {
     Expression *pos;
     exp = alloc_expression(EXPRESSION_LIST_EXPRESSION);
     exp->u.expression_list.expression = add;
-    exp->u.expression_list.next = NULL;
+    exp->u.expression_list.next = nullptr;
     for (pos = list; pos->u.expression_list.next; pos->u.expression_list.next);
     pos->u.expression_list.next = exp;
     return list;

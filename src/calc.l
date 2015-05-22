@@ -35,7 +35,6 @@ other        .|\n
 2(pi|π)			{ yylval.character = create_character(yytext); return CHARACTER; }
 pi|π			{ yylval.character = create_character(yytext); return CHARACTER; }
 
-sin 			{ yylval.character = create_character(yytext); return FUNCTION; }
 asinh			{ yylval.character = create_character(yytext); return FUNCTION;}
 acosh			{ yylval.character = create_character(yytext); return FUNCTION;}
 atanh 			{ yylval.character = create_character(yytext); return FUNCTION;}
