@@ -2,8 +2,10 @@
 // Created by Keigo Ogawa on 5/22/15.
 //
 
+#include <math.h>
 #include "default_function.h"
 #include "calc.hpp"
+#include "variable.h"
 
 void defineDefaultFunction(const char *name) {
     char* parme = "x";
@@ -13,6 +15,13 @@ void defineDefaultFunction(const char *name) {
     Expression* expression_list = create_expression_list(math_expression);
 
     function_define(math_name, parameter, expression_list);
+}
+
+void defineDefaultConstant(const char *name, double const_val) {
+    Value v;
+    v.type = NUM_VALUE;
+    v.u.num_value = const_val;
+    add_variable(name, &v);
 }
 
 void defineAllDefaultFunction() {
@@ -45,5 +54,10 @@ void defineAllDefaultFunction() {
     defineDefaultFunction("Degrees");
     defineDefaultFunction("toBin");
     defineDefaultFunction("toHex");
+    defineDefaultConstant("pi2", M_PI_2);
+    defineDefaultConstant("2pi", 2*M_PI);
+    defineDefaultConstant("pi", M_PI);
+    defineDefaultConstant("e", M_E);
+
 //    defineDefaultFunction("");
 }

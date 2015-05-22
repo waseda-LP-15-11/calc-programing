@@ -177,6 +177,7 @@ static Value eval_math_expression(char *math_name, Expression *arg) {
     return result;
 
 }
+
 // 右辺と左辺があるタイプの枝を評価
 Value eval_binary_expression(ExpressionType type, Expression *left, Expression *right) {
     Value left_val;

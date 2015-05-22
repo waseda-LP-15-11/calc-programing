@@ -97,6 +97,7 @@ int main(int argc, char *argv[])
 
 OPEN_SUCCESS:
   defineAllDefaultFunction();
+
   Print(">> ",false);
   yyparse();
 }

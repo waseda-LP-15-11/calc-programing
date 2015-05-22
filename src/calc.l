@@ -25,10 +25,15 @@ white_blank  [ \t]
 other        .|\n
 
 %%
+
 "exit" { exit(0); }
 {white_blank}+
 
 "#" { return DEFINE; }
+
+(pi|π)2			{ yylval.character = create_character(yytext); return CHARACTER; }
+2(pi|π)			{ yylval.character = create_character(yytext); return CHARACTER; }
+pi|π			{ yylval.character = create_character(yytext); return CHARACTER; }
 
 sin 			{ yylval.character = create_character(yytext); return FUNCTION; }
 asinh			{ yylval.character = create_character(yytext); return FUNCTION;}
@@ -47,7 +52,7 @@ asin 			{ yylval.character = create_character(yytext); return FUNCTION;}
 acos 			{ yylval.character = create_character(yytext); return FUNCTION;}
 atan 			{ yylval.character = create_character(yytext); return FUNCTION;}
 
-e				{ yylval.number = M_E; return CONSTANT; }
+e				{ yylval.character = create_character(yytext); return CHARACTER; }
 exp				{ yylval.character = create_character(yytext); return FUNCTION;}
 exp2			{ yylval.character = create_character(yytext); return FUNCTION;}
 log2			{ yylval.character = create_character(yytext); return FUNCTION;}
