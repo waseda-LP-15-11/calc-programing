@@ -128,7 +128,7 @@ Expression *create_assign_expression(char *variable, Expression *operand) {
 
 Expression *create_math_expression(char* math_name ) {
     Expression *exp;
-    char *arg = "x";
+    char *arg = (char*)"x";
     Expression *name_expr = create_character_expression(math_name);
     Expression *arg_expr = create_character_expression(arg);
     exp = alloc_expression(MATH_EXPRESSION);

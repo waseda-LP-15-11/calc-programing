@@ -72,7 +72,7 @@ Radians			{ yylval.character = create_character(yytext); return FUNCTION;}
 Degrees			{ yylval.character = create_character(yytext); return FUNCTION;}
 
 toHex			{ yylval.character = create_character(yytext); isHexInput=true; return FUNCTION;}
-toBin			{ yylval.character = create_character(yytext); isBinInput=true; return FUNCTION;}
+toBin			{ yylval.character = create_character(yytext); isBinaryInput=true; return FUNCTION;}
 
 {digit}+(\.{digit}+)?   {
     Expression *expression = alloc_expression(NUM_EXPRESSION);

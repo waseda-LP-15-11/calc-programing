@@ -138,7 +138,7 @@ lines
   | error '\n'       { yyerrok;PrintNextLine(); }
   | lines function_definition
 function_definition
-  : DEFINE CHARACTER '(' func_parameter_list ')' '=' func_expression_list { function_define($2, $4, $7) }
+  : DEFINE CHARACTER '(' func_parameter_list ')' '=' func_expression_list { function_define($2, $4, $7); }
 func_parameter_list
   : CHARACTER { $$ = create_parameter($1); }
   | func_parameter_list ',' CHARACTER { $$ = chain_parameter($1, $3); }
@@ -164,7 +164,7 @@ term
 primary
   : NUM_LITERAL
   | '(' formula ')'  { $$ = $2; }
-  | CHARACTER '(' func_expression_list ')' { $$ = create_function_call_expression($1, $3) }
+  | CHARACTER '(' func_expression_list ')' { $$ = create_function_call_expression($1, $3); }
   | CHARACTER { $$ = create_character_expression($1); }
-  | FUNCTION '(' func_expression_list ')' { $$ = create_function_call_expression($1, $3) }
+  | FUNCTION '(' func_expression_list ')' { $$ = create_function_call_expression($1, $3); }
 %%
