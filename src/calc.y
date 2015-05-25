@@ -17,12 +17,14 @@
 
 FlexLexer* lexer;
 bool isFileInputMode = false;//ファイル入力があるか
+bool isReadEnd = false;//ファイル入力があるか
 bool isBinaryInput = false;//その時点の計算に2進数表記があるか
 bool isHexInput = false;
 bool isFuncReadMode = false;
 int yyparse();
 int yylex()
 {
+  auto y = lexer->yylex();
   if(const char* text = lexer->YYText())
   {
     if(to_String(text) != "\n")
@@ -30,7 +32,7 @@ int yylex()
       WriteInput(to_String(text));
     }
   }
-  return lexer->yylex();
+  return y;
 }
 
 void yyerror(const char *s)
@@ -41,38 +43,39 @@ void yyerror(const char *s)
 
 void showFormula(double value)
 {  
-  bool error = false;
-  if(std::isinf(value))//オーバーフロー
-  {
-    PrintErrorln("ERROR: Overflow");
-    error = true;
-  }
-  if(std::isnan(value))//数値でない
-  {
-    PrintErrorln("Not a Number");
-    error = true;
-  }
+
+    bool error = false;
+    if(std::isinf(value))//オーバーフロー
+    {
+      PrintErrorln("ERROR: Overflow");
+      error = true;
+    }
+    if(std::isnan(value))//数値でない
+    {
+      PrintErrorln("Not a Number");
+      error = true;
+    }
 
 
-  if(!error)
-  {
-    if(isBinaryInput)
+    if(!error)
     {
-      Println(uIntToBinStr((unsigned int)value)+"("+to_String((unsigned int)value)+")");
+      if(isBinaryInput)
+      {
+        Println(uIntToBinStr((unsigned int)value)+"("+to_String((unsigned int)value)+")");
+      }
+      else if(isHexInput)
+      {
+        Println(uIntToHexStr((unsigned int)value)+"("+to_String((unsigned int)value)+")");
+      }
+      else if(ceil(value)!=floor(value) || value > INT_MAX)
+      {
+        Println(value);
+      }
+      else
+      {
+        Println((int)value);
+      }
     }
-    else if(isHexInput)
-    {
-      Println(uIntToHexStr((unsigned int)value)+"("+to_String((unsigned int)value)+")");
-    }
-    else if(ceil(value)!=floor(value) || value > INT_MAX)
-    {
-      Println(value);
-    }
-    else
-    {
-      Println((int)value);
-    }
-  }
 
   isBinaryInput=false;
   isHexInput = false;
@@ -120,13 +123,13 @@ lines
   | lines expression '\n' {PrintNextLine();}
   | error '\n'       { yyerrok;PrintNextLine(); }
 expression
-  : formula { showFormula($1);update_ans($1);pushMemory($1); }
+  : formula {   if(!isReadEnd){showFormula($1);update_ans($1);pushMemory($1);}  isReadEnd = false;}
   | character { show_variable($1); }
   | character '=' formula { update_variable($1, $3); }
   | FUNCTION0 { $1();}
   | FUNCTION_user '(' character ')'{$1($3);clearArgs();/*変数なしのファイル*/}
   | FUNCTION_user '(' character'('args')' ')'{$1($3);  clearArgs();/*変数ｘがあるファイル*/}
-  | '#'  character'('character')'FUNCTION_TEXT {makeFunc($2,$6); clearArgs();/*# a(x) $(x-1)*(x-3)$のような定義*/}
+  | '#'  character'('character')''='FUNCTION_TEXT {makeFunc($2,$7); clearArgs();/*# a(x) $(x-1)*(x-3)$のような定義*/}
 formula
   : term
   | '-'term  { $$ = (!isBinaryInput) ? -1*$2 : complement($2) ;}
@@ -149,7 +152,7 @@ function
   : FUNCTION '(' formula ')'{ $$ = $1($3); }
   | FUNCTION2 '(' formula','formula')'{ $$ = $1($3,$5); }
   | FUNCTION_var '(' args ')'{ $$ = $1(); clearArgs();/* argsで引数を全てpushArgした後、それらは関数内で参照する */}
-  | character'('args')'{readFunc($1);  clearArgs();$$=get_value("ans") ? *get_value("ans"):1;/*ユーザー定義の関数(変数ｘがあるファイル)*/}
+  | character'('args')'{readFunc($1);  clearArgs();$$=get_value("ans") ? *get_value("ans"):NAN;/*ユーザー定義の関数(変数ｘがあるファイル)*/}
 args/* $$ = NANは使われないため特に意味はない */
   : formula   { pushArg($1);$$ = NAN;}
   | formula ',' args  { pushArg($1);$$ = NAN; }

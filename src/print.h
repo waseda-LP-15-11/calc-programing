@@ -9,6 +9,7 @@ extern bool isFileInputMode;
 extern bool isFuncReadMode;
 void PrintNextLine();
 
+void ClearInputOutput();
 void WriteInput(const std::string& value);
 void WriteOutput(const std::string& value);
 

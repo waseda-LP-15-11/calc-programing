@@ -20,6 +20,12 @@ public:
     m_ofs.close();
   }
 
+  void ClearInputOutput()
+  {
+    m_inputs.clear();
+    m_outputs.clear();
+  }
+
   void writeInput(const std::string& value)
   {
     m_inputs.push_back(value);

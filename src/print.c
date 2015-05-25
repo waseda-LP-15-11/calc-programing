@@ -4,6 +4,11 @@
 #include "Calc.h"
 Writer writer("result.txt");
 
+void ClearInputOutput()
+{
+	writer.ClearInputOutput();
+}
+
 void WriteInput(const std::string& value)
 {
 	writer.writeInput(value);
@@ -20,10 +25,8 @@ void PrintNextLine()
 		if(!isFuncReadMode)
 		{
 			writer.writeInputToCout();
-			writer.writeOutputToCout();
 		}
-
-
+		writer.writeOutputToCout();
 	}
 	writer.writeOneLine();
 	Print(">> ",false);

@@ -24,6 +24,7 @@ void readFile(char* fileName)
 			ofs << str << std::endl;
 		}
 	}
+	ClearInputOutput();
 	Clac calc("temp");
   	calc.doFunc();
 }
