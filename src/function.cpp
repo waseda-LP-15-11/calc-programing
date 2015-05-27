@@ -28,7 +28,7 @@ void readFile(char* fileName)
 	Clac calc("temp");
   	calc.doFunc();
 }
-void readFunc(char* funcName)
+double readFunc(char* funcName)
 {
 	{
 		const char* filename = std::string(to_String(funcName)+".txt").c_str();
@@ -36,10 +36,10 @@ void readFunc(char* funcName)
 		if(ifs.fail())
 		{
 			PrintErrorln("the func is undefined");
-			return;
+			return 0;
 		}
 
-		std::ofstream ofs("temp");
+		std::ofstream ofs("temp0");
 		std::string str;
 
 		//引数の取得
@@ -74,9 +74,11 @@ void readFunc(char* funcName)
 			ofs << str << std::endl;
 		}
 	}
-	isFuncReadMode=true;
-	Clac calc("temp");
-  	calc.doFunc();
+	double ret = system("calc.exe temp0");
+	std::ifstream ifs("temp1");
+	std::string str;
+	ifs >> str;
+	return atof(str.c_str());
 }
 
 void makeFunc(char* funcName,char* funcText)

@@ -7,6 +7,7 @@
 #include "sum.h"
 #include "numberBase.h"
 #include "variable.h"
+#include "Writer.h"
 //#include <FlexLexer.h>
 #include <iostream>
 using namespace std;
@@ -23,6 +24,7 @@ extern double* get_value(const char*  name);
 extern bool isReadEnd;//ファイル入力があるか
 extern bool isFuncReadMode;
 extern FlexLexer* lexer;
+extern Writer writer;
 %}
 
 letter  [a-zA-Z_'"']
@@ -33,8 +35,8 @@ white_blank  [ \t]
 other        .|\n
 
 %%
-<<EOF>> 		{lexer->yyrestart(&std::cin);isFileInputMode=false;isFuncReadMode=false;isReadEnd = true;yylval.number = 0; return CONSTANT; }
-"exit" { remove("temp");exit(0); }
+<<EOF>> 		{if(isFuncReadMode){writer.deleteResultFile();exit(0);}lexer->yyrestart(&std::cin);isFileInputMode=false;isFuncReadMode=false;isReadEnd = true;yylval.number = 0; return CONSTANT; }
+"exit" { exit(0); }
 {white_blank}+
 
 $.*$			{ strcpy(yylval.expr, yytext); return FUNCTION_TEXT; }

@@ -20,6 +20,12 @@ public:
     m_ofs.close();
   }
 
+  void deleteResultFile()
+  {
+      m_ofs.close();
+      remove(szDst);
+  }
+
   void ClearInputOutput()
   {
     m_inputs.clear();

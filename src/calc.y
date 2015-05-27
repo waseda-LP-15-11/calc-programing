@@ -84,8 +84,18 @@ void showFormula(double value)
 
 int main(int argc, char *argv[])
 {
-    Clac mainCalc;
-    mainCalc.run();
+	if(2<=argc)
+	{
+		isFuncReadMode=true;
+    	Clac mainCalc(argv[1]);
+    	mainCalc.run();
+	}
+	else
+	{
+    	Clac mainCalc;
+    	mainCalc.run();
+	}
+
 }
 %}
 
@@ -152,7 +162,7 @@ function
   : FUNCTION '(' formula ')'{ $$ = $1($3); }
   | FUNCTION2 '(' formula','formula')'{ $$ = $1($3,$5); }
   | FUNCTION_var '(' args ')'{ $$ = $1(); clearArgs();/* argsで引数を全てpushArgした後、それらは関数内で参照する */}
-  | character'('args')'{readFunc($1);  clearArgs();$$=get_value("ans") ? *get_value("ans"):NAN;/*ユーザー定義の関数(変数ｘがあるファイル)*/}
+  | character'('args')'{$$=readFunc($1);  clearArgs();/*ユーザー定義の関数(変数ｘがあるファイル)*/}
 args/* $$ = NANは使われないため特に意味はない */
   : formula   { pushArg($1);$$ = NAN;}
   | formula ',' args  { pushArg($1);$$ = NAN; }

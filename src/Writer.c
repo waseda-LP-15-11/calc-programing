@@ -14,6 +14,8 @@ void Writer::writeOneLine()
  	{
  		 m_ofs << m_outputs[i] << std::endl;
  	}
+ 	std::ofstream last("temp1");
+ 	last << m_outputs.back();
  	m_inputs.clear();
 	m_outputs.clear();
 }

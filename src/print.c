@@ -25,8 +25,9 @@ void PrintNextLine()
 		if(!isFuncReadMode)
 		{
 			writer.writeInputToCout();
+			writer.writeOutputToCout();
 		}
-		writer.writeOutputToCout();
+
 	}
 	writer.writeOneLine();
 	Print(">> ",false);
