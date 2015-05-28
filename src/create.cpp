@@ -10,8 +10,8 @@
 #include <string.h>
 #include "calc.hpp"
 
-FunctionDefinition *search_function(char *name) {
-    FunctionDefinition *pos;
+shared_ptr<FunctionDefinition> search_function(char *name) {
+    shared_ptr<FunctionDefinition> pos;
     for(pos = function_list_top; pos; pos = pos->next) {
         if (!strcmp(pos->name, name)) {
             break;
@@ -26,11 +26,12 @@ void function_define(char *character, ParameterList *parameter_list, Expression 
         return;
     }
     f = new FunctionDefinition;
-    f->name = character;
-    f->parameter = parameter_list;
-    f->expression_list = expression_list;
-    f->next = function_list_top;
-    function_list_top = f;
+    std::shared_ptr<FunctionDefinition> pf(f);
+    pf->name = character;
+    pf->parameter = parameter_list;
+    pf->expression_list = expression_list;
+    pf->next = function_list_top;
+    function_list_top = pf;
 }
 
 ParameterList *create_parameter(char *character) {

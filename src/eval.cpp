@@ -17,6 +17,9 @@
 extern bool isBinInput;//calc.y
 extern bool isHexInput;//calc.y
 
+void delete_expression_memory(std::shared_ptr<Expression> exp) {
+}
+
 //
 // 計算関数
 //
@@ -129,7 +132,7 @@ static Value eval_function_call_expression(char *character, Expression *arg) {
     Value result;
     Expression *arg_p = nullptr;
     ParameterList *param_p = nullptr;
-    FunctionDefinition *func = nullptr;
+    shared_ptr<FunctionDefinition> func = nullptr;
 
     func = search_function(character);
     if (func == nullptr) {
@@ -148,7 +151,10 @@ static Value eval_function_call_expression(char *character, Expression *arg) {
     if (param_p) {
         // error few arg
     }
+    Expression *func_exp;
+    func_exp = func->expression_list;
     result = eval_expression(func->expression_list);
+    func->expression_list = func_exp;
     //dispose var
     for (arg_p = arg, param_p = func->parameter; arg_p; arg_p = arg_p->u.expression_list.next, param_p = param_p->next) {
         remove_variable(param_p->name);
@@ -252,8 +258,6 @@ Value eval_expression(Expression *expr) {
     switch(expr->type) {
         case NUM_EXPRESSION:
             v = eval_num_expression(expr->u.num_value);
-            //printf("%f ", expr->u.num_value);
-            delete(expr);
             break;
         case CHAR_EXPRESSION:
             v = eval_char_expression(expr);
@@ -280,7 +284,6 @@ Value eval_expression(Expression *expr) {
         case LS_EXPRESSION:
         case RS_EXPRESSION:
             v = eval_binary_expression(expr->type, expr->u.binary_expression.left, expr->u.binary_expression.right);
-            delete(expr);
             break;
         case MATH_EXPRESSION:
             v = eval_math_expression(expr->u.function_call_expression.character, expr->u.function_call_expression.arg );
@@ -292,6 +295,7 @@ Value eval_expression(Expression *expr) {
         case FUNCTION_VAR_CALL_EXPRESSION:
             v = eval_function_var_call_expression(expr->u.function_call_expression.character);
             clearArgs();
+            delete(expr);
             break;
         default:
             Println("Expression error");
@@ -301,30 +305,30 @@ Value eval_expression(Expression *expr) {
 
 
 // 入力された解析木全体の評価をする。そして、最終的な出力をする。
-void calc_eval_expression(Expression *expression) 
+void calc_eval_expression(Expression *expression)
 {
     Value v = eval_expression(expression);
     const auto uIntValue = to_String((unsigned int)v.u.num_value);
-    if (v.type == HEX_VALUE || isHexInput) 
+    if (v.type == HEX_VALUE || isHexInput)
     {
         Println(uIntToHexStr((unsigned int)v.u.num_value)+"("+uIntValue+")");
-    } 
-    else if (v.type == BIN_VALUE || isBinInput) 
+    }
+    else if (v.type == BIN_VALUE || isBinInput)
     {
         Println(uIntToBinStr((unsigned int)v.u.num_value)+"("+uIntValue+")");
-    } 
-    else if (v.type == NUM_VALUE) 
+    }
+    else if (v.type == NUM_VALUE)
     {
-        if (v.u.num_value / (int)(v.u.num_value) == 1) 
+        if (v.u.num_value / (int)(v.u.num_value) == 1)
         {
             Println((int)(v.u.num_value));
-        } 
-        else 
+        }
+        else
         {
             Println(v.u.num_value);
         }
-    } 
-    else 
+    }
+    else
     {
         Println("<void>");
     }
@@ -332,3 +336,4 @@ void calc_eval_expression(Expression *expression)
   isBinInput=false;
   isHexInput = false;
 }
+

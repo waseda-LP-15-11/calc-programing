@@ -10,8 +10,8 @@ void defineDefaultFunction(const char *name) {
     char* parme = (char*)"math_function_argument";
     char *math_name = (char*)name;
     ParameterList* parameter = create_parameter(parme);
-    Expression* math_expression = create_math_expression(math_name);
-    Expression* expression_list = create_expression_list(math_expression);
+    Expression *math_expression = create_math_expression(math_name);
+    Expression *expression_list = create_expression_list(math_expression);
 
     function_define(math_name, parameter, expression_list);
 }

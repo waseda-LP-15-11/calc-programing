@@ -113,10 +113,10 @@ struct FunctionDefinition
     char* name;
     ParameterList *parameter;
     Expression *expression_list;
-    struct FunctionDefinition* next;
+    struct shared_ptr<FunctionDefinition> next;
 };
 
-static FunctionDefinition* function_list_top=nullptr;
+static shared_ptr<FunctionDefinition> function_list_top=nullptr;
 
 // create.cpp
 Expression* alloc_expression(ExpressionType type);
@@ -127,7 +127,7 @@ ParameterList * chain_parameter(ParameterList *list, char *character);
 ParameterList * create_parameter(char *character);
 Expression * chain_expression_list(Expression *list, Expression *add);
 Expression * create_expression_list(Expression *expression);
-FunctionDefinition * search_function(char *name);
+std::shared_ptr<FunctionDefinition> search_function(char *name);
 void function_define(char *character, ParameterList *parameter_list, Expression *expression_list);
 Expression * create_function_call_expression(char *func_name, Expression *arg);
 Expression * create_function_var_call_expression(char *func_name);

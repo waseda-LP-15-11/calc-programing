@@ -89,18 +89,18 @@ function		{ yylval.fpv = dispFunc; return FUNCTION0;}
 
 0(b|B)(0|(1|0)+)	{ 
 	Expression *expression = alloc_expression(NUM_EXPRESSION);
-	expression->u.num_value = binToUInt(yytext); 
+	expression->u.num_value = binToUInt(yytext);
 	isBinInput=true;
 	yylval.expression = expression;
-	return NUM_LITERAL; 
+	return NUM_LITERAL;
 }
 
-0(x|X)(0|({digit}|{hexleter})+)	{	
+0(x|X)(0|({digit}|{hexleter})+)	{
 	Expression *expression = alloc_expression(NUM_EXPRESSION);
-	expression->u.num_value = hexToUInt(yytext); 
+	expression->u.num_value = hexToUInt(yytext);
 	isHexInput=true;
 	yylval.expression = expression;
-	return NUM_LITERAL; 
+	return NUM_LITERAL;
 }
 
 {digit}+(\.{digit}+)?   {
