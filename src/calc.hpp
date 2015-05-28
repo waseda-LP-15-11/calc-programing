@@ -114,6 +114,15 @@ struct FunctionDefinition
     ParameterList *parameter;
     Expression *expression_list;
     struct shared_ptr<FunctionDefinition> next;
+    ~FunctionDefinition()
+    {
+        for(auto param = parameter; param; ) 
+        {
+            auto next = param = param->next;
+            delete param;
+            param = next;
+        }
+    }
 };
 
 static shared_ptr<FunctionDefinition> function_list_top=nullptr;

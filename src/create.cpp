@@ -21,12 +21,10 @@ shared_ptr<FunctionDefinition> search_function(char *name) {
 }
 
 void function_define(char *character, ParameterList *parameter_list, Expression *expression_list) {
-    FunctionDefinition *f = nullptr;
     if (search_function(character)) {
         return;
     }
-    f = new FunctionDefinition;
-    std::shared_ptr<FunctionDefinition> pf(f);
+    std::shared_ptr<FunctionDefinition> pf = std::make_shared<FunctionDefinition>();
     pf->name = character;
     pf->parameter = parameter_list;
     pf->expression_list = expression_list;
@@ -36,9 +34,9 @@ void function_define(char *character, ParameterList *parameter_list, Expression 
 
 ParameterList *create_parameter(char *character) {
     ParameterList *p = nullptr;
-    p = new ParameterList;
+    p = new ParameterList;//最終的にセットされるであろうFunctionDefinitionのデストラクタでdeleteしている
     p->name = character;
-    p->next = NULL;
+    p->next = nullptr;
     return p;
 }
 
@@ -155,8 +153,7 @@ Expression *create_function_var_call_expression(char *name) {
     return exp;
 }
 
-// 変数作成
-// TODO: これは枝作成機能ではないので違うところに移動したい
+
 class DupStr
 {
 public:
@@ -182,7 +179,6 @@ private:
 };
 
 static std::vector<DupStr> tempChara;
-
 char *create_character(char *chara) {
     tempChara.emplace_back(chara);
     return tempChara.back().getCharPtr();
