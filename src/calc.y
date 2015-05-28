@@ -100,6 +100,7 @@ OPEN_SUCCESS:
 %type <parameter_list> func_parameter_list
 %type <number> lines
 %type <expression> expression formula term primary func_expression_list args
+%type <fpv> system_func
 %%
 lines
   : /* empty */ {/* empty */}
@@ -107,6 +108,7 @@ lines
   | lines expression '\n' {calc_eval_expression($2); PrintNextLine();}
   | error '\n'       { yyerrok;PrintNextLine(); }
   | lines function_definition
+  | lines system_func
 function_definition
   : DEFINE CHARACTER '(' func_parameter_list ')' '=' func_expression_list { function_define($2, $4, $7); }
 func_parameter_list
@@ -141,4 +143,6 @@ primary
 args/* $$ = NANは使われないため特に意味はない */
   : formula   { pushArg($1);}
   | formula ',' args  { pushArg($1); }
+system_func
+  : FUNCTION0 {$1();}
 %%

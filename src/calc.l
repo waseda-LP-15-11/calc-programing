@@ -12,6 +12,7 @@
 
 extern bool isBinInput;
 extern bool isHexInput;
+void dispVar(void);
 %}
 
 letter  [a-zA-Z_'"']
@@ -74,6 +75,8 @@ sum				{ yylval.character = strdup(yytext); return FUNCTION_var;}
 ave				{ yylval.character = strdup(yytext); return FUNCTION_var;}
 
 geomean			{ yylval.character = strdup(yytext); return FUNCTION_var;}
+
+variable		{ yylval.fpv = dispVar; return FUNCTION0;}
 
 0(b|B)(0|(1|0)+)	{ 
 	Expression *expression = alloc_expression(NUM_EXPRESSION);
