@@ -18,7 +18,7 @@
 
 std::unique_ptr<FlexLexer> lexer = nullptr;
 bool isFileInputMode = false;//ファイル入力があるか
-bool isBinaryInput = false;//その時点の計算に2進数表記があるか
+bool isBinInput = false;//その時点の計算に2進数表記があるか
 bool isHexInput = false;
 int yyparse();
 int yylex()

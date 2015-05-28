@@ -13,6 +13,9 @@
 #include "sum.h"
 #include "args.h"
 
+extern bool isBinInput;//calc.y
+extern bool isHexInput;//calc.y
+
 //
 // 計算関数
 //
@@ -284,24 +287,32 @@ Value eval_expression(Expression *expr) {
 
 
 // 入力された解析木全体の評価をする。そして、最終的な出力をする。
-extern bool isBinaryInput;//calc.y
-extern bool isHexInput;//calc.y
-void calc_eval_expression(Expression *expression) {
-    Value v;
-    v = eval_expression(expression);
-    if (v.type == NUM_VALUE) {
-        if (v.u.num_value / (int)(v.u.num_value) == 1) {
+void calc_eval_expression(Expression *expression) 
+{
+    Value v = eval_expression(expression);
+    if (v.type == HEX_VALUE || isHexInput) 
+    {
+        Println(uIntToHexStr((unsigned int)v.u.num_value)+"("+to_String((unsigned int)v.u.num_value)+")");
+    } 
+    else if (v.type == BIN_VALUE || isBinInput) 
+    {
+        Println(uIntToBinStr((unsigned int)v.u.num_value)+"("+to_String((unsigned int)v.u.num_value)+")");
+    } 
+    else if (v.type == NUM_VALUE) 
+    {
+        if (v.u.num_value / (int)(v.u.num_value) == 1) 
+        {
             Println((int)(v.u.num_value));
-        } else {
+        } 
+        else 
+        {
             Println(v.u.num_value);
         }
-    } else if (v.type == HEX_VALUE) {
-        Println(uIntToHexStr((unsigned int)v.u.num_value)+"("+to_String((unsigned int)v.u.num_value)+")");
-    } else if (v.type == BIN_VALUE) {
-        Println(uIntToBinStr((unsigned int)v.u.num_value)+"("+to_String((unsigned int)v.u.num_value)+")");
-    } else {
+    } 
+    else 
+    {
         Println("<void>");
     }
-  isBinaryInput=false;
+  isBinInput=false;
   isHexInput = false;
 }

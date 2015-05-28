@@ -7,13 +7,10 @@
 #include "exmath.h"
 #include "sum.h"
 #include "numberBase.h"
+#include "numberBase.h"
+#include "print.h"
 
-using namespace std;
-double getMem(double);
-void dispMem(void);
-void dispFunc(void);
-void dispVar(void);
-extern bool isBinaryInput;
+extern bool isBinInput;
 extern bool isHexInput;
 %}
 
@@ -71,12 +68,28 @@ Radians			{ yylval.character = strdup(yytext); return FUNCTION;}
 Degrees			{ yylval.character = strdup(yytext); return FUNCTION;}
 
 toHex			{ yylval.character = strdup(yytext); isHexInput=true; return FUNCTION;}
-toBin			{ yylval.character = strdup(yytext); isBinaryInput=true; return FUNCTION;}
+toBin			{ yylval.character = strdup(yytext); isBinInput=true; return FUNCTION;}
 
 sum				{ yylval.character = strdup(yytext); return FUNCTION_var;}
 ave				{ yylval.character = strdup(yytext); return FUNCTION_var;}
 
 geomean			{ yylval.character = strdup(yytext); return FUNCTION_var;}
+
+0(b|B)(0|(1|0)+)	{ 
+	Expression *expression = alloc_expression(NUM_EXPRESSION);
+	expression->u.num_value = binToUInt(yytext); 
+	isBinInput=true;
+	yylval.expression = expression;
+	return NUM_LITERAL; 
+}
+
+0(x|X)(0|({digit}|{hexleter})+)	{	
+	Expression *expression = alloc_expression(NUM_EXPRESSION);
+	expression->u.num_value = hexToUInt(yytext); 
+	isHexInput=true;
+	yylval.expression = expression;
+	return NUM_LITERAL; 
+}
 
 {digit}+(\.{digit}+)?   {
     Expression *expression = alloc_expression(NUM_EXPRESSION);
