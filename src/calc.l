@@ -31,52 +31,52 @@ other        .|\n
 
 "#" { return DEFINE; }
 
-(pi|π)2			{ yylval.character = create_character(yytext); return CHARACTER; }
-2(pi|π)			{ yylval.character = create_character(yytext); return CHARACTER; }
-pi|π			{ yylval.character = create_character(yytext); return CHARACTER; }
+(pi|π)2			{ yylval.character = strdup(yytext); return CHARACTER; }
+2(pi|π)			{ yylval.character = strdup(yytext); return CHARACTER; }
+pi|π			{ yylval.character = strdup(yytext); return CHARACTER; }
 
-asinh			{ yylval.character = create_character(yytext); return FUNCTION;}
-acosh			{ yylval.character = create_character(yytext); return FUNCTION;}
-atanh 			{ yylval.character = create_character(yytext); return FUNCTION;}
+asinh			{ yylval.character = strdup(yytext); return FUNCTION;}
+acosh			{ yylval.character = strdup(yytext); return FUNCTION;}
+atanh 			{ yylval.character = strdup(yytext); return FUNCTION;}
 
-sinh			{ yylval.character = create_character(yytext); return FUNCTION;}
-cosh			{ yylval.character = create_character(yytext); return FUNCTION;}
-tanh 			{ yylval.character = create_character(yytext); return FUNCTION;}
+sinh			{ yylval.character = strdup(yytext); return FUNCTION;}
+cosh			{ yylval.character = strdup(yytext); return FUNCTION;}
+tanh 			{ yylval.character = strdup(yytext); return FUNCTION;}
 
-sin 			{ yylval.character = create_character(yytext); return FUNCTION; }
-cos 			{ yylval.character = create_character(yytext); return FUNCTION; }
-tan 			{ yylval.character = create_character(yytext); return FUNCTION; }
+sin 			{ yylval.character = strdup(yytext); return FUNCTION; }
+cos 			{ yylval.character = strdup(yytext); return FUNCTION; }
+tan 			{ yylval.character = strdup(yytext); return FUNCTION; }
 
-asin 			{ yylval.character = create_character(yytext); return FUNCTION;}
-acos 			{ yylval.character = create_character(yytext); return FUNCTION;}
-atan 			{ yylval.character = create_character(yytext); return FUNCTION;}
+asin 			{ yylval.character = strdup(yytext); return FUNCTION;}
+acos 			{ yylval.character = strdup(yytext); return FUNCTION;}
+atan 			{ yylval.character = strdup(yytext); return FUNCTION;}
 
-e				{ yylval.character = create_character(yytext); return CHARACTER; }
-exp				{ yylval.character = create_character(yytext); return FUNCTION;}
-exp2			{ yylval.character = create_character(yytext); return FUNCTION;}
-log2			{ yylval.character = create_character(yytext); return FUNCTION;}
-log10			{ yylval.character = create_character(yytext); return FUNCTION;}
-log|ln			{ yylval.character = create_character(yytext); return FUNCTION;}
+e				{ yylval.character = strdup(yytext); return CHARACTER; }
+exp				{ yylval.character = strdup(yytext); return FUNCTION;}
+exp2			{ yylval.character = strdup(yytext); return FUNCTION;}
+log2			{ yylval.character = strdup(yytext); return FUNCTION;}
+log10			{ yylval.character = strdup(yytext); return FUNCTION;}
+log|ln			{ yylval.character = strdup(yytext); return FUNCTION;}
 
-abs				{ yylval.character = create_character(yytext); return FUNCTION;}
+abs				{ yylval.character = strdup(yytext); return FUNCTION;}
 
-sqrt|√			{ yylval.character = create_character(yytext); return FUNCTION;}
-cbrt			{ yylval.character = create_character(yytext); return FUNCTION;}
+sqrt|√			{ yylval.character = strdup(yytext); return FUNCTION;}
+cbrt			{ yylval.character = strdup(yytext); return FUNCTION;}
 
-round|rint		{ yylval.character = create_character(yytext); return FUNCTION;}
-floor			{ yylval.character = create_character(yytext); return FUNCTION;}
-ceil			{ yylval.character = create_character(yytext); return FUNCTION;}
+round|rint		{ yylval.character = strdup(yytext); return FUNCTION;}
+floor			{ yylval.character = strdup(yytext); return FUNCTION;}
+ceil			{ yylval.character = strdup(yytext); return FUNCTION;}
 
-Radians			{ yylval.character = create_character(yytext); return FUNCTION;}
-Degrees			{ yylval.character = create_character(yytext); return FUNCTION;}
+Radians			{ yylval.character = strdup(yytext); return FUNCTION;}
+Degrees			{ yylval.character = strdup(yytext); return FUNCTION;}
 
-toHex			{ yylval.character = create_character(yytext); isHexInput=true; return FUNCTION;}
-toBin			{ yylval.character = create_character(yytext); isBinaryInput=true; return FUNCTION;}
+toHex			{ yylval.character = strdup(yytext); isHexInput=true; return FUNCTION;}
+toBin			{ yylval.character = strdup(yytext); isBinaryInput=true; return FUNCTION;}
 
-sum				{ yylval.character = create_character(yytext); return FUNCTION_var;}
-ave				{ yylval.character = create_character(yytext); return FUNCTION_var;}
+sum				{ yylval.character = strdup(yytext); return FUNCTION_var;}
+ave				{ yylval.character = strdup(yytext); return FUNCTION_var;}
 
-geomean			{ yylval.character = create_character(yytext); return FUNCTION_var;}
+geomean			{ yylval.character = strdup(yytext); return FUNCTION_var;}
 
 {digit}+(\.{digit}+)?   {
     Expression *expression = alloc_expression(NUM_EXPRESSION);
@@ -84,5 +84,5 @@ geomean			{ yylval.character = create_character(yytext); return FUNCTION_var;}
     yylval.expression = expression;
     return NUM_LITERAL;
 }
-{letter}({digit}|{letter})* 		{ yylval.character = create_character(yytext); return CHARACTER;}
+{letter}({digit}|{letter})* 		{ yylval.character = strdup(yytext); return CHARACTER;}
 {other}          	{ return (int)yytext[0]; } 

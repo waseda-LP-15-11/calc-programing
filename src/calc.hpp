@@ -114,15 +114,12 @@ struct FunctionDefinition
     Expression *expression_list;
 };
 
-// 関数の保存場所
-static std::map<std::string,FunctionDefinition> function_list;
 
 // create.cpp
 Expression* alloc_expression(ExpressionType type);
 Expression* create_binary_expression(ExpressionType type, Expression *left, Expression *right);
 Expression * create_character_expression(char *chara);
 Expression * create_assign_expression(char *variable, Expression *operand);
-char * create_character(char *chara);
 ParameterList * chain_parameter(ParameterList *list, char *character);
 ParameterList * create_parameter(char *character);
 Expression * chain_expression_list(Expression *list, Expression *add);

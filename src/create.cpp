@@ -9,8 +9,11 @@
 #include <stdlib.h>
 #include <string.h>
 #include "calc.hpp"
+// 関数の保存場所
+static std::map<std::string,FunctionDefinition> function_list;
+FunctionDefinition *search_function(char *name) 
+{
 
-FunctionDefinition *search_function(char *name) {
     const std::string key(name);
     if (function_list.find(key) != function_list.end())
     {
@@ -156,15 +159,4 @@ Expression *create_function_var_call_expression(char *name) {
     exp = alloc_expression(FUNCTION_VAR_CALL_EXPRESSION);
     exp->u.function_call_expression.character = name;
     return exp;
-}
-
-// 変数作成
-// TODO: これは枝作成機能ではないので違うところに移動したい
-
-char *create_character(char *chara) {
-    //create_characterで渡されたcharaはtempCharactersに全て追加されていく
-    //できれば一つの計算ごとに.clearしたい。
-    static std::vector<std::string> tempChara;
-    tempChara.push_back(chara);
-    return const_cast<char *>(tempChara.back().c_str());
 }
