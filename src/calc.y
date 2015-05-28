@@ -39,44 +39,6 @@ void yyerror(const char *s)
   PrintErrorln(s);
 }
 
-
-void showFormula(double value)
-{  
-  bool error = false;
-  if(std::isinf(value))//オーバーフロー
-  {
-    PrintErrorln("ERROR: Overflow");
-    error = true;
-  }
-  if(std::isnan(value))//数値でない
-  {
-    PrintErrorln("Not a Number");
-    error = true;
-  }
-
-
-  if(!error)
-  {
-    if(isBinaryInput)
-    {
-      Println(uIntToBinStr((unsigned int)value)+"("+to_String((unsigned int)value)+")");
-    }
-    else if(isHexInput)
-    {
-      Println(uIntToHexStr((unsigned int)value)+"("+to_String((unsigned int)value)+")");
-    }
-    else if(ceil(value)!=floor(value) || value > INT_MAX)
-    {
-      Println(value);
-    }
-    else
-    {
-      Println((int)value);
-    }
-  }
-  isBinaryInput=false;
-  isHexInput = false;
-}
 int main(int argc, char *argv[])
 {
 #ifdef MEMCHEK

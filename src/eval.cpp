@@ -300,4 +300,6 @@ void calc_eval_expression(Expression *expression) {
     } else {
         Println("<void>");
     }
+  isBinaryInput=false;
+  isHexInput = false;
 }
