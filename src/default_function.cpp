@@ -54,6 +54,7 @@ void defineAllDefaultFunction() {
     defineDefaultFunction("toBin");
     defineDefaultFunction("toHex");
     defineDefaultConstant("pi2", M_PI_2);
+    defineDefaultConstant("pi4", M_PI_4);
     defineDefaultConstant("2pi", 2*M_PI);
     defineDefaultConstant("pi", M_PI);
     defineDefaultConstant("e", M_E);
