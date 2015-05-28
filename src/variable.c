@@ -42,16 +42,16 @@ Value* search_local_variable(const char* name)
 }
 
 
-//void dispVar(void)
-//{
-//	if(variables.empty())
-//	{
-//		Println("Variable is undefined");
-//		return;
-//	}
-//	for(const auto& var: variables)
-//	{
-//		//var.firstがキー(変数名),var.secondが変数の値
-//		Println(var.first + " = " + to_String(var.second));
-//	}
-//}
+void dispVar(void)
+{
+	if(Variables.empty())
+	{
+		Println("Variable is undefined");
+		return;
+	}
+	for(const auto& var: Variables)
+	{
+		//var.firstがキー(変数名),var.secondが変数の値
+		Println(var.first + " = " + to_String(var.second.u.num_value));
+	}
+}

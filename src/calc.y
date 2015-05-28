@@ -18,7 +18,7 @@
 
 std::unique_ptr<FlexLexer> lexer = nullptr;
 bool isFileInputMode = false;//ファイル入力があるか
-bool isBinaryInput = false;//その時点の計算に2進数表記があるか
+bool isBinInput = false;//その時点の計算に2進数表記があるか
 bool isHexInput = false;
 int yyparse();
 int yylex()
@@ -100,6 +100,7 @@ OPEN_SUCCESS:
 %type <parameter_list> func_parameter_list
 %type <number> lines
 %type <expression> expression formula term primary func_expression_list args
+%type <fpv> system_func
 %%
 lines
   : /* empty */ {/* empty */}
@@ -107,6 +108,7 @@ lines
   | lines expression '\n' {calc_eval_expression($2); PrintNextLine();}
   | error '\n'       { yyerrok;PrintNextLine(); }
   | lines function_definition
+  | lines system_func
 function_definition
   : DEFINE CHARACTER '(' func_parameter_list ')' '=' func_expression_list { function_define($2, $4, $7); }
 func_parameter_list
@@ -138,7 +140,9 @@ primary
   | CHARACTER { $$ = create_character_expression($1); }
   | FUNCTION '(' func_expression_list ')' { $$ = create_function_call_expression($1, $3); }
   | FUNCTION_var '(' args ')' { $$ = create_function_var_call_expression($1);}
-args/* $$ = NANは使われないため特に意味はない */
+args
   : formula   { pushArg($1);}
   | formula ',' args  { pushArg($1); }
+system_func
+  : FUNCTION0 {$1();}
 %%
