@@ -140,7 +140,7 @@ primary
   | CHARACTER { $$ = create_character_expression($1); }
   | FUNCTION '(' func_expression_list ')' { $$ = create_function_call_expression($1, $3); }
   | FUNCTION_var '(' args ')' { $$ = create_function_var_call_expression($1);}
-args/* $$ = NANは使われないため特に意味はない */
+args
   : formula   { pushArg($1);}
   | formula ',' args  { pushArg($1); }
 system_func

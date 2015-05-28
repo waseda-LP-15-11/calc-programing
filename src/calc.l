@@ -15,6 +15,7 @@ extern bool isHexInput;
 void dispVar(void);
 void dispMem(void);
 void dispFunc(void);
+double getMem(double index);
 %}
 
 letter  [a-zA-Z_'"']
@@ -78,7 +79,7 @@ ave				{ yylval.character = strdup(yytext); return FUNCTION_var;}
 
 geomean			{ yylval.character = strdup(yytext); return FUNCTION_var;}
 
-
+mem				{ yylval.character = strdup(yytext); return FUNCTION;}
 
 memory			{ yylval.fpv = dispMem; return FUNCTION0;}
 

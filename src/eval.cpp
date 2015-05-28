@@ -199,6 +199,7 @@ static Value eval_math_expression(char *math_name, Expression *arg) {
         result.type = HEX_VALUE;
         result.u.num_value = toHex(arg_p.u.num_value);
     }
+    if (!strcmp(math_name, "mem")) { result.u.num_value = getMem(arg_p.u.num_value); }
     return result;
 
 }

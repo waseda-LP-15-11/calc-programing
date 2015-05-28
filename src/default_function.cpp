@@ -53,6 +53,7 @@ void defineAllDefaultFunction() {
     defineDefaultFunction("Degrees");
     defineDefaultFunction("toBin");
     defineDefaultFunction("toHex");
+    defineDefaultFunction("mem");
     defineDefaultConstant("pi2", M_PI_2);
     defineDefaultConstant("pi4", M_PI_4);
     defineDefaultConstant("2pi", 2*M_PI);
