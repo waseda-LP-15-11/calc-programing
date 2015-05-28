@@ -21,7 +21,7 @@ double getMem(double index)
   if(i <= 0 || memory.size() < i)
   {
     Println("Out of Index",false);
-    Println("num of memory is "+to_string(memory.size()),false);
+    Println("num of memory is "+to_String(memory.size()),false);
     return NAN;
   }
 
