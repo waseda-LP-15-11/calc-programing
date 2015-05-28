@@ -17,6 +17,10 @@ void add_variable(const char* name, Value *var)
 //	Println(string(name)+" = "+to_String(value));
 }
 
+void remove_variable(const char *name) {
+	Variables.erase(to_String(name));
+}
+
 //void update_ans(double value)
 //{
 //	variables["ans"] = value;

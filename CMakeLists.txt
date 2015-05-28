@@ -22,7 +22,9 @@ set(SOURCE_FILES
     src/numberBase.c
     src/lexer.cpp
     src/variable.c
-    src/calc.tab.c)
+    src/calc.tab.c
+    src/MemLeakChecker.c)
+
 
 SET_SOURCE_FILES_PROPERTIES(
  src/exmath.c
@@ -34,6 +36,7 @@ SET_SOURCE_FILES_PROPERTIES(
  src/args.c
  src/numberBase.c
  src/calc.tab.c
+ src/MemLeakChecker.c
  PROPERTIES LANGUAGE CXX )
 
 add_executable(calc_programing

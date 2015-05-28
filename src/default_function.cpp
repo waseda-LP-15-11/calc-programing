@@ -7,7 +7,7 @@
 #include "variable.h"
 
 void defineDefaultFunction(const char *name) {
-    char* parme = (char*)"x";
+    char* parme = (char*)"math_function_argument";
     char *math_name = (char*)name;
     ParameterList* parameter = create_parameter(parme);
     Expression* math_expression = create_math_expression(math_name);

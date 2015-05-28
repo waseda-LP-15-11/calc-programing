@@ -67,7 +67,7 @@ static double calc_binary_int(ExpressionType type, double left, double right) {
 // 今のところ、ローカルな変数とグローバルな変数は区別していない
 static Value eval_char_expression(Expression *expr) {
     Value v;
-    Value *var;
+    Value *var = nullptr;
 
     // 変数を探す
     var = search_local_variable(expr->u.character);
@@ -80,6 +80,7 @@ static Value eval_char_expression(Expression *expr) {
         if(var != nullptr) {
             v = *var;
         } else {
+            printf("undefined variable error");
          // TODO: error handling
         }
     }
@@ -89,7 +90,7 @@ static Value eval_char_expression(Expression *expr) {
 // 変数作成枝の評価
 static Value eval_assign_expression(char *chara, Expression *expr) {
     Value v;
-    Value *left;
+    Value *left = nullptr;
 
     // 右辺の構文木を評価
     v = eval_expression(expr);
@@ -106,7 +107,6 @@ static Value eval_assign_expression(char *chara, Expression *expr) {
         // なかったら作成
         add_variable(chara, &v);
     }
-
     return v;
 
 }
@@ -122,9 +122,9 @@ static Value eval_expression_list_expression(Expression *expression, Expression 
 
 static Value eval_function_call_expression(char *character, Expression *arg) {
     Value result;
-    Expression *arg_p;
-    ParameterList *param_p;
-    FunctionDefinition *func;
+    Expression *arg_p = nullptr;
+    ParameterList *param_p = nullptr;
+    FunctionDefinition *func = nullptr;
 
     func = search_function(character);
     if (func == nullptr) {
@@ -135,6 +135,7 @@ static Value eval_function_call_expression(char *character, Expression *arg) {
         Value arg_val;
         if (param_p == nullptr) {
             // error many arg
+            break;
         }
         arg_val = eval_expression(arg_p->u.expression_list.expression);
         add_variable(param_p->name, &arg_val);
@@ -144,6 +145,9 @@ static Value eval_function_call_expression(char *character, Expression *arg) {
     }
     result = eval_expression(func->expression_list);
     //dispose var
+    for (arg_p = arg, param_p = func->parameter; arg_p; arg_p = arg_p->u.expression_list.next, param_p = param_p->next) {
+        remove_variable(param_p->name);
+    }
     return result;
 }
 
@@ -242,6 +246,8 @@ Value eval_expression(Expression *expr) {
     switch(expr->type) {
         case NUM_EXPRESSION:
             v = eval_num_expression(expr->u.num_value);
+            //printf("%f ", expr->u.num_value);
+            delete(expr);
             break;
         case CHAR_EXPRESSION:
             v = eval_char_expression(expr);
@@ -251,9 +257,12 @@ Value eval_expression(Expression *expr) {
             break;
         case ASSIGN_EXPRESSION:
             v = eval_assign_expression(expr->u.assignExpression.variable, expr->u.assignExpression.operand);
+            printf("%s = ", expr->u.character);
+            delete(expr);
             break;
         case MINUS_EXPRESSION:
             v = eval_minus_expression(expr->u.minus_expression);
+            delete(expr);
             break;
         case ADD_EXPRESSION:
         case SUB_EXPRESSION:
@@ -265,12 +274,14 @@ Value eval_expression(Expression *expr) {
         case LS_EXPRESSION:
         case RS_EXPRESSION:
             v = eval_binary_expression(expr->type, expr->u.binary_expression.left, expr->u.binary_expression.right);
+            delete(expr);
             break;
         case MATH_EXPRESSION:
             v = eval_math_expression(expr->u.function_call_expression.character, expr->u.function_call_expression.arg );
             break;
         case FUNCTION_CALL_EXPRESSION:
             v = eval_function_call_expression(expr->u.function_call_expression.character, expr->u.function_call_expression.arg);
+            delete(expr);
             break;
         case FUNCTION_VAR_CALL_EXPRESSION:
             v = eval_function_var_call_expression(expr->u.function_call_expression.character);
@@ -302,6 +313,7 @@ void calc_eval_expression(Expression *expression) {
     } else {
         Println("<void>");
     }
-  isBinaryInput=false;
-  isHexInput = false;
+    isBinaryInput=false;
+    isHexInput = false;
+
 }

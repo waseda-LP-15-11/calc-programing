@@ -324,8 +324,8 @@ int yyFlexLexer::yywrap() { return 1; }
 	*yy_cp = '\0'; \
 	(yy_c_buf_p) = yy_cp;
 
-#define YY_NUM_RULES 42
-#define YY_END_OF_BUFFER 43
+#define YY_NUM_RULES 41
+#define YY_END_OF_BUFFER 42
 /* This struct is not used in this scanner,
    but its presence is necessary. */
 struct yy_trans_info
@@ -335,19 +335,19 @@ struct yy_trans_info
 	};
 static yyconst flex_int16_t yy_accept[121] =
     {   0,
-        0,    0,   43,   41,    2,   40,    3,   39,   39,   40,
-       40,   40,   40,   20,   40,   40,   40,   40,   40,   40,
-       40,   41,   41,    2,   40,    0,   39,    0,    0,   40,
-       40,   40,   40,   40,   40,   40,   40,   40,   40,   40,
-       40,   40,   25,   40,    6,   40,   40,   40,   40,   40,
-       40,   40,    6,    0,   39,    5,   40,   40,   26,   40,
-       40,   40,   37,   40,   40,   15,   40,   21,   40,   40,
-       25,    4,   40,   40,    7,   40,   36,   16,   40,   40,
-        4,   27,   40,   40,   18,   17,   19,   28,   31,   12,
-        1,   22,   40,   40,   40,   23,   29,   40,   11,   27,
+        0,    0,   42,   40,    2,   39,    3,   38,   38,   39,
+       39,   39,   39,   19,   39,   39,   39,   39,   39,   39,
+       39,   40,   40,    2,   39,    0,   38,    0,    0,   39,
+       39,   39,   39,   39,   39,   39,   39,   39,   39,   39,
+       39,   39,   24,   39,    6,   39,   39,   39,   39,   39,
+       39,   39,    6,    0,   38,    5,   39,   39,   25,   39,
+       39,   39,   36,   39,   39,   14,   39,   20,   39,   39,
+       24,    4,   39,   39,   13,   39,   35,   15,   39,   39,
+        4,   26,   39,   39,   17,   16,   18,   27,   30,   11,
+        1,   21,   39,   39,   39,   22,   28,   39,   10,   26,
 
-       13,   40,   40,   40,   40,    9,    8,   10,   30,   40,
-       24,   35,   34,   40,   40,   40,   33,   32,   38,    0
+       12,   39,   39,   39,   39,    8,    7,    9,   29,   39,
+       23,   34,   33,   39,   39,   39,   32,   31,   37,    0
     } ;
 
 static yyconst flex_int32_t yy_ec[256] =
@@ -707,181 +707,176 @@ YY_RULE_SETUP
 case 4:
 YY_RULE_SETUP
 #line 34 "src/calc.l"
-{ yylval.character = create_character(yytext); return CHARACTER; }
+{ yylval.character = strdup(yytext); return CHARACTER; }
 	YY_BREAK
 case 5:
 YY_RULE_SETUP
 #line 35 "src/calc.l"
-{ yylval.character = create_character(yytext); return CHARACTER; }
+{ yylval.character = strdup(yytext); return CHARACTER; }
 	YY_BREAK
 case 6:
 YY_RULE_SETUP
 #line 36 "src/calc.l"
-{ yylval.character = create_character(yytext); return CHARACTER; }
+{ yylval.character = strdup(yytext); return CHARACTER; }
 	YY_BREAK
 case 7:
 YY_RULE_SETUP
 #line 38 "src/calc.l"
-{ yylval.character = create_character(yytext); return FUNCTION; }
+{ yylval.character = strdup(yytext); return FUNCTION;}
 	YY_BREAK
 case 8:
 YY_RULE_SETUP
 #line 39 "src/calc.l"
-{ yylval.character = create_character(yytext); return FUNCTION;}
+{ yylval.character = strdup(yytext); return FUNCTION;}
 	YY_BREAK
 case 9:
 YY_RULE_SETUP
 #line 40 "src/calc.l"
-{ yylval.character = create_character(yytext); return FUNCTION;}
+{ yylval.character = strdup(yytext); return FUNCTION;}
 	YY_BREAK
 case 10:
 YY_RULE_SETUP
-#line 41 "src/calc.l"
-{ yylval.character = create_character(yytext); return FUNCTION;}
+#line 42 "src/calc.l"
+{ yylval.character = strdup(yytext); return FUNCTION;}
 	YY_BREAK
 case 11:
 YY_RULE_SETUP
 #line 43 "src/calc.l"
-{ yylval.character = create_character(yytext); return FUNCTION;}
+{ yylval.character = strdup(yytext); return FUNCTION;}
 	YY_BREAK
 case 12:
 YY_RULE_SETUP
 #line 44 "src/calc.l"
-{ yylval.character = create_character(yytext); return FUNCTION;}
+{ yylval.character = strdup(yytext); return FUNCTION;}
 	YY_BREAK
 case 13:
 YY_RULE_SETUP
-#line 45 "src/calc.l"
-{ yylval.character = create_character(yytext); return FUNCTION;}
+#line 46 "src/calc.l"
+{ yylval.character = strdup(yytext); return FUNCTION; }
 	YY_BREAK
 case 14:
 YY_RULE_SETUP
 #line 47 "src/calc.l"
-{ yylval.character = create_character(yytext); return FUNCTION; }
+{ yylval.character = strdup(yytext); return FUNCTION; }
 	YY_BREAK
 case 15:
 YY_RULE_SETUP
 #line 48 "src/calc.l"
-{ yylval.character = create_character(yytext); return FUNCTION; }
+{ yylval.character = strdup(yytext); return FUNCTION; }
 	YY_BREAK
 case 16:
 YY_RULE_SETUP
-#line 49 "src/calc.l"
-{ yylval.character = create_character(yytext); return FUNCTION; }
+#line 50 "src/calc.l"
+{ yylval.character = strdup(yytext); return FUNCTION;}
 	YY_BREAK
 case 17:
 YY_RULE_SETUP
 #line 51 "src/calc.l"
-{ yylval.character = create_character(yytext); return FUNCTION;}
+{ yylval.character = strdup(yytext); return FUNCTION;}
 	YY_BREAK
 case 18:
 YY_RULE_SETUP
 #line 52 "src/calc.l"
-{ yylval.character = create_character(yytext); return FUNCTION;}
+{ yylval.character = strdup(yytext); return FUNCTION;}
 	YY_BREAK
 case 19:
 YY_RULE_SETUP
-#line 53 "src/calc.l"
-{ yylval.character = create_character(yytext); return FUNCTION;}
+#line 54 "src/calc.l"
+{ yylval.character = strdup(yytext); return CHARACTER; }
 	YY_BREAK
 case 20:
 YY_RULE_SETUP
 #line 55 "src/calc.l"
-{ yylval.character = create_character(yytext); return CHARACTER; }
+{ yylval.character = strdup(yytext); return FUNCTION;}
 	YY_BREAK
 case 21:
 YY_RULE_SETUP
 #line 56 "src/calc.l"
-{ yylval.character = create_character(yytext); return FUNCTION;}
+{ yylval.character = strdup(yytext); return FUNCTION;}
 	YY_BREAK
 case 22:
 YY_RULE_SETUP
 #line 57 "src/calc.l"
-{ yylval.character = create_character(yytext); return FUNCTION;}
+{ yylval.character = strdup(yytext); return FUNCTION;}
 	YY_BREAK
 case 23:
 YY_RULE_SETUP
 #line 58 "src/calc.l"
-{ yylval.character = create_character(yytext); return FUNCTION;}
+{ yylval.character = strdup(yytext); return FUNCTION;}
 	YY_BREAK
 case 24:
 YY_RULE_SETUP
 #line 59 "src/calc.l"
-{ yylval.character = create_character(yytext); return FUNCTION;}
+{ yylval.character = strdup(yytext); return FUNCTION;}
 	YY_BREAK
 case 25:
 YY_RULE_SETUP
-#line 60 "src/calc.l"
-{ yylval.character = create_character(yytext); return FUNCTION;}
+#line 61 "src/calc.l"
+{ yylval.character = strdup(yytext); return FUNCTION;}
 	YY_BREAK
 case 26:
 YY_RULE_SETUP
-#line 62 "src/calc.l"
-{ yylval.character = create_character(yytext); return FUNCTION;}
+#line 63 "src/calc.l"
+{ yylval.character = strdup(yytext); return FUNCTION;}
 	YY_BREAK
 case 27:
 YY_RULE_SETUP
 #line 64 "src/calc.l"
-{ yylval.character = create_character(yytext); return FUNCTION;}
+{ yylval.character = strdup(yytext); return FUNCTION;}
 	YY_BREAK
 case 28:
 YY_RULE_SETUP
-#line 65 "src/calc.l"
-{ yylval.character = create_character(yytext); return FUNCTION;}
+#line 66 "src/calc.l"
+{ yylval.character = strdup(yytext); return FUNCTION;}
 	YY_BREAK
 case 29:
 YY_RULE_SETUP
 #line 67 "src/calc.l"
-{ yylval.character = create_character(yytext); return FUNCTION;}
+{ yylval.character = strdup(yytext); return FUNCTION;}
 	YY_BREAK
 case 30:
 YY_RULE_SETUP
 #line 68 "src/calc.l"
-{ yylval.character = create_character(yytext); return FUNCTION;}
+{ yylval.character = strdup(yytext); return FUNCTION;}
 	YY_BREAK
 case 31:
 YY_RULE_SETUP
-#line 69 "src/calc.l"
-{ yylval.character = create_character(yytext); return FUNCTION;}
+#line 70 "src/calc.l"
+{ yylval.character = strdup(yytext); return FUNCTION;}
 	YY_BREAK
 case 32:
 YY_RULE_SETUP
 #line 71 "src/calc.l"
-{ yylval.character = create_character(yytext); return FUNCTION;}
+{ yylval.character = strdup(yytext); return FUNCTION;}
 	YY_BREAK
 case 33:
 YY_RULE_SETUP
-#line 72 "src/calc.l"
-{ yylval.character = create_character(yytext); return FUNCTION;}
+#line 73 "src/calc.l"
+{ yylval.character = strdup(yytext); isHexInput=true; return FUNCTION;}
 	YY_BREAK
 case 34:
 YY_RULE_SETUP
 #line 74 "src/calc.l"
-{ yylval.character = create_character(yytext); isHexInput=true; return FUNCTION;}
+{ yylval.character = strdup(yytext); isBinaryInput=true; return FUNCTION;}
 	YY_BREAK
 case 35:
 YY_RULE_SETUP
-#line 75 "src/calc.l"
-{ yylval.character = create_character(yytext); isBinaryInput=true; return FUNCTION;}
+#line 76 "src/calc.l"
+{ yylval.character = strdup(yytext); return FUNCTION_var;}
 	YY_BREAK
 case 36:
 YY_RULE_SETUP
 #line 77 "src/calc.l"
-{ yylval.character = create_character(yytext); return FUNCTION_var;}
+{ yylval.character = strdup(yytext); return FUNCTION_var;}
 	YY_BREAK
 case 37:
 YY_RULE_SETUP
-#line 78 "src/calc.l"
-{ yylval.character = create_character(yytext); return FUNCTION_var;}
+#line 79 "src/calc.l"
+{ yylval.character = strdup(yytext); return FUNCTION_var;}
 	YY_BREAK
 case 38:
 YY_RULE_SETUP
-#line 80 "src/calc.l"
-{ yylval.character = create_character(yytext); return FUNCTION_var;}
-	YY_BREAK
-case 39:
-YY_RULE_SETUP
-#line 82 "src/calc.l"
+#line 81 "src/calc.l"
 {
     Expression *expression = alloc_expression(NUM_EXPRESSION);
     sscanf(yytext, "%lf", &expression->u.num_value);
@@ -889,23 +884,23 @@ YY_RULE_SETUP
     return NUM_LITERAL;
 }
 	YY_BREAK
+case 39:
+YY_RULE_SETUP
+#line 87 "src/calc.l"
+{ yylval.character = strdup(yytext); return CHARACTER;}
+	YY_BREAK
 case 40:
+/* rule 40 can match eol */
 YY_RULE_SETUP
 #line 88 "src/calc.l"
-{ yylval.character = create_character(yytext); return CHARACTER;}
-	YY_BREAK
-case 41:
-/* rule 41 can match eol */
-YY_RULE_SETUP
-#line 89 "src/calc.l"
 { return (int)yytext[0]; } 
 	YY_BREAK
-case 42:
+case 41:
 YY_RULE_SETUP
-#line 90 "src/calc.l"
+#line 89 "src/calc.l"
 ECHO;
 	YY_BREAK
-#line 909 "/Users/KeigoOgawa/work/Waseda/calc-programing/src/lexer.cpp"
+#line 904 "/Users/KeigoOgawa/work/Waseda/calc-programing/src/lexer.cpp"
 case YY_STATE_EOF(INITIAL):
 	yyterminate();
 
@@ -1805,4 +1800,4 @@ void yyfree (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
-#line 90 "src/calc.l"
+#line 89 "src/calc.l"

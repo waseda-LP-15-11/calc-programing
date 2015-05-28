@@ -21,7 +21,7 @@ FunctionDefinition *search_function(char *name) {
 }
 
 void function_define(char *character, ParameterList *parameter_list, Expression *expression_list) {
-    FunctionDefinition *f;
+    FunctionDefinition *f = nullptr;
     if (search_function(character)) {
         return;
     }
@@ -34,7 +34,7 @@ void function_define(char *character, ParameterList *parameter_list, Expression 
 }
 
 ParameterList *create_parameter(char *character) {
-    ParameterList *p;
+    ParameterList *p = nullptr;
     p = new ParameterList;
     p->name = character;
     p->next = NULL;
@@ -42,10 +42,10 @@ ParameterList *create_parameter(char *character) {
 }
 
 ParameterList *chain_parameter(ParameterList *list, char *character) {
-    ParameterList *add;
+    ParameterList *add = nullptr;
     add = create_parameter(character);
 
-    ParameterList *pos;
+    ParameterList *pos = nullptr;
     for (pos = list; pos->next; pos = pos->next);
     pos->next = add;
     return list;
@@ -53,14 +53,14 @@ ParameterList *chain_parameter(ParameterList *list, char *character) {
 
 // expression(=解析木の枝)のメモリ確保
 Expression* alloc_expression(ExpressionType type) {
-    Expression *exp;
+    Expression *exp = nullptr;
     exp = new Expression;
     exp->type = type;
     return exp;
 }
 
 Expression *create_expression_list(Expression *expression) {
-    Expression *exp;
+    Expression *exp = nullptr;
     exp = alloc_expression(EXPRESSION_LIST_EXPRESSION);
     exp->u.expression_list.expression = expression;
     exp->u.expression_list.next = nullptr;
@@ -68,8 +68,8 @@ Expression *create_expression_list(Expression *expression) {
 }
 
 Expression *chain_expression_list(Expression *list, Expression *add) {
-    Expression *exp;
-    Expression *pos;
+    Expression *exp = nullptr;
+    Expression *pos = nullptr;
     exp = alloc_expression(EXPRESSION_LIST_EXPRESSION);
     exp->u.expression_list.expression = add;
     exp->u.expression_list.next = nullptr;
@@ -80,7 +80,7 @@ Expression *chain_expression_list(Expression *list, Expression *add) {
 
 // 右辺と左辺があるタイプの枝を作成
 Expression* create_binary_expression(ExpressionType type, Expression *left, Expression *right) {
-    Expression *exp;
+    Expression *exp = nullptr;
     exp = alloc_expression(type);
     exp->u.binary_expression.left = left;
     exp->u.binary_expression.right = right;
@@ -103,7 +103,7 @@ Expression *create_minus_expression(Expression *ope) {
         *ope = convert_value_to_expression(&v);
         return ope;
     } else {
-        Expression *exp;
+        Expression *exp = nullptr;
         exp = alloc_expression(MINUS_EXPRESSION);
         exp->u.minus_expression = ope;
         return exp;
@@ -112,7 +112,7 @@ Expression *create_minus_expression(Expression *ope) {
 
 // 変数の枝作成
 Expression *create_character_expression(char *chara) {
-    Expression *exp;
+    Expression *exp = nullptr;
     exp = alloc_expression(CHAR_EXPRESSION);
     exp->u.character = chara;
     return exp;
@@ -120,7 +120,7 @@ Expression *create_character_expression(char *chara) {
 
 // 変数に割り当てる枝作成(a=1としたときの=を挟んだ両辺の関係)
 Expression *create_assign_expression(char *variable, Expression *operand) {
-    Expression *exp;
+    Expression *exp = nullptr;
     exp = alloc_expression(ASSIGN_EXPRESSION);
     exp->u.assignExpression.variable = variable;
     exp->u.assignExpression.operand = operand;
@@ -129,8 +129,8 @@ Expression *create_assign_expression(char *variable, Expression *operand) {
 }
 
 Expression *create_math_expression(char* math_name ) {
-    Expression *exp;
-    char *arg = (char*)"x";
+    Expression *exp = nullptr;
+    char *arg = (char*)"math_function_argument";
     Expression *name_expr = create_character_expression(math_name);
     Expression *arg_expr = create_character_expression(arg);
     exp = alloc_expression(MATH_EXPRESSION);
@@ -140,7 +140,7 @@ Expression *create_math_expression(char* math_name ) {
 }
 
 Expression *create_function_call_expression(char *func_name, Expression *arg) {
-    Expression *exp;
+    Expression *exp = nullptr;
     exp = alloc_expression(FUNCTION_CALL_EXPRESSION);
     exp->u.function_call_expression.character = func_name;
     exp->u.function_call_expression.arg = arg;
@@ -148,7 +148,7 @@ Expression *create_function_call_expression(char *func_name, Expression *arg) {
 }
 
 Expression *create_function_var_call_expression(char *name) {
-    Expression *exp;
+    Expression *exp = nullptr;
     exp = alloc_expression(FUNCTION_VAR_CALL_EXPRESSION);
     exp->u.function_call_expression.character = name;
     return exp;
