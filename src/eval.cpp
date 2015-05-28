@@ -12,6 +12,7 @@
 #include "numberBase.h"
 #include "sum.h"
 #include "args.h"
+#include "memory.h"
 
 extern bool isBinInput;//calc.y
 extern bool isHexInput;//calc.y
@@ -290,13 +291,14 @@ Value eval_expression(Expression *expr) {
 void calc_eval_expression(Expression *expression) 
 {
     Value v = eval_expression(expression);
+    const auto uIntValue = to_String((unsigned int)v.u.num_value);
     if (v.type == HEX_VALUE || isHexInput) 
     {
-        Println(uIntToHexStr((unsigned int)v.u.num_value)+"("+to_String((unsigned int)v.u.num_value)+")");
+        Println(uIntToHexStr((unsigned int)v.u.num_value)+"("+uIntValue+")");
     } 
     else if (v.type == BIN_VALUE || isBinInput) 
     {
-        Println(uIntToBinStr((unsigned int)v.u.num_value)+"("+to_String((unsigned int)v.u.num_value)+")");
+        Println(uIntToBinStr((unsigned int)v.u.num_value)+"("+uIntValue+")");
     } 
     else if (v.type == NUM_VALUE) 
     {
@@ -313,6 +315,7 @@ void calc_eval_expression(Expression *expression)
     {
         Println("<void>");
     }
+  pushMemory(v.u.num_value);
   isBinInput=false;
   isHexInput = false;
 }
