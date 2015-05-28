@@ -9,42 +9,36 @@
 #include <stdlib.h>
 #include <string.h>
 #include "calc.hpp"
-// 関数の保存場所
-static std::map<std::string,FunctionDefinition> function_list;
-FunctionDefinition *search_function(char *name) 
-{
 
-    const std::string key(name);
-    if (function_list.find(key) != function_list.end())
-    {
-        return &function_list[key];
+FunctionDefinition *search_function(char *name) {
+    FunctionDefinition *pos;
+    for(pos = function_list_top; pos; pos = pos->next) {
+        if (!strcmp(pos->name, name)) {
+            break;
+        }
     }
-    else
-    {
-        return nullptr;
-    }
+    return pos;
 }
 
 void function_define(char *character, ParameterList *parameter_list, Expression *expression_list) {
-
+    FunctionDefinition *f;
     if (search_function(character)) {
         return;
     }
-
-    FunctionDefinition f;
-    f.parameter = parameter_list;
-    f.expression_list = expression_list;
-
-    function_list[std::string(character)] = f;
+    f = new FunctionDefinition;
+    f->name = character;
+    f->parameter = parameter_list;
+    f->expression_list = expression_list;
+    f->next = function_list_top;
+    function_list_top = f;
 }
 
 ParameterList *create_parameter(char *character) {
-    static std::vector<ParameterList> tempParameterList;
-    ParameterList p;
-    p.name = character;
-    p.next = nullptr;
-    tempParameterList.push_back(p);
-    return &tempParameterList.back();
+    ParameterList *p;
+    p = new ParameterList;
+    p->name = character;
+    p->next = NULL;
+    return p;
 }
 
 ParameterList *chain_parameter(ParameterList *list, char *character) {
@@ -59,11 +53,10 @@ ParameterList *chain_parameter(ParameterList *list, char *character) {
 
 // expression(=解析木の枝)のメモリ確保
 Expression* alloc_expression(ExpressionType type) {
-    static std::vector<Expression> tempExpression;
-    Expression exp;
-    exp.type = type;
-    tempExpression.push_back(exp);
-    return &tempExpression.back();
+    Expression *exp;
+    exp = new Expression;
+    exp->type = type;
+    return exp;
 }
 
 Expression *create_expression_list(Expression *expression) {

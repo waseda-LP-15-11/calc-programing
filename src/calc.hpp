@@ -110,10 +110,13 @@ struct ParameterList {
 
 struct FunctionDefinition 
 {
+    char* name;
     ParameterList *parameter;
     Expression *expression_list;
+    struct FunctionDefinition* next;
 };
 
+static FunctionDefinition* function_list_top=nullptr;
 
 // create.cpp
 Expression* alloc_expression(ExpressionType type);
