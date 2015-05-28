@@ -1,5 +1,6 @@
 #include "numberBase.h"
 #include "print.h"
+#include <limits>
 
 unsigned int binToUInt(const std::string &str)
 {
@@ -36,7 +37,7 @@ std::string uIntToBinStr(unsigned int value)
 }
 unsigned int complement(unsigned int value)
 {
-    std::string binStrMAX = uIntToBinStr(UINT_MAX);
+    std::string binStrMAX = uIntToBinStr(std::numeric_limits<unsigned int>::max());
     std::string binStr = uIntToBinStr(value);
     for(unsigned int i = binStr.length() - 1 ; 2 <= i; --i)
     {

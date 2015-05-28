@@ -154,3 +154,36 @@ Expression *create_function_var_call_expression(char *name) {
     exp->u.function_call_expression.character = name;
     return exp;
 }
+
+// 変数作成
+// TODO: これは枝作成機能ではないので違うところに移動したい
+class DupStr
+{
+public:
+
+    DupStr(const char* character)
+    :m_string(strdup(character))
+    {}
+
+    ~DupStr()
+    {
+        if(m_string)
+        {
+            free(m_string);
+        }
+    }
+
+    char* getCharPtr()
+    {
+        return m_string;
+    }
+private:
+    char* m_string=nullptr;
+};
+
+static std::vector<DupStr> tempChara;
+
+char *create_character(char *chara) {
+    tempChara.emplace_back(chara);
+    return tempChara.back().getCharPtr();
+}
