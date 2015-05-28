@@ -36,12 +36,18 @@ std::string uIntToBinStr(unsigned int value)
 }
 unsigned int complement(unsigned int value)
 {
+    std::string binStrMAX = uIntToBinStr(UINT_MAX);
     std::string binStr = uIntToBinStr(value);
-    for(unsigned int i=2;i<binStr.length();++i)
+    for(unsigned int i = binStr.length() - 1 ; 2 <= i; --i)
     {
-        binStr[i] = (binStr[i] == '0') ? '1' : '0';
+        if(binStr[i] == '1')
+        {
+            auto offset = binStrMAX.length() - binStr.length();
+
+            binStrMAX[i+offset] = '0';
+        }
     }
-    return binToUInt(binStr)+1 ;
+    return binToUInt(binStrMAX)+1 ;
 }
 
 
