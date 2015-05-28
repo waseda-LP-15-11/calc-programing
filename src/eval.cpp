@@ -284,6 +284,8 @@ Value eval_expression(Expression *expr) {
 
 
 // 入力された解析木全体の評価をする。そして、最終的な出力をする。
+extern bool isBinaryInput;//calc.y
+extern bool isHexInput;//calc.y
 void calc_eval_expression(Expression *expression) {
     Value v;
     v = eval_expression(expression);
