@@ -143,7 +143,7 @@ Expression * create_function_var_call_expression(char *func_name);
 Expression * create_math_expression(char* math_name );
 Expression * create_minus_expression(Expression *ope);
 Expression * create_function_var_call_expression(char *name);
-char *create_character(char *chara);
+
 
 // eval.cpp
 void calc_eval_expression(Expression *expression);

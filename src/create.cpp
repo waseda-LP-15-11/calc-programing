@@ -21,10 +21,12 @@ shared_ptr<FunctionDefinition> search_function(char *name) {
 }
 
 void function_define(char *character, ParameterList *parameter_list, Expression *expression_list) {
+    FunctionDefinition *f = nullptr;
     if (search_function(character)) {
         return;
     }
-    std::shared_ptr<FunctionDefinition> pf = std::make_shared<FunctionDefinition>();
+    f = new FunctionDefinition;
+    std::shared_ptr<FunctionDefinition> pf(f);
     pf->name = character;
     pf->parameter = parameter_list;
     pf->expression_list = expression_list;
@@ -34,9 +36,9 @@ void function_define(char *character, ParameterList *parameter_list, Expression 
 
 ParameterList *create_parameter(char *character) {
     ParameterList *p = nullptr;
-    p = new ParameterList;//最終的にセットされるであろうFunctionDefinitionのデストラクタでdeleteしている
+    p = new ParameterList;
     p->name = character;
-    p->next = nullptr;
+    p->next = NULL;
     return p;
 }
 
@@ -151,35 +153,4 @@ Expression *create_function_var_call_expression(char *name) {
     exp = alloc_expression(FUNCTION_VAR_CALL_EXPRESSION);
     exp->u.function_call_expression.character = name;
     return exp;
-}
-
-
-class DupStr
-{
-public:
-
-    DupStr(const char* character)
-    :m_string(strdup(character))
-    {}
-
-    ~DupStr()
-    {
-        if(m_string)
-        {
-            free(m_string);
-        }
-    }
-
-    char* getCharPtr()
-    {
-        return m_string;
-    }
-private:
-    char* m_string=nullptr;
-};
-
-static std::vector<DupStr> tempChara;
-char *create_character(char *chara) {
-    tempChara.emplace_back(chara);
-    return tempChara.back().getCharPtr();
 }
