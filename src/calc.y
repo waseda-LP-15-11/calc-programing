@@ -38,12 +38,21 @@ void yyerror(const char *s)
 {
   PrintErrorln(s);
 }
+void restart()
+{
+  isFileInputMode = false;
+  lexer->yyrestart(&std::cin);
+  Print(">> ",false);
+}
 
 int main(int argc, char *argv[])
 {
 #ifdef MEMCHEK
   MemLeakChecker checker;
 #endif
+
+
+  lexer = std::make_unique<yyFlexLexer>();
 
   std::ifstream ifs;
 
@@ -52,9 +61,8 @@ int main(int argc, char *argv[])
     ifs.open(argv[1]);
     if(!ifs.fail())
     {
-      lexer = std::make_unique<yyFlexLexer>(&ifs);
+      lexer->yyrestart(&ifs);
       isFileInputMode = true;
-      goto OPEN_SUCCESS;
     }
     else
     {
@@ -62,8 +70,6 @@ int main(int argc, char *argv[])
     }
   }
 
-  //失敗した場合||入力がない場合はここでnew
-  lexer = std::make_unique<yyFlexLexer>();
 
 OPEN_SUCCESS:
   defineAllDefaultFunction();

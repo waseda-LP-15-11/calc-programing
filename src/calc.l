@@ -16,6 +16,7 @@ void dispVar(void);
 void dispMem(void);
 void dispFunc(void);
 double getMem(double index);
+void restart();
 %}
 
 letter  [a-zA-Z_'"']
@@ -26,7 +27,7 @@ white_blank  [ \t]
 other        .|\n
 
 %%
-
+<<EOF>>			{ yylval.fpv = restart; return FUNCTION0; }
 "exit" { exit(0); }
 {white_blank}+
 
